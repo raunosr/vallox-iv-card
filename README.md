@@ -2,7 +2,7 @@
 
 A custom Lovelace card for Home Assistant that visualizes Vallox IV ventilation unit airflow, temperatures, and heat recovery efficiency.
 
-![Vallox IV Card Screenshot](screenshot.png)
+![Vallox IV Card Screenshot](/examples/example_finnish.png)
 
 ## Features
 
