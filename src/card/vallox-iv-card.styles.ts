@@ -176,26 +176,26 @@ export const cardStyles = css`
   }
 
   .temp-block .label-value {
-    font-size: 16px;
+    font-size: 14px;
     margin-top: 0;
     line-height: 1.3;
     text-align: center;
   }
 
   .temp-block .label-value .sensor-icon {
-    --mdc-icon-size: 16px;
+    --mdc-icon-size: 14px;
     vertical-align: -0.15em;
     margin-right: 2px;
     color: var(--vallox-label-color);
   }
 
   .temp-block .label-value .value {
-    font-size: 16px;
+    font-size: 14px;
     display: inline;
   }
 
   .temp-block .label-value .value .unit {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   /* Extract air - left top */
