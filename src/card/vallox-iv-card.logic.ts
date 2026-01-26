@@ -77,8 +77,8 @@ export function calculateTheoreticalEfficiency(state: ValloxIvCardState): number
   }
 
   const denominator = extractTemp - outdoorTemp;
-  if (Math.abs(denominator) < 0.1) {
-    // Avoid division by zero or near-zero
+  if (Math.abs(denominator) < 1.0) {
+    // Avoid division by zero or near-zero - need at least 1°C difference for meaningful efficiency
     return null;
   }
 

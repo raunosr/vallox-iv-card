@@ -10,6 +10,24 @@ export interface FormattedValue {
 }
 
 /**
+ * Parses a formatted value string to separate the numeric part from the unit
+ * Handles formats like "21.5°C", "85%", "450 ppm"
+ */
+export function parseValueAndUnit(formatted: string): { value: string; unit: string } {
+  if (!formatted || formatted === '—') {
+    return { value: formatted, unit: '' };
+  }
+  
+  // Match number (with optional decimal) followed by unit
+  const match = formatted.match(/^(-?\d+(?:\.\d+)?)\s*(.*)$/);
+  if (match) {
+    return { value: match[1], unit: match[2] };
+  }
+  
+  return { value: formatted, unit: '' };
+}
+
+/**
  * Formats a temperature value with unit
  * @returns Formatted string like "21.5°C" or "—" if null
  */
@@ -41,31 +59,40 @@ export function formatTemperatureParts(
 
 /**
  * Formats a percentage value
+ * @param value - The numeric value to format
+ * @param decimals - Number of decimal places (default: 0)
+ * @param isAlreadyNormalized - If true, value is already 0-100; if false, value is 0-1 and needs normalization (default: true)
  * @returns Formatted string like "85%" or "—" if null
  */
 export function formatPercentage(
   value: number | null,
-  decimals: number = 0
+  decimals: number = 0,
+  isAlreadyNormalized: boolean = true
 ): string {
   if (value === null) {
     return '—';
   }
-  // Normalize: if value is between 0-1, multiply by 100
-  const normalized = value <= 1 && value >= 0 ? value * 100 : value;
+  // Only normalize if explicitly told value is 0-1 range
+  const normalized = isAlreadyNormalized ? value : value * 100;
   return `${normalized.toFixed(decimals)}%`;
 }
 
 /**
  * Formats a percentage value returning value and unit separately
+ * @param value - The numeric value to format
+ * @param decimals - Number of decimal places (default: 0)
+ * @param isAlreadyNormalized - If true, value is already 0-100; if false, value is 0-1 and needs normalization (default: true)
  */
 export function formatPercentageParts(
   value: number | null,
-  decimals: number = 0
+  decimals: number = 0,
+  isAlreadyNormalized: boolean = true
 ): FormattedValue {
   if (value === null) {
     return { value: '—', unit: '', combined: '—' };
   }
-  const normalized = value <= 1 && value >= 0 ? value * 100 : value;
+  // Only normalize if explicitly told value is 0-1 range
+  const normalized = isAlreadyNormalized ? value : value * 100;
   const numStr = normalized.toFixed(decimals);
   return { value: numStr, unit: '%', combined: `${numStr}%` };
 }
