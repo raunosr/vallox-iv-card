@@ -233,7 +233,6 @@ export const cardStyles = css`
     flex-direction: row;
     align-items: center;
     gap: 6px;
-    z-index: 10;
   }
 
   .supply-cell-block .supply-cell-temp {

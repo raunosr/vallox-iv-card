@@ -11,7 +11,7 @@ export const DEFAULT_CONFIG: Partial<ValloxIvCardConfig> = {
   show_fan_speed: true,
   show_cell_state: true,
   show_co2: true,
-  show_humidity: false,
+  show_humidity: true,
   show_post_heater: true,
   // Alert & dynamic color defaults
   enable_temp_colors: true,
@@ -50,6 +50,7 @@ export function validateConfig(config: unknown): ValloxIvCardConfig {
   const entityFields = [
     'outdoor_air_temp',
     'supply_air_temp',
+    'supply_cell_temp',
     'extract_air_temp',
     'exhaust_air_temp',
     'efficiency',

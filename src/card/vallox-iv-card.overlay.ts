@@ -8,24 +8,7 @@ import type {
   ValloxDashboardEntities,
   ValloxDashboardColors,
 } from './vallox-iv-card.svg';
-
-/**
- * Parses a formatted value string to separate the numeric part from the unit
- * Handles formats like "21.5°C", "85%", "450 ppm"
- */
-function parseValueAndUnit(formatted: string): { value: string; unit: string } {
-  if (!formatted || formatted === '—') {
-    return { value: formatted, unit: '' };
-  }
-  
-  // Match number (with optional decimal) followed by unit
-  const match = formatted.match(/^(-?\d+(?:\.\d+)?)\s*(.*)$/);
-  if (match) {
-    return { value: match[1], unit: match[2] };
-  }
-  
-  return { value: formatted, unit: '' };
-}
+import { parseValueAndUnit } from '../shared/format';
 
 /**
  * Renders a clickable value with optional color override
@@ -50,7 +33,15 @@ function renderValue(
   
   if (clickable && entityId && onEntityClick) {
     return html`
-      <span class="${classes}" style="${style}" @click=${() => onEntityClick(entityId)}>
+      <span
+        class="${classes}"
+        style="${style}"
+        role="button"
+        tabindex="0"
+        aria-label="View ${entityId} details"
+        @click=${() => onEntityClick(entityId)}
+        @keydown=${(e: KeyboardEvent) => e.key === 'Enter' && onEntityClick(entityId)}
+      >
         ${content}
       </span>
     `;
@@ -111,7 +102,14 @@ function renderLabelValue(
   
   if (clickable && entityId && onEntityClick) {
     return html`
-      <div class="${classes}" @click=${() => onEntityClick(entityId)}>
+      <div
+        class="${classes}"
+        role="button"
+        tabindex="0"
+        aria-label="View ${entityId} details"
+        @click=${() => onEntityClick(entityId)}
+        @keydown=${(e: KeyboardEvent) => e.key === 'Enter' && onEntityClick(entityId)}
+      >
         ${content}
       </div>
     `;
