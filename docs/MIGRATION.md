@@ -5,7 +5,7 @@
 1. Open Vallox IV Card in HACS. If needed, add `raunosr/vallox-iv-card` as a custom
    repository with type **Dashboard**.
 2. Use **⋮ → Update information** to refresh release metadata, then **Redownload**.
-3. Under **Need a different version?**, select **v2.0.0-beta.2** and download it.
+3. Under **Need a different version?**, select **v2.0.0-beta.3** and download it.
 4. Reload the frontend, including any kiosk/tablet sessions.
 
 For automatic beta update notifications, enable this repository's prerelease switch

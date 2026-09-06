@@ -65,6 +65,25 @@ test('fan percentage, extract-air quality and supply heater stay distinct in a c
   await expect(card.locator('.heater-symbol')).toBeVisible();
   await expect(card.locator('.core-value')).toHaveText('74%');
 });
+
+for(const [width,height] of [[320,248],[320,376],[390,376]]) test(`localized heater and quality readings fit with wider fonts at ${width}×${height}`,async({page})=>{
+  for(const language of ['fi','en']) {
+    await page.goto(`/?test=1&scenario=defrost&width=${width}&height=${height}&language=${language}`);
+    await page.addStyleTag({content:'vallox-iv-card { font-family:Verdana,sans-serif; letter-spacing:.035em; }'});
+    await expect(page.locator('.reading-value')).toHaveCount(4);
+    await expect(page.locator('.supply-chain')).toContainText(language==='fi'?'lämmittää':'heating');
+    const bounds=await page.locator('vallox-iv-card').evaluate(el=>{
+      const root=el.shadowRoot!,scene=root.querySelector('.scene')!.getBoundingClientRect();
+      const extract=root.querySelector('.extract')!.getBoundingClientRect(),supply=root.querySelector('.supply')!.getBoundingClientRect();
+      return {separate:extract.bottom<=supply.top+1,inside:extract.top>=scene.top-1&&supply.bottom<=scene.bottom+1,
+        valuesFit:[...root.querySelectorAll('.reading-value')].every(node=>{
+          const value=node.getBoundingClientRect(),air=node.closest('.air')!.getBoundingClientRect();
+          return value.right<=air.right+1&&value.left>=air.left-1&&node.scrollWidth<=node.clientWidth+1;
+        })};
+    });
+    expect(bounds,language).toEqual({separate:true,inside:true,valuesFit:true});
+  }
+});
 test('detail tabs support arrow keys without leaving the tab list',async({page})=>{
   await page.goto('/?test=1');
   await page.getByRole('button',{name:'Avaa ohjaus ja lisätiedot'}).click();
