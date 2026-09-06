@@ -24,7 +24,7 @@ export const DEFAULT_CONFIG: Partial<ValloxIvCardConfig> = {
   // Typography defaults
   value_font_size: 48,
   unit_opacity: 0.6,
-  font_weight: 500,
+  font_weight: 600,
 };
 
 /**

@@ -1,11 +1,13 @@
-# Beta validation — v2.0.0-beta.1
+# Beta validation — v2.0.0-beta.2
 
 ## Automated checks
 
 - TypeScript and ESLint pass; the production bundle is built from the same source.
 - 35 Vitest tests cover readings, command targets, energy integrity and suggestions.
-- 40 Playwright tests cover light/dark themes, 320/390/480/768 px widths,
+- 42 Playwright tests cover light/dark themes, 320/390/480/768 px widths,
   248/376/504 px heights, masonry, keyboard controls and reduced motion.
+- Beta 2 also checks a blue-grey HA theme, actual selected-button contrast, enlarged
+  arrowheads and a readable core at 464×376 with the unchanged energy row.
 - Core and heater bounds remain fixed across seven states at 320×248, 390×376,
   420×440 and 768×504. Airflow directions and separated crossings are covered.
 - 13 Python tests execute the companion YAML templates/actions against a deterministic
@@ -14,12 +16,15 @@
 
 ## What has been checked in Home Assistant
 
-An isolated dashboard has been checked with a real Vallox installation. Temperatures,
+The first beta's isolated dashboard was checked with a real Vallox installation. Temperatures,
 fan request, CO₂, humidity, core state and heater status load correctly. The visual
 editor and Recorder history have also been checked. Sections cards at 464×376 and
 464×248 remain within their assigned space, and an unavailable meter displays missing
 measurement rather than zero. The production card and the isolated preview have
 separate element names so they can be compared.
+
+Beta 2's visual changes were checked in the local simulation, including a blue-grey
+HA-style surface. They still need confirmation in users' installed dashboard themes.
 
 Bypass, defrost, supply-stop, missing readings and winter energy situations are also
 covered by the local simulation. The ice effect is illustrative, not measured ice

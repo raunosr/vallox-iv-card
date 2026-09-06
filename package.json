@@ -1,6 +1,6 @@
 {
   "name": "vallox-iv-card",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Custom Lovelace card for Vallox IV ventilation units",
   "type": "module",
   "main": "dist/vallox-iv-card.js",

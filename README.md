@@ -4,10 +4,10 @@ A standalone Home Assistant card with a counterflow core, four air streams, inte
 profile controls, measured electricity and explainable suggestions. Lit + TypeScript.
 Finnish and English, dark and light HA themes.
 
-**Version 2.0.0-beta.1 — opt-in prerelease.** The card works independently. Seasonal control
+**Version 2.0.0-beta.2 — opt-in prerelease.** The card works independently. Seasonal control
 and custom profile timing are experimental, optional Home Assistant companions that still
 need real-device validation. Installing the card does not install or enable these companions.
-See the [release notes](docs/releases/v2.0.0-beta.1.md) and [validation status](docs/BETA-VALIDATION.md).
+See the [release notes](docs/releases/v2.0.0-beta.2.md) and [validation status](docs/BETA-VALIDATION.md).
 
 ## What you see
 
@@ -27,7 +27,7 @@ button. Keyboard operation, reduced motion and 44-pixel touch targets are suppor
 ## Installation
 
 In HACS, open **Vallox IV Card → ⋮ → Redownload → Need a different version?** and select
-**v2.0.0-beta.1**. Use **Update information** first if the release has not appeared yet.
+**v2.0.0-beta.2**. Use **Update information** first if the release has not appeared yet.
 HACS also offers an optional prerelease switch for beta update notifications.
 See the [HACS version selector](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository)
 and [prerelease switch](https://www.hacs.xyz/docs/use/entities/switch/) documentation.

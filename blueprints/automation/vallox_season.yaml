@@ -8,7 +8,7 @@ blueprint:
     persisted. External lock changes pause Auto. No temperature or defrost
     parameters are written. Thresholds are project defaults, not manufacturer limits.
   domain: automation
-  source_url: https://github.com/raunosr/vallox-iv-card/blob/v2.0.0-beta.1/blueprints/automation/vallox_season.yaml
+  source_url: https://github.com/raunosr/vallox-iv-card/blob/v2.0.0-beta.2/blueprints/automation/vallox_season.yaml
   homeassistant:
     min_version: 2025.1.0
   input:

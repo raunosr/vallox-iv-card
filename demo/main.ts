@@ -22,6 +22,7 @@ const apply=()=>{
   card.setConfig(current.config);card.hass=current.hass;
   slot.style.width=`${input('width').value}px`;slot.style.height=params.get('layout')==='masonry'?'auto':`${input('height').value}px`;
   document.body.classList.toggle('light',input('theme').value==='light');
+  document.body.classList.toggle('slate',input('theme').value==='slate');
 };
 for(const id of ['scenario','width','height','theme','language']) { if(params.has(id))input(id).value=params.get(id)!; input(id).addEventListener(['width','height'].includes(id)?'input':'change',apply); }
 document.getElementById('all-modes')!.addEventListener('click',()=>{allModes=!allModes;apply();});

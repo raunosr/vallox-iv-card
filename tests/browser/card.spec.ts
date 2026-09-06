@@ -1,21 +1,57 @@
 import { test,expect } from '@playwright/test';
-for(const theme of ['dark','light']) test(`temperature values and active profile have readable contrast in ${theme}`,async({page})=>{
+for(const theme of ['dark','light','slate']) test(`temperature values and active profile have readable contrast in ${theme}`,async({page})=>{
   await page.goto(`/?test=1&theme=${theme}`);
   await expect(page.locator('.air-value').first()).toBeVisible();
+  for(const profile of ['Kotona','Tehostus']) {
+  await page.getByRole('button',{name:profile,exact:true}).click();
   const contrasts=await page.locator('vallox-iv-card').evaluate(el=>{
     const root=el.shadowRoot!;
-    const luminance=(color:string)=>{
+    const rgb=(color:string)=>{
       const numbers=color.match(/[\d.]+/g)!.slice(0,3).map(Number);
-      const values=numbers.map(x=>color.startsWith('color(')?x:x/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);
+      return numbers.map(x=>color.startsWith('color(')?x:x/255);
+    };
+    const luminance=(color:number[])=>{
+      const values=color.map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4);
       return values[0]*.2126+values[1]*.7152+values[2]*.0722;
     };
-    const background=luminance(getComputedStyle(root.querySelector('ha-card')!).backgroundColor);
+    const cardColor=rgb(getComputedStyle(root.querySelector('ha-card')!).backgroundColor);
     return [...root.querySelectorAll('.air-value,.mode[aria-pressed=true]')].map(node=>{
-      const foreground=luminance(getComputedStyle(node).color);
+      const style=getComputedStyle(node),fill=style.backgroundColor;
+      const alpha=Number(fill.match(/\/\s*([\d.]+)\)/)?.[1] ?? fill.match(/rgba\(.+,\s*([\d.]+)\)/)?.[1] ?? 1);
+      const background=luminance(rgb(fill).map((c,i)=>c*alpha+cardColor[i]*(1-alpha)));
+      const foreground=luminance(rgb(style.color));
       return (Math.max(background,foreground)+.05)/(Math.min(background,foreground)+.05);
     });
   });
   for(const contrast of contrasts)expect(contrast).toBeGreaterThanOrEqual(4.5);
+  }
+});
+
+test('core, arrowheads and active Boost remain legible in a Sections card with energy',async({page})=>{
+  await page.goto('/?test=1&scenario=missing&width=464&height=376&theme=slate');
+  await page.getByRole('button',{name:'Tehostus',exact:true}).click();
+  await expect(page.locator('.mode[aria-pressed=true]')).toHaveText('Tehostus');
+  const geometry=await page.locator('vallox-iv-card').evaluate(el=>{
+    const root=el.shadowRoot!,rect=(selector:string)=>root.querySelector(selector)!.getBoundingClientRect();
+    const svg=root.querySelector('svg.core-svg') as SVGSVGElement;
+    const marker=svg.querySelector('marker')!;
+    const arrowWidth=Number(marker.getAttribute('markerHeight'))*svg.getScreenCTM()!.a;
+    const strokeWidth=parseFloat(getComputedStyle(svg.querySelector('.air-route')!).strokeWidth)*svg.getScreenCTM()!.a;
+    const label=rect('.efficiency-label');
+    return {core:rect('.core-frame').height,arrowWidth,strokeWidth,footer:rect('.footer').height,
+      captionSeparate:label.top>=rect('.core-frame').bottom-1,
+      energyVisible:rect('.footer').bottom<el.getBoundingClientRect().bottom};
+  });
+  expect(geometry.core).toBeGreaterThan(100);
+  expect(geometry.arrowWidth).toBeGreaterThan(18);
+  expect(geometry.arrowWidth).toBeGreaterThan(geometry.strokeWidth*2);
+  expect(geometry.captionSeparate).toBe(true);
+  expect(geometry.energyVisible).toBe(true);
+  expect(geometry.footer).toBe(44);
+  await expect(page.locator('.footer')).toContainText('Energiamittaus puuttuu');
+  await page.goto('/?test=1&width=464&height=376&theme=slate');
+  await expect(page.locator('.footer')).toContainText('84 W');
+  expect((await page.locator('.footer').boundingBox())!.height).toBe(geometry.footer);
 });
 test('fan percentage, extract-air quality and supply heater stay distinct in a compact card',async({page})=>{
   await page.goto('/?test=1&width=320&height=248');

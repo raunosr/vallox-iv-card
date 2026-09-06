@@ -112,7 +112,7 @@ export interface ValloxIvCardConfig {
   // Typography settings
   value_font_size?: number;       // Base font size for values (SVG units, default: 48)
   unit_opacity?: number;          // Opacity for units (0-1, default: 0.6)
-  font_weight?: number;           // Font weight for values (500 or 600, default: 500)
+  font_weight?: number;           // Font weight for values (400, 500, 600 or 700; default: 600)
 }
 
 /**

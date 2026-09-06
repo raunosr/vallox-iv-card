@@ -3,11 +3,33 @@ import type { Language, ValloxIvCardConfig, ValloxIvCardState } from '../shared/
 import { numberText, operationName } from '../shared/localize';
 import { getTemperatureColor } from '../shared/format';
 
-export function airColor(value: number | null, model: ValloxIvCardState, config: ValloxIvCardConfig): string {
+export function airColor(value: number | null, model: ValloxIvCardState, config: ValloxIvCardConfig, surface: 'text' | 'flow' = 'text'): string {
   if (config.value_color) return config.value_color;
   if (config.enable_temp_colors === false) return 'var(--primary-text-color, #dce7ef)';
-  const color = getTemperatureColor(value, model.tempUnit, { cold: config.temp_color_cold ?? '#6baaf9', freeze: config.temp_color_freeze ?? '#81bcf8', neutral: config.temp_color_neutral ?? '#e6af80', warm: config.temp_color_warm ?? '#efaa78', hot: config.temp_color_hot ?? '#ef7973' });
-  return color ? `color-mix(in srgb, ${color} 45%, var(--primary-text-color, #dce7ef))` : 'var(--secondary-text-color, #8293a3)';
+  if (value === null) return 'var(--secondary-text-color, #8293a3)';
+  const custom = [config.temp_color_cold, config.temp_color_freeze, config.temp_color_neutral, config.temp_color_warm, config.temp_color_hot].some(color => color !== undefined);
+  const defaults = { cold: '#559cff', freeze: '#30b5ff', neutral: '#ffb34d', warm: '#ff9353', hot: '#ff685b' };
+  let color: string;
+  if (custom) {
+    // Preserve the existing temperature keyframes for configured palettes.
+    color = getTemperatureColor(value, model.tempUnit, { cold: config.temp_color_cold ?? defaults.cold, freeze: config.temp_color_freeze ?? defaults.freeze, neutral: config.temp_color_neutral ?? defaults.neutral, warm: config.temp_color_warm ?? defaults.warm, hot: config.temp_color_hot ?? defaults.hot })!;
+  } else {
+    // Keep mild outdoor air visibly cool instead of blending blue and orange into grey.
+    // The same temperature palette is used for all four streams; these are visual
+    // keyframes, not recommended temperature setpoints.
+    const celsius = model.tempUnit === '°F' ? (value - 32) * 5 / 9 : value;
+    const stops: [number, string][] = [[-10, defaults.cold], [0, defaults.freeze], [15, '#36c8ec'], [22, defaults.neutral], [25, defaults.warm], [30, defaults.hot]];
+    const upper = stops.findIndex(([temperature]) => celsius <= temperature);
+    if (upper < 0) color = defaults.hot;
+    else if (upper === 0) color = defaults.cold;
+    else {
+      const [low, lowColor] = stops[upper - 1], [high, highColor] = stops[upper];
+      color = `color-mix(in srgb, ${lowColor}, ${highColor} ${100 * (celsius - low) / (high - low)}%)`;
+    }
+  }
+  // Text follows the HA foreground for legibility on both light and dark cards.
+  // Paths keep their saturation so the moving air remains easy to follow.
+  return surface === 'flow' ? color : `color-mix(in srgb, ${color} 45%, var(--primary-text-color, #dce7ef))`;
 }
 
 export function renderCore(model: ValloxIvCardState, config: ValloxIvCardConfig, language: Language, id: string) {
@@ -17,7 +39,7 @@ export function renderCore(model: ValloxIvCardState, config: ValloxIvCardConfig,
   // All modes share the same inlet, outlet, heater and core geometry.
   const supply = bypass ? 'M190 24 H159 Q146 24 146 37 Q146 42 152 48 L170 66 Q187 83 171 101 L121 153 Q108 167 90 167 H66 Q55 167 50 156 Q45 144 32 144 H10' : 'M190 24 H151 Q139 24 130 36 L53 133 Q44 144 28 144 H10';
   const extract = 'M10 24 L29 24 Q41 24 50 36 L127 133 Q137 144 151 144 L174 144';
-  const colors = [model.extractTemp, model.exhaustTemp, model.outdoorTemp, model.supplyCellTemp].map(v => airColor(v, model, config));
+  const colors = [model.extractTemp, model.exhaustTemp, model.outdoorTemp, model.supplyCellTemp].map(v => airColor(v, model, config, 'flow'));
   const efficiency = config.show_efficiency !== false && model.operation === 'heat_recovery' ? model.efficiency : null;
   const heaterX = 42, heaterY = 144;
   const frame = 'M88 13 L145 69 Q158 82 145 95 L88 153 L32 97 Q18 83 32 69 Z';
@@ -26,7 +48,7 @@ export function renderCore(model: ValloxIvCardState, config: ValloxIvCardConfig,
       <linearGradient id=${`${id}-extract`} x1="0" y1="0" x2="1" y2="1"><stop stop-color=${colors[0]}/><stop offset="1" stop-color=${colors[1]}/></linearGradient>
       <linearGradient id=${`${id}-supply`} x1="1" y1="0" x2="0" y2="1"><stop stop-color=${colors[2]}/><stop offset="1" stop-color=${colors[3]}/></linearGradient>
       <linearGradient id=${`${id}-plate`} x1="0" y1="0" x2="1" y2="1"><stop stop-color=${model.operation === 'defrost' ? 'color-mix(in srgb, #c5eeff 25%, var(--core-plate-start, #253944))' : 'var(--core-plate-start, #253944)'}/><stop offset="1" stop-color=${model.operation === 'defrost' ? 'color-mix(in srgb, #85c5e2 12%, var(--core-plate-end, #14232d))' : 'var(--core-plate-end, #14232d)'}/></linearGradient>
-      <marker id=${`${id}-arrow`} markerUnits="userSpaceOnUse" markerWidth="16" markerHeight="16" refX="12" refY="8" orient="auto"><path d="M0 0 L16 8 L0 16 Z" fill="context-stroke"/></marker>
+      <marker id=${`${id}-arrow`} markerUnits="userSpaceOnUse" markerWidth="26" markerHeight="26" refX="19" refY="13" orient="auto"><path d="M0 0 L26 13 L0 26 L6 13 Z" fill="context-stroke"/></marker>
     </defs>
     <path class="core-frame" d=${frame} fill=${`url(#${id}-plate)`}/>
     ${Array.from({ length: 8 }, (_, i) => svg`<path class="fin" d=${`M${42 + i * 7} ${65 - i * 5} l48 49`}/>`)}
