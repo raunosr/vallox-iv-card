@@ -1,0 +1,37 @@
+type: custom:vallox-iv-card
+config_version: 2
+language: fi
+fan_entity: fan.vallox
+modes: [Home, Away, Boost]
+outdoor_air_temp: sensor.vallox_outdoor_air
+extract_air_temp: sensor.vallox_extract_air
+supply_air_temp: sensor.vallox_supply_air
+exhaust_air_temp: sensor.vallox_exhaust_air
+supply_cell_temp: sensor.vallox_supply_cell_air
+cell_state: sensor.vallox_cell_state
+post_heater: binary_sensor.vallox_post_heater
+profile: sensor.vallox_current_profile
+profile_duration: sensor.vallox_profile_duration
+fan_speed: sensor.vallox_fan_speed
+supply_fan_speed: sensor.vallox_supply_fan_speed
+extract_fan_speed: sensor.vallox_extract_fan_speed
+humidity: sensor.vallox_humidity
+co2: sensor.vallox_carbon_dioxide
+defrost_mode: auto
+# Energy meter is optional. Select your replacement meter when available.
+# energy:
+#   power_entity: sensor.your_meter_power
+#   energy_entity: sensor.your_meter_energy
+insights:
+  enabled: true
+  heating_system: heat_pump
+grid_options:
+  columns: 12
+  rows: 6
+# Enable these only after installing the companion blueprints/helpers.
+# profile_action_script: script.vallox_profile_v2
+# seasonal:
+#   mode_entity: input_select.vallox_season_mode
+#   status_entity: input_text.vallox_season_status
+#   mean_entity: sensor.vallox_outdoor_mean_24h
+#   bypass_lock_entity: switch.vallox_bypass_locked

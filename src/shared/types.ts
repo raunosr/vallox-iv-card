@@ -1,12 +1,55 @@
-// TODO (Milestone 1): Define configuration types
 
-import type { HomeAssistant } from 'custom-card-helpers';
+/** The public Home Assistant frontend surface used by the card. */
+export interface HomeAssistant {
+  states: Record<string, {
+    entity_id: string;
+    state: string;
+    attributes: Record<string, unknown> & {
+      unit_of_measurement?: string; friendly_name?: string; percentage?: number;
+      preset_mode?: string; preset_modes?: string[]; options?: string[];
+    };
+    last_updated?: string;
+    last_changed?: string;
+    context?: { id: string; parent_id: string | null; user_id: string | null };
+  }>;
+  language?: string;
+  config?: { time_zone?: string; unit_system?: { temperature?: string } };
+  connection?: object;
+  callWS<T>(message: Record<string, unknown>): Promise<T>;
+  callService(domain: string, service: string, data?: Record<string, unknown>): Promise<unknown>;
+}
 
 /**
  * Configuration interface for the Vallox IV Card
  */
 export interface ValloxIvCardConfig {
   type: string;
+  config_version?: 2;
+  language?: 'fi' | 'en';
+  fan_entity?: string;
+  modes?: string[];
+  profile_action_script?: string;
+  profile_duration?: string;
+  boost_duration?: number;
+  fireplace_duration?: number;
+  filter_remaining?: string;
+  supply_fan_speed?: string;
+  extract_fan_speed?: string;
+  defrost_mode?: 'auto' | 'bypass' | 'supply_stop';
+  compact?: boolean;
+  temperature_unit?: '°C' | '°F';
+  efficiency_kind?: 'supply' | 'extract' | 'custom';
+  efficiency_scale?: 'percent' | 'ratio';
+  energy?: { power_entity?: string; energy_entity?: string };
+  insights?: {
+    enabled?: boolean;
+    heating_system?: 'unknown' | 'heat_pump' | 'district_heating' | 'other_efficient' | 'electric';
+    daily_budget_kwh?: number;
+    comfort_floor?: number;
+    excess_ratio?: number;
+    defrost_minutes?: number;
+  };
+  seasonal?: { mode_entity?: string; status_entity?: string; mean_entity?: string; bypass_lock_entity?: string };
   
   // Temperature entities (required)
   outdoor_air_temp?: string;      // Outside air coming in
@@ -87,8 +130,59 @@ export interface ValloxIvCardState {
   fanSpeed: number | null;
   co2: number | null;
   humidity: number | null;
-  postHeaterActive: boolean;
+  postHeaterActive: boolean | null;
   tempUnit: string;
+  operation: Operation;
+  running: boolean | null;
+  supportedModes: string[];
+  availableModes: string[];
+  duration: number | null;
+  efficiencyEstimated: boolean;
+  efficiencyKind: 'supply' | 'extract' | 'custom';
+  power: number | null;
+  energy: number | null;
+  issues: string[];
+  supplyFlow: boolean | null;
+  extractFlow: boolean | null;
+  defrostMethod: 'unknown' | 'bypass' | 'supply_stop';
+}
+
+export type Operation = 'heat_recovery' | 'bypass' | 'cool_recovery' | 'defrost' | 'stopped' | 'unknown';
+export type Language = 'fi' | 'en';
+export interface Sample { time: number; state: string; unit?: string; attributes?: Record<string, unknown> }
+export type History = Record<string, Sample[]>;
+export interface Hour {
+  start: number;
+  kwh: number | null;
+  coverage: number;
+  outdoor: number | null;
+  supply: number | null;
+  cell: number | null;
+  power: number | null;
+  profile: string | null;
+  fan: number | null;
+  operation: Operation;
+  defrostMinutes: number;
+  heaterMinutes: number;
+  heaterActiveMinutes: number | null;
+  normalMinutes: number;
+  contextCoverage: number;
+  operationCoverage: number;
+}
+export interface EnergyAnalysis {
+  today: number | null;
+  last24h: number | null;
+  todayCoverage: number;
+  hours: Hour[];
+  daily: { date: string; kwh: number | null; coverage: number }[];
+  defrostKwh: number | null;
+  defrostMinutes: number;
+  longDefrosts: number;
+  defrostIncreaseRatio: number | null;
+  heaterShare: number | null;
+  elevated: boolean;
+  baselineReady: boolean;
+  historyAvailable: boolean;
 }
 
 /**
@@ -115,5 +209,3 @@ declare global {
     }>;
   }
 }
-
-export type { HomeAssistant };

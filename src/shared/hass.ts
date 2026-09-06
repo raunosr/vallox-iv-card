@@ -20,6 +20,7 @@ export function getState(
   if (!entity) {
     return null;
   }
+  if (entity.attributes.restored === true) return null;
 
   const state = entity.state;
   if (UNAVAILABLE_STATES.includes(state.toLowerCase())) {
@@ -42,7 +43,7 @@ export function getNumericState(
     return null;
   }
 
-  const num = parseFloat(state);
+  const num = state.trim() === '' ? NaN : Number(state);
   if (isNaN(num) || !isFinite(num)) {
     return null;
   }

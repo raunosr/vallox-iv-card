@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
@@ -13,7 +13,7 @@ export default defineConfig({
       // Don't externalize anything - bundle everything into single file
       external: [],
     },
-    outDir: 'dist',
+    outDir: mode === 'ha-preview' ? '.cache/ha-preview' : 'dist',
     emptyOutDir: true,
     sourcemap: false,
     minify: 'terser',
@@ -24,6 +24,7 @@ export default defineConfig({
     },
   },
   define: {
+    __VALLOX_PREVIEW__: JSON.stringify(mode === 'ha-preview'),
     'process.env.NODE_ENV': JSON.stringify('production'),
   },
-});
+}));

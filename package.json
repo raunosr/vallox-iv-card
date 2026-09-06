@@ -1,6 +1,6 @@
 {
   "name": "vallox-iv-card",
-  "version": "0.0.2",
+  "version": "2.0.0-beta.1",
   "description": "Custom Lovelace card for Vallox IV ventilation units",
   "type": "module",
   "main": "dist/vallox-iv-card.js",
@@ -9,7 +9,10 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:browser": "playwright test",
+    "check": "npm run typecheck && npm run lint && npm test && npm run build"
   },
   "keywords": [
     "home-assistant",
@@ -21,16 +24,18 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.55.0",
     "@types/node": "^20.10.0",
-    "@typescript-eslint/eslint-plugin": "^6.13.0",
-    "@typescript-eslint/parser": "^6.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.69.0",
+    "@typescript-eslint/parser": "^8.69.0",
     "eslint": "^8.55.0",
     "terser": "^5.46.0",
     "typescript": "^5.3.0",
-    "vite": "^7.3.1"
+    "vite": "^7.3.1",
+    "vitest": "^3.2.0",
+    "yaml": "^2.8.0"
   },
   "dependencies": {
-    "custom-card-helpers": "^1.9.0",
     "lit": "^3.1.0"
   }
 }

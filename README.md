@@ -1,257 +1,129 @@
-# Vallox IV Card
+# Vallox IV Card 2.0
 
-A custom Lovelace card for Home Assistant that visualizes Vallox IV ventilation unit airflow, temperatures, and heat recovery efficiency.
+A standalone Home Assistant card with a counterflow core, four air streams, integrated
+profile controls, measured electricity and explainable suggestions. Lit + TypeScript.
+Finnish and English, dark and light HA themes.
 
-![Vallox IV Card Screenshot](/examples/example_finnish.png)
+**Version 2.0.0-beta.1 — opt-in prerelease.** The card works independently. Seasonal control
+and custom profile timing are experimental, optional Home Assistant companions that still
+need real-device validation. Installing the card does not install or enable these companions.
+See the [release notes](docs/releases/v2.0.0-beta.1.md) and [validation status](docs/BETA-VALIDATION.md).
 
-## Features
+## What you see
 
-- 📊 **Animated Airflow Diagram** - SVG visualization with animated airflow speed controlled by fan speed
-- 🌡️ **Dynamic Temperature Colors** - Automatic color coding from cold (blue) to hot (red) with smooth interpolation
-- ♻️ **Heat Recovery Efficiency** - Central badge showing recovery percentage
-- 🔥 **Post-Heater Indicator** - Visual icon showing post-heater status (green=active, grey=inactive)
-- 🌡️ **Supply Cell Temperature** - Display temperature at the heat recovery cell output
-- ⚠️ **CO₂ Alert Animation** - Pulsating warning when CO₂ exceeds configurable threshold
-- 💧 **Humidity & CO₂ Display** - With custom icons
-- 📱 **Sections Support** - Native grid layout for modern dashboards (4×3 or 2×2)
-- 🎨 **Full Theme Integration** - Uses Home Assistant CSS variables with customizable overrides
-- ⚙️ **Visual Editor** - Configure everything via UI including color pickers
-- 🖱️ **Entity Click Support** - Click any value to open entity details dialog
-- 🌍 **Fahrenheit Support** - Automatic conversion for temperature color calculations
+- Core state and an explanation of heat recovery, bypass, cool recovery and defrost.
+- A labelled propeller indicator for fan request, separate from core efficiency.
+- Extract temperature with its CO₂ and humidity readings.
+- Supply temperature with core-outlet temperature and a heater symbol on its airflow route.
+- Thicker directional paths; stopped or unconfirmed supply flow during defrost.
+- Home/Away/Boost controls and optional Fireplace/Extra/Auto when advertised by the unit.
+- Power, daily/24-hour electricity, seven-day consumption and a shared state/temperature/power timeline.
+- Read-only suggestions with observations, limitations and manufacturer references.
+
+The card responds to its available height and width. Four-row compact cards keep air-quality
+and heater readings attached to the correct air stream. Open energy through the details
+button. Keyboard operation, reduced motion and 44-pixel touch targets are supported.
 
 ## Installation
 
-### HACS (Recommended)
+In HACS, open **Vallox IV Card → ⋮ → Redownload → Need a different version?** and select
+**v2.0.0-beta.1**. Use **Update information** first if the release has not appeared yet.
+HACS also offers an optional prerelease switch for beta update notifications.
+See the [HACS version selector](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository)
+and [prerelease switch](https://www.hacs.xyz/docs/use/entities/switch/) documentation.
 
-1. Open HACS in Home Assistant
-2. Go to "Frontend" section
-3. Click the menu (three dots) and select "Custom repositories"
-4. Add this repository URL with category "Lovelace"
-5. Install "Vallox IV Card"
-6. Refresh your browser
-
-### Manual Installation
-
-1. Download `vallox-iv-card.js` from the [latest release](releases)
-2. Copy to `/config/www/vallox-iv-card.js`
-3. Add resource in Home Assistant:
-   - Go to Settings → Dashboards → Resources
-   - Add `/local/vallox-iv-card.js` as JavaScript Module
-
-## Configuration
-
-### Using UI Editor
-
-1. Add a new card to your dashboard
-2. Search for "Vallox IV Card"
-3. Configure entities using the visual editor with grouped sections
-
-### YAML Configuration
+Reload the frontend after updating. The HACS module resource should point to
+`/hacsfiles/vallox-iv-card/vallox-iv-card.js`. A manually registered `/local/` copy is a
+different file and will not be updated by HACS. Keep only one production card resource.
+See [installation, migration and rollback](docs/MIGRATION.md) before replacing it.
+For manual installation, use the release asset `vallox-iv-card.js` or build
+`dist/vallox-iv-card.js` locally.
 
 ```yaml
 type: custom:vallox-iv-card
-title: Ventilation
-
-# Temperature sensors
+fan_entity: fan.vallox
 outdoor_air_temp: sensor.vallox_outdoor_air
-supply_air_temp: sensor.vallox_supply_air
-supply_cell_temp: sensor.vallox_supply_cell_air
 extract_air_temp: sensor.vallox_extract_air
+supply_air_temp: sensor.vallox_supply_air
 exhaust_air_temp: sensor.vallox_exhaust_air
-
-# Heat recovery
-efficiency: sensor.vallox_efficiency
+supply_cell_temp: sensor.vallox_supply_cell_air
 cell_state: sensor.vallox_cell_state
 post_heater: binary_sensor.vallox_post_heater
-
-# Additional sensors
-profile: sensor.vallox_profile
-fan_speed: sensor.vallox_fan_speed
-co2: sensor.vallox_co2
+co2: sensor.vallox_carbon_dioxide
 humidity: sensor.vallox_humidity
-
-# Display toggles
-show_efficiency: true
-show_profile: true
-show_fan_speed: true
-show_cell_state: true
-show_co2: true
-show_humidity: true
-show_supply_cell_temp: true
-show_post_heater: true
-
-# Temperature colors (optional - has smart defaults)
-enable_temp_colors: true
-temp_color_cold: "#0000FF"      # ≤-10°C
-temp_color_freeze: "#00FFFF"    # 0°C
-temp_color_neutral: "#8892E3"   # 22°C
-temp_color_warm: "#FFA500"      # 25°C
-temp_color_hot: "#FF4500"       # ≥30°C
-
-# CO₂ alert settings
-co2_limit: 1000
-co2_alert_color: "#ff4444"
-enable_co2_blink: true
-
-# Typography (optional)
-value_font_size: 48
-font_weight: 500
-unit_opacity: 0.6
-
-# Custom labels (optional)
-label_cell_state_title: "LTO-Cell State"
-label_extract_air: "Extract air"
-label_supply_air: "Supply air"
-label_outdoor_air: "Outdoor air"
-label_exhaust_air: "Exhaust air"
+modes: [Home, Away, Boost]
 ```
 
-## Configuration Options
+The visual editor exposes optional settings. See [the Finnish example](examples/card-fi.yaml).
 
-### Entity Configuration
+| Setting | Meaning / default |
+|---|---|
+| `fan_entity` | Explicit fan target; required for commands |
+| `modes` | Ordered profiles; default Home/Away/Boost; unsupported profiles hidden |
+| `profile_action_script` | Optional adapter for custom timing; never inferred automatically |
+| `boost_duration`, `fireplace_duration` | Adapter defaults: 30 / 15 minutes |
+| `profile_duration` | Actual remaining time; no browser return timer |
+| `supply_fan_speed`, `extract_fan_speed` | RPM readings for identifying supply-stop defrost |
+| `defrost_mode` | `auto` (RPM), `bypass`, `supply_stop`; describes a known setting without changing it |
+| `efficiency` | Optional sensor; otherwise estimate from the core outlet |
+| `efficiency_kind` | `custom`, `supply`, `extract`; identifies the supplied sensor's meaning |
+| `efficiency_scale` | `percent` default; `ratio` must be explicit for 0–1 values |
+| `energy.power_entity`, `energy.energy_entity` | Optional W/kW and cumulative Wh/kWh/MWh |
+| `insights.heating_system` | `unknown`, `heat_pump`, `district_heating`, `other_efficient`, `electric` |
+| `insights.daily_budget_kwh` | Optional personal budget, no universal default |
+| `insights.comfort_floor` | Optional user preference in °C, no generic lower limit |
+| `insights.excess_ratio`, `insights.defrost_minutes` | Observation defaults 0.5 / 60; not manufacturer fault limits |
+| `seasonal` | Mode/status/mean/bypass-lock helper bindings |
+| `language`, `temperature_unit` | Inherit HA; optional fi/en and °C/°F overrides |
+| `compact` | Force compact layout; a low card height also selects it |
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `title` | string | Card title |
-| `outdoor_air_temp` | entity | Outside air temperature sensor |
-| `supply_air_temp` | entity | Supply air to rooms temperature sensor |
-| `supply_cell_temp` | entity | Temperature after heat exchanger (before post-heater) |
-| `extract_air_temp` | entity | Extract air from rooms temperature sensor |
-| `exhaust_air_temp` | entity | Exhaust air going outside temperature sensor |
-| `efficiency` | entity | Heat recovery efficiency sensor (%) |
-| `cell_state` | entity | Heat cell state (heat_recovery, cool_recovery, bypass, defrost) |
-| `post_heater` | entity | Post-heater state (binary_sensor, sensor, or switch) |
-| `profile` | entity | Ventilation profile (home, away, boost, fireplace, extra) |
-| `fan_speed` | entity | Fan speed sensor (0-100%, controls animation speed) |
-| `co2` | entity | CO₂ sensor (ppm) |
-| `humidity` | entity | Humidity sensor (%) |
+## Energy philosophy
 
-### Display Options
+There is **no general 17 °C recommendation** and no automatic supply-temperature change.
+Away 12 °C, Home/Boost 15 °C and lower winter settings are valid inputs to the user's own
+comparison. Findings account for the selected heating system and measured electricity,
+distinguishing heater activity during and outside defrost.
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `show_efficiency` | boolean | `true` | Show efficiency badge in center |
-| `show_profile` | boolean | `true` | Show ventilation profile |
-| `show_fan_speed` | boolean | `true` | Show fan speed value |
-| `show_cell_state` | boolean | `true` | Show cell state header |
-| `show_co2` | boolean | `true` | Show CO₂ value |
-| `show_humidity` | boolean | `true` | Show humidity value |
-| `show_supply_cell_temp` | boolean | `true` | Show supply cell temperature on arrow |
-| `show_post_heater` | boolean | `true` | Show post-heater indicator icon |
+A broken meter does not become zero consumption. Heater nameplate power is not used to
+estimate kWh. Electricity during defrost is not labelled entirely as incremental defrost
+cost. A ventilation meter alone cannot establish whole-home savings. Read the
+[measurement details](docs/ARCHITECTURE.md) for coverage requirements and limitations.
 
-### Temperature Color Options
+## Optional server controls
 
-Dynamic temperature colors with linear interpolation between 5 keyframes:
+- [Native profile timer](blueprints/script/vallox_profile.yaml): one command path for
+  card, sauna and CO₂. Guards the untargeted timed service against multiple Vallox units.
+  Repeated requests are idempotent; an explicit restart is separate.
+- [Seasonal control](blueprints/automation/vallox_season.yaml): initially Off. Above a
+  15 °C 24-hour mean, releases the winter lock; below 12 °C, locks. Requires six qualifying
+  hours and a minimum 24-hour interval. Thresholds and times are configurable.
+- [Companion helper example](examples/packages/vallox_companion.yaml) and
+  [migration/rollback instructions](docs/MIGRATION.md).
 
-| Option | Type | Default | Temperature Zone |
-|--------|------|---------|------------------|
-| `enable_temp_colors` | boolean | `true` | Enable dynamic coloring |
-| `temp_color_cold` | color | `#0000FF` | ≤-10°C (Deep Blue) |
-| `temp_color_freeze` | color | `#00FFFF` | 0°C (Cyan) |
-| `temp_color_neutral` | color | `#8892E3` | 22°C (Lavender) |
-| `temp_color_warm` | color | `#FFA500` | 25°C (Orange) |
-| `temp_color_hot` | color | `#FF4500` | ≥30°C (OrangeRed) |
-
-Colors accept hex strings (`#RRGGBB`) or RGB arrays (`[r, g, b]`) from HA color picker.
-
-### CO₂ Alert Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `co2_limit` | number | `1000` | CO₂ threshold (ppm) that triggers alert |
-| `co2_alert_color` | string | `#ff4444` | Color when CO₂ exceeds threshold |
-| `enable_co2_blink` | boolean | `true` | Enable pulsating animation for alert |
-
-### Typography Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `value_font_size` | number | `48` | Base font size for values (SVG units) |
-| `font_weight` | number | `500` | Font weight for values |
-| `unit_opacity` | number | `0.6` | Opacity for unit text (°C, %, ppm) |
-
-### Label Customization
-
-| Option | Type | Default |
-|--------|------|---------|
-| `label_cell_state_title` | string | `"LTO-Cell State"` |
-| `label_extract_air` | string | `"Extract air"` |
-| `label_supply_air` | string | `"Supply air"` |
-| `label_outdoor_air` | string | `"Outdoor air"` |
-| `label_exhaust_air` | string | `"Exhaust air"` |
-| `label_efficiency` | string | `"Efficiency"` |
-| `label_profile` | string | `"Profile"` |
-| `label_fan_speed` | string | `"Fan speed"` |
-| `label_humidity` | string | `"Humidity"` |
-| `label_co2` | string | `"CO₂"` |
-
-## Theming with CSS Variables
-
-Customize the card appearance using CSS variables:
-
-```css
-ha-card {
-  --vallox-value-color: var(--primary-text-color);
-  --vallox-label-color: var(--secondary-text-color);
-  --vallox-unit-opacity: 0.6;
-  --vallox-glow-start: #e1f0ff;
-  --vallox-ring-stroke: #dcdcdc;
-  --vallox-ring-stroke-inner: #e6e6e6;
-  --vallox-arrow-dark: #2a7ebf;
-  --vallox-arrow-light: #5cb8ff;
-  --vallox-badge-stroke: var(--divider-color, #d1e8ff);
-  --vallox-badge-fill: var(--ha-card-background);
-  --vallox-line-color: #d1e8ff;
-}
-```
-
-## Airflow Diagram
-
-The card displays a visual diagram showing:
-
-```
-  Extract (from rooms)          Outdoor (fresh air)
-         ↘                           ↙
-          ┌─────────────────────────┐
-          │                         │
-          │    [Heat Recovery]      │
-          │      Efficiency %       │
-          │                         │
-          └─────────────────────────┘
-         ↙  🔥 17.1°C               ↘
-  Supply (to rooms)            Exhaust (expelled)
-```
-
-- **Dark blue arrow**: Extract air from rooms → Exhaust (animated)
-- **Light blue arrow**: Outdoor fresh air → Supply air (animated)
-- **Animation speed**: Controlled by `fan_speed` entity value (0-100%)
-- **Efficiency badge**: Heat recovery percentage in center
-- **Post-heater icon**: Radiator icon on supply path (green=active, grey=inactive)
-- **Supply Cell Temp**: Temperature badge after heat recovery cell
-
-## Sections View
-
-The card supports Home Assistant's Sections view with automatic grid sizing:
-
-- **Standard mode**: 4 columns × 3 rows
-- **Minimum**: 2 columns × 2 rows
+Summer allows Vallox to choose bypass or cool recovery. No supply target or frost-protection
+parameter is changed. Missing data and external lock changes are handled explicitly.
 
 ## Development
 
-```bash
-# Install dependencies
-npm install
+Node 22 is used in CI. Install with `npm ci`, then:
 
-# Development server with hot reload
+```text
 npm run dev
-
-# Build for production
-npm run build
-
-# Type checking
-npm run typecheck
+npm run check
+npx playwright install chromium
+npm run test:browser
+pip install -r tests/requirements.txt
+python tests/test_blueprints.py
 ```
 
-## License
+The local demo at http://127.0.0.1:5173/ has simulated winter, bypass, cool-recovery,
+defrost, stopped, missing-sensor and high-consumption scenarios. Its commands only affect
+demo state. Width, height, theme and language can be changed.
 
-MIT License
+`npx vite build --mode ha-preview` builds a separate `vallox-iv-card-v2-preview` element
+in `.cache/ha-preview` for testing beside v1. The standard build produces one HACS bundle.
+Tagged releases run checks and verify the tag against package.json before publication.
+
+See [architecture](docs/ARCHITECTURE.md), [migration](docs/MIGRATION.md) and
+[evidence](docs/EVIDENCE.md). Actual winter observations are still needed to evaluate
+the rules for a particular house.
