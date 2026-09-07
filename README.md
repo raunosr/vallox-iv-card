@@ -1,48 +1,86 @@
-# Vallox IV Card 2.0
+# Vallox IV Card
 
-A standalone Home Assistant card with a counterflow core, four air streams, integrated
-profile controls, measured electricity and explainable suggestions. Lit + TypeScript.
-Finnish and English, dark and light HA themes.
+See what your ventilation is doing — and control it from one Home Assistant card.
 
-**Version 2.0.0 — stable release.** The card works independently. Seasonal control
-and custom profile timing are experimental, optional Home Assistant companions that still
-need real-device validation. Installing the card does not install or enable these companions.
-See the [release notes](docs/releases/v2.0.0.md) and [validation status](docs/VALIDATION.md).
+**Vallox IV Card 2.0** shows the four air temperatures, heat recovery, bypass, defrost,
+fan profile and measured electricity in a layout that fits your dashboard.
+Available in English and Finnish, with light and dark theme support.
 
-## What you see
+[Install with HACS](#install-with-hacs) · [Set up the card](#set-up-the-card) ·
+[User guide](docs/USER-GUIDE.md) · [Configuration](docs/CONFIGURATION.md) ·
+[Latest release](https://github.com/raunosr/vallox-iv-card/releases/latest)
 
-- Core state and an explanation of heat recovery, bypass, cool recovery and defrost.
-- A labelled propeller indicator for fan request, separate from core efficiency.
-- Extract temperature with its CO₂ and humidity readings.
-- Supply temperature with core-outlet temperature and a heater symbol on its airflow route.
-- Open entity history directly from temperatures, the efficiency number or heater symbol.
-- Thicker directional paths; stopped or unconfirmed supply flow during defrost.
-- Home/Away/Boost controls and optional Fireplace/Extra/Auto when advertised by the unit.
-- Power, daily/24-hour electricity, seven-day consumption and a shared state/temperature/power timeline.
-- Read-only suggestions with observations, limitations and manufacturer references.
+## See the airflow, understand the state
 
-The card responds to its available height and width. Four-row compact cards keep air-quality
-and heater readings attached to the correct air stream. Open energy through the details
-button. Keyboard operation, reduced motion and 44-pixel touch targets are supported.
+| Heat recovery · dark theme | Defrost · light theme |
+|:--:|:--:|
+| ![Vallox card showing separate warm and cold air streams, temperatures and integrated profile buttons](https://raw.githubusercontent.com/raunosr/vallox-iv-card/master/docs/images/heat-recovery.png) | ![Vallox card showing a frosted core, the bypass route and an active post-heater during defrost](https://raw.githubusercontent.com/raunosr/vallox-iv-card/master/docs/images/defrost.png) |
 
-## Installation
+*Screenshots use simulated readings. The frost effect illustrates defrost; it does not
+measure ice or show how much of a defrost cycle is complete.*
 
-In HACS, open **Vallox IV Card** and install or update to **v2.0.0**.
-Use **⋮ → Update information** first if the release has not appeared yet. This release
-is available on the normal stable channel; enabling prereleases is not required.
-You can also choose **Redownload → Need a different version? → v2.0.0**.
-See the [HACS version selector](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository).
+- **Follow the air:** separate paths for outdoor/supply and extract/exhaust air,
+  with distinct heat-recovery, bypass, cool-recovery and defrost states.
+- **Control your profile:** Home, Away and Boost inside the card; optionally show
+  Fireplace and other profiles supported by your unit.
+- **Check indoor air:** CO₂ and humidity appear beside extract air.
+- **Understand post-heating:** see the temperature after the core, the heater state
+  and the final supply temperature together.
+- **Open history:** press a temperature, the efficiency number or the heater symbol
+  to open that entity's Home Assistant history.
+- **Track electricity:** connect your own power/energy meter for consumption history
+  and explainable suggestions.
 
-Reload the frontend after updating. The HACS module resource should point to
-`/hacsfiles/vallox-iv-card/vallox-iv-card.js`. A manually registered `/local/` copy is a
-different file and will not be updated by HACS. Keep only one production card resource.
-See [installation, migration and rollback](docs/MIGRATION.md) before replacing it.
-For manual installation, use the release asset `vallox-iv-card.js` or build
-`dist/vallox-iv-card.js` locally.
+## What you need
+
+- Home Assistant with the [Vallox integration](https://www.home-assistant.io/integrations/vallox/)
+  already configured and working.
+- HACS for the easiest installation, or use the [manual installation instructions](docs/MIGRATION.md#manual-installation).
+- The Vallox fan and temperature entities you want to display. Optional features
+  appear when you select their sensors.
+
+This is a **dashboard card** for the Vallox integration, not a replacement integration.
+Available sensors and profiles depend on your unit and its integration.
+An electricity meter is optional; the card works without one.
+
+## Install with HACS
+
+1. Open **HACS → ⋮ → Custom repositories**.
+2. Add `https://github.com/raunosr/vallox-iv-card` with type **Dashboard**.
+3. Find **Vallox IV Card** in HACS and download the latest stable version.
+4. Reload Home Assistant in your browser or Companion App.
+
+Already installed? Update to **2.0.0** in HACS. If it has not appeared, use
+**⋮ → Update information** on the repository. This is a stable release; no beta
+opt-in is needed.
+
+HACS normally registers the resource. Its URL should be
+`/hacsfiles/vallox-iv-card/vallox-iv-card.js`, with type **JavaScript module**.
+If you previously installed a manual copy, follow the
+[migration instructions](docs/MIGRATION.md) so two versions do not load together.
+
+## Set up the card
+
+1. Edit your dashboard and choose **Add card → Vallox IV Card**.
+2. In **Unit and profiles**, select your Vallox fan and the profiles you want to show.
+3. In **Airflow and core**, select the four temperature sensors and **Core state**.
+   Core state means the sensor reporting heat recovery, bypass or defrost — usually
+   `sensor.vallox_cell_state`.
+4. Optionally select the **post-heater**, **temperature after the core**, **CO₂**,
+   **humidity**, **efficiency** and **remaining profile duration** sensors.
+5. Save. In a Sections dashboard, start with the default **12 columns × 6 rows**.
+   Four rows use the compact layout.
+
+Your entity IDs may differ from the examples. Find them under
+**Settings → Devices & services → Vallox → your device**. Some diagnostic entities
+may need enabling before they appear in the selector.
+
+Prefer YAML? Add a **Manual** card and adapt this example:
 
 ```yaml
 type: custom:vallox-iv-card
 fan_entity: fan.vallox
+modes: [Home, Away, Boost]
 outdoor_air_temp: sensor.vallox_outdoor_air
 extract_air_temp: sensor.vallox_extract_air
 supply_air_temp: sensor.vallox_supply_air
@@ -52,79 +90,81 @@ cell_state: sensor.vallox_cell_state
 post_heater: binary_sensor.vallox_post_heater
 co2: sensor.vallox_carbon_dioxide
 humidity: sensor.vallox_humidity
-modes: [Home, Away, Boost]
+profile_duration: sensor.vallox_profile_duration
+grid_options:
+  columns: 12
+  rows: 6
 ```
 
-The visual editor exposes optional settings. See [the Finnish example](examples/card-fi.yaml).
+[Full configuration reference](docs/CONFIGURATION.md) ·
+[Finnish example](examples/card-fi.yaml)
 
-| Setting | Meaning / default |
+## Use the card
+
+| Press | What happens |
 |---|---|
-| `fan_entity` | Explicit fan target; required for commands |
-| `modes` | Ordered profiles; default Home/Away/Boost; unsupported profiles hidden |
-| `profile_action_script` | Optional adapter for custom timing; never inferred automatically |
-| `boost_duration`, `fireplace_duration` | Adapter defaults: 30 / 15 minutes |
-| `profile_duration` | Actual remaining time; no browser return timer |
-| `supply_fan_speed`, `extract_fan_speed` | RPM readings for identifying supply-stop defrost |
-| `defrost_mode` | `auto` (RPM), `bypass`, `supply_stop`; describes a known setting without changing it |
-| `efficiency` | Optional sensor; otherwise estimate from the core outlet |
-| `efficiency_kind` | `custom`, `supply`, `extract`; identifies the supplied sensor's meaning |
-| `efficiency_scale` | `percent` default; `ratio` must be explicit for 0–1 values |
-| `energy.power_entity`, `energy.energy_entity` | Optional W/kW and cumulative Wh/kWh/MWh |
-| `insights.heating_system` | `unknown`, `heat_pump`, `district_heating`, `other_efficient`, `electric` |
-| `insights.daily_budget_kwh` | Optional personal budget, no universal default |
-| `insights.comfort_floor` | Optional user preference in °C, no generic lower limit |
-| `insights.excess_ratio`, `insights.defrost_minutes` | Observation defaults 0.5 / 60; not manufacturer fault limits |
-| `seasonal` | Mode/status/mean/bypass-lock helper bindings |
-| `language`, `temperature_unit` | Inherit HA; optional fi/en and °C/°F overrides |
-| `compact` | Force compact layout; a low card height also selects it |
+| **Home / Away / Boost** | Selects that profile on your configured Vallox fan. |
+| **Profile badge** at the top right | Opens controls, remaining timer information and additional details. |
+| **A temperature** | Opens the selected temperature entity's history. |
+| **Efficiency number** | Opens its configured sensor's history. A calculated estimate has no separate entity history. |
+| **Heater symbol** | Opens the post-heater's on/off history, including when its current state is unknown. |
+| **Energy row** | Opens energy history and observations. If an observation needs attention, its tab opens first. |
 
-## Energy philosophy
+Boost and Fireplace use the duration stored in your unit. Their timers run in Vallox,
+so closing the dashboard does not end or extend them. A custom duration requires the
+[optional profile companion](docs/MIGRATION.md#optional-companions--experimental).
+Start/stop is available in the controls dialog and uses the fan integration.
 
-There is **no general 17 °C recommendation** and no automatic supply-temperature change.
-Away 12 °C, Home/Boost 15 °C and lower winter settings are valid inputs to the user's own
-comparison. Findings account for the selected heating system and measured electricity,
-distinguishing heater activity during and outside defrost.
+The percentage beside the **fan icon** is the fan request; the percentage in the
+**core** is efficiency. The diagram explains air routing, not measured airflow volume
+or a measured bypass-damper position.
 
-A broken meter does not become zero consumption. Heater nameplate power is not used to
-estimate kWh. Electricity during defrost is not labelled entirely as incremental defrost
-cost. A ventilation meter alone cannot establish whole-home savings. Read the
-[measurement details](docs/ARCHITECTURE.md) for coverage requirements and limitations.
+## Add energy measurement when you're ready
 
-## Optional server controls
+In the editor's **Energy measurement** section, select:
 
-- [Native profile timer](blueprints/script/vallox_profile.yaml): one command path for
-  card, sauna and CO₂. Guards the untargeted timed service against multiple Vallox units.
-  Repeated requests are idempotent; an explicit restart is separate.
-- [Seasonal control](blueprints/automation/vallox_season.yaml): initially Off. Above a
-  15 °C 24-hour mean, releases the winter lock; below 12 °C, locks. Requires six qualifying
-  hours and a minimum 24-hour interval. Thresholds and times are configurable.
-- [Companion helper example](examples/packages/vallox_companion.yaml) and
-  [migration/rollback instructions](docs/MIGRATION.md).
+- **Power:** a sensor reporting W or kW.
+- **Cumulative energy:** a sensor reporting Wh, kWh or MWh.
 
-Summer allows Vallox to choose bypass or cool recovery. No supply target or frost-protection
-parameter is changed. Missing data and external lock changes are handled explicitly.
+Use separate power and energy entities with the correct units. The card shows
+instantaneous power, today's energy, the last 24 hours and a seven-day view when
+enough history exists. With only a power sensor, you can create a Home Assistant
+**Integral helper** for cumulative energy.
 
-## Development
+Without a working meter, the card shows **Energy measurement unavailable**.
+It does not substitute zero or calculate consumption from the heater's rated power.
 
-Node 22 is used in CI. Install with `npm ci`, then:
+Suggestions can account for your heating system and your own daily energy budget.
+They explain the observation and what to check; they never change temperature or
+defrost settings. There is no universal supply-temperature minimum or built-in
+17 °C recommendation. [Learn how energy and suggestions work](docs/USER-GUIDE.md#energy-and-suggestions).
 
-```text
-npm run dev
-npm run check
-npx playwright install chromium
-npm run test:browser
-pip install -r tests/requirements.txt
-python tests/test_blueprints.py
-```
+## Optional seasonal control
 
-The local demo at http://127.0.0.1:5173/ has simulated winter, bypass, cool-recovery,
-defrost, stopped, missing-sensor and high-consumption scenarios. Its commands only affect
-demo state. Width, height, theme and language can be changed.
+An optional Home Assistant blueprint can switch the winter bypass lock using outdoor
+temperature history. Releasing the lock lets Vallox choose bypass or cool recovery;
+it does not force the core into a fixed position.
 
-`npx vite build --mode ha-preview` builds a separate `vallox-iv-card-v2-preview` element
-in `.cache/ha-preview` for testing beside v1. The standard build produces one HACS bundle.
-Tagged releases run checks and verify the tag against package.json before publication.
+The seasonal and custom-timer companions are **experimental**, installed separately
+and initially disabled where applicable. Updating the card through HACS does not
+install or enable them. [Companion setup and validation](docs/MIGRATION.md#optional-companions--experimental).
 
-See [architecture](docs/ARCHITECTURE.md), [migration](docs/MIGRATION.md) and
-[evidence](docs/EVIDENCE.md). Actual winter observations are still needed to evaluate
-the rules for a particular house.
+## Help and troubleshooting
+
+- **The old design still appears:** reload every browser/Companion App session and
+  check for a manually installed `/local/` resource or an isolated preview card.
+  Use `custom:vallox-iv-card` with the HACS resource.
+- **A profile is missing:** check the selected fan and your **Visible profiles** list.
+  Only profiles advertised by that fan are shown.
+- **Core state is unknown:** select the operating-state sensor, not an efficiency sensor.
+- **Energy or history is missing:** check the sensor's availability, units and Recorder
+  history. Power alone is not cumulative energy.
+- **The after-core temperature equals supply:** check that `supply_cell_temp` is
+  bound to the pre-heater sensor.
+
+See the [user guide](docs/USER-GUIDE.md), [migration and rollback](docs/MIGRATION.md),
+[release notes](docs/releases/v2.0.0.md) and [validation scope](docs/VALIDATION.md).
+For a problem, [open an issue](https://github.com/raunosr/vallox-iv-card/issues) with
+your card/HA/browser versions, card dimensions, anonymized YAML and a screenshot.
+
+Want to contribute? See [contributing](CONTRIBUTING.md).

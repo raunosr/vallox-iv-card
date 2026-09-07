@@ -42,16 +42,16 @@ Remove separately stacked profile buttons if you want to use the controls inside
 card. Font overrides adapt to available space; old absolute label positions do not
 apply to the redesigned layout. Test your layout on a separate view first.
 
-## Manual installation and isolated preview
+## Manual installation
 
 The release asset is `vallox-iv-card.js`; a local build produces
 `dist/vallox-iv-card.js`. Copy it into HA's `www` directory and register a JavaScript
 module resource if HACS is not used. Reload after replacing the resource.
 
-The `ha-preview` build produces a separate `vallox-iv-card-v2-preview` element and
-editor in `.cache/ha-preview`. Developers can load this beside v1 in an isolated
-view. The standard HACS build uses the original element name and requires only one
-production resource.
+An old isolated preview uses `custom:vallox-iv-card-v2-preview` and does not update
+with HACS. Change its type to `custom:vallox-iv-card`, verify the selected entities,
+and remove its old resource registration once no cards reference it. Developer
+preview builds are described in the [development guide](DEVELOPMENT.md#test-beside-an-installed-card).
 
 ## Optional companions — experimental
 
