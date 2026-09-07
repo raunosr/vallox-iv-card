@@ -3,6 +3,7 @@ node_modules/
 .DS_Store
 *.local
 .env
+CLAUDE.local.md
 .cache/
 test-results/
 playwright-report/

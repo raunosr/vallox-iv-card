@@ -1,28 +1,20 @@
-# Vallox IV Card — contributor notes
+# Vallox IV Card — Copilot instructions
 
-Lit 3 + TypeScript, bundled by Vite into one HACS JavaScript module.
+Read the shared [project instructions](../AGENTS.md) and the
+[development guide](../docs/DEVELOPMENT.md) for the task you are working on.
+These files are the common guidance for Codex, Claude Code and Copilot.
 
-- `src/card/vallox-iv-card.logic.ts`: HA readings → normalized device state.
-- `src/card/core.ts`: stationary SVG core, independent air channels and heater.
-- `src/card/vallox-iv-card.ts` / `.styles.ts`: responsive layout and controls.
-- `src/data/`: history, measured energy, read-only insights and explicit actions.
-- `src/editor/schema.ts` / `vallox-iv-card-editor.ts`: HA visual editor.
-- `src/shared/`: configuration, validation, units, localization and theme colors.
-- `blueprints/`: optional HA companions, independent from the browser.
+The project is a Lit 3 / TypeScript HA dashboard card. Vite builds the committed
+`dist/vallox-iv-card.js` HACS artifact. Edit `src/` and rebuild instead of editing
+that generated bundle. Keep the public `custom:vallox-iv-card` name compatible.
 
-Read `docs/ARCHITECTURE.md` and `docs/MIGRATION.md` before changing behavior.
-`SPEC.md` describes historical v1, not the current implementation.
+Preserve missing versus zero/off, explicit efficiency scales, extract-air CO₂ and
+humidity, and separate airflow paths. Suggestions never change settings or invent
+energy readings. Persistent timing belongs in HA/Vallox. UI changes must preserve
+responsive dimensions, theme contrast, keyboard access and reduced motion.
 
-Keep unavailable distinct from zero/off; never guess percent vs ratio. CO₂ and
-humidity belong to extract air. Use the core outlet for estimated supply efficiency.
-Suggestions are read-only, with no generic minimum supply target or invented energy.
-Only explicit user actions reach `data/actions.ts`; timing belongs to HA/the device.
-
-The core and heater retain the same bounds in every operating state. Use the card's
-available width and height, HA theme variables, reduced motion and 44px touch targets.
-Sections defaults are 12 columns × 6 rows; four rows use a compact view.
-
-Run `npm run check`, `npm run test:browser` and `python tests/test_blueprints.py`.
-CI uses Node 22 and Python 3.12. The version source is `package.json`; tags use `v`
-plus that version. Update the built `dist/vallox-iv-card.js` with source changes.
-Prereleases are opt-in and use reviewed notes from `docs/releases/<tag>.md`.
+CI uses Node 22 and Python 3.12. Run `npm run check` for runtime changes,
+`npm run test:browser` for UI changes and `python tests/test_blueprints.py` for
+companions. Validate links, examples and images for documentation-only changes.
+Keep user-facing instructions in README/user docs and engineering guidance in
+AGENTS.md/developer docs. Do not publish private HA configuration or credentials.

@@ -1,7 +1,7 @@
-# Vallox IV Card – Specification
+# Vallox IV Card — historical v1 specification
 
 > Historical v1 specification. The implemented v2 contract is documented in
-> [README](README.md), [architecture](docs/ARCHITECTURE.md) and [migration](docs/MIGRATION.md).
+> [README](../../README.md), [architecture](../ARCHITECTURE.md) and [migration](../MIGRATION.md).
 
 ## Overview
 

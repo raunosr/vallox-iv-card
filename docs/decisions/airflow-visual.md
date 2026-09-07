@@ -1,5 +1,7 @@
 # Airflow visual decision — 2026-09-06
 
+Design record for contributors. For operating the card, see the [user guide](../USER-GUIDE.md).
+
 The user chose the original diamond core: keeping its size and position across
 operating states makes the diagram easier to follow than changing the core shape.
 The larger route-map and horizontal-channel alternatives were discarded; their
