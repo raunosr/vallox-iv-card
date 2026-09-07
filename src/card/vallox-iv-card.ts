@@ -121,7 +121,11 @@ export class ValloxIvCard extends LitElement {
         <div class="scene">
           ${air('extract',config.label_extract_air ?? this._t('Poistoilma','Extract air'),model.extractTemp,config.extract_air_temp,this._t('Huoneista →','From rooms →'))}
           ${air('outdoor',config.label_outdoor_air ?? this._t('Ulkoilma','Outdoor air'),model.outdoorTemp,config.outdoor_air_temp,this._t('← Ulkoa','← From outside'))}
-          <div class="core">${renderCore(model,config,lang,this._id)}<span class="efficiency-label" aria-hidden=${config.show_efficiency === false || model.operation !== 'heat_recovery' ? 'true' : 'false'}>${efficiencyLabel}${model.efficiencyEstimated ? this._t(' · arvio',' · estimate') : ''}</span></div>
+          <div class="core"><div class="core-graphic">
+            ${renderCore(model,config,lang,this._id)}
+            ${config.show_efficiency !== false && model.operation === 'heat_recovery' && model.efficiency !== null && !model.efficiencyEstimated && config.efficiency ? html`<button class="core-history efficiency-history" title=${this._t('Avaa hyötysuhteen historia','Open efficiency history')} aria-label=${`${efficiencyLabel} ${this._n(model.efficiency,0)} % · ${this._t('Avaa historia','Open history')}`} @click=${() => this._moreInfo(config.efficiency)}></button>` : nothing}
+            ${config.show_post_heater !== false && config.post_heater ? html`<button class="core-history heater-history" title=${this._t('Avaa vastuksen tilahistoria','Open heater history')} aria-label=${`${this._t('Vastus','Heater')} ${model.postHeaterActive === null ? this._t('ei tiedossa','unknown') : heaterState} · ${this._t('Avaa historia','Open history')}`} @click=${() => this._moreInfo(config.post_heater)}></button>` : nothing}
+          </div><span class="efficiency-label" aria-hidden=${config.show_efficiency === false || model.operation !== 'heat_recovery' ? 'true' : 'false'}>${efficiencyLabel}${model.efficiencyEstimated ? this._t(' · arvio',' · estimate') : ''}</span></div>
           ${air('supply',config.label_supply_air ?? this._t('Tuloilma','Supply air'),model.supplyTemp,config.supply_air_temp,this._t('← Huoneisiin','← To rooms'))}
           ${air('exhaust',config.label_exhaust_air ?? this._t('Jäteilma','Exhaust air'),model.exhaustTemp,config.exhaust_air_temp,this._t('Ulos →','To outside →'))}
         </div>

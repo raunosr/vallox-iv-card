@@ -5,7 +5,7 @@
 1. Open Vallox IV Card in HACS. If needed, add `raunosr/vallox-iv-card` as a custom
    repository with type **Dashboard**.
 2. Use **⋮ → Update information** to refresh release metadata, then **Redownload**.
-3. Under **Need a different version?**, select **v2.0.0-beta.3** and download it.
+3. Under **Need a different version?**, select **v2.0.0-beta.4** and download it.
 4. Reload the frontend, including any kiosk/tablet sessions.
 
 For automatic beta update notifications, enable this repository's prerelease switch
@@ -29,6 +29,13 @@ Check that `supply_cell_temp` is the temperature after the core, before post-hea
 it should not point to the final supply-air sensor. For an explicit efficiency sensor,
 set `efficiency_kind` to its actual meaning. The default scale is percent: a value of
 1 means 1%. Use `efficiency_scale: ratio` only for an explicitly documented 0–1 sensor.
+
+Click the efficiency number or heater symbol to open the configured entity's Home
+Assistant more-info dialog and history, just like the temperatures. Keyboard users
+can focus either control and press Enter or Space. An efficiency calculated by the
+card from temperatures has no separate entity history. Heater history remains
+accessible when its current state is unavailable. History availability and the chart
+type depend on the entity and Home Assistant's Recorder configuration.
 
 The default Sections size is 12 columns × 6 rows. Four rows select the compact view.
 Remove separately stacked profile buttons if you want to use the controls inside the

@@ -33,8 +33,15 @@ export const cardStyles = css`
   .reading-label { overflow:hidden;text-overflow:ellipsis;min-width:0; }
   .reading-value { flex:none; }
   .extract { grid-area:1 / 1; } .outdoor { grid-area:1 / 3; } .supply { grid-area:2 / 1; } .exhaust { grid-area:2 / 3; }
-  .core { grid-area:1 / 2 / 3 / 3; width:100%; height:100%; min-height:0; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-  .core-svg { width:100%; min-height:0; flex:1; max-height:290px; overflow:visible; }
+  .core { grid-area:1 / 2 / 3 / 3; width:100%; height:100%; min-height:0; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; container-type:size; }
+  /* Match the SVG's contained viewBox so native, unscaled buttons follow its symbols. */
+  .core-graphic { position:relative; flex:none; width:min(100cqw,calc(100cqh * 208 / 190),calc(290px * 208 / 190)); aspect-ratio:208 / 190; }
+  .core-svg { display:block; width:100%; height:100%; overflow:visible; }
+  .core-history { position:absolute; transform:translate(-50%,-50%); min-width:44px; min-height:44px; padding:0; border-radius:12px; }
+  .core-history:hover { box-shadow:inset 0 0 0 1px var(--accent); }
+  .efficiency-history { left:43.269%; top:43.947%; width:37.5%; height:21.579%; }
+  /* Separate the 44px touch areas even when the core is drawn small. */
+  .heater-history { left:20.192%; top:max(75.789%,calc(43.947% + 44px)); width:16.346%; height:12.632%; }
   .core-frame { stroke:color-mix(in srgb,var(--primary-text-color,#deedf5) 55%,transparent);stroke-width:1.8; }
   .fin { stroke:var(--primary-text-color,#afc0ce);stroke-width:1;opacity:.18; }
   .air-track { fill:none;stroke:var(--ha-card-background,var(--card-background-color,#14232d));stroke-width:15;stroke-linecap:round; }
@@ -103,7 +110,7 @@ export const cardStyles = css`
   .dense:not(.compact) .air-value { font-size:clamp(22px,calc(var(--value-scale,1) * 6.5cqw),28px); }
   .compact .footer { display:none; }
   .compact .modes { padding-top:4px; }
-  .compact .core-svg { max-height:145px; }
+  .compact .core-graphic { width:min(100cqw,calc(100cqh * 208 / 190),calc(145px * 208 / 190)); }
   .tiny .scene,.tiny .footer { display:none; }
   .many .mode { flex-direction:column; gap:2px; }
   .error-inline { color:#e6ae75; font-size:11px; margin:0; }
