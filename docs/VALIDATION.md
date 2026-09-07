@@ -1,4 +1,7 @@
-# Beta validation — v2.0.0-beta.4
+# Validation — v2.0.0
+
+The stable card release promotes the functionality tested in 2.0.0-beta.4. The
+promotion updates release metadata and documentation without changing card behavior.
 
 ## Automated checks
 
@@ -6,7 +9,7 @@
 - 35 Vitest tests cover readings, command targets, energy integrity and suggestions.
 - 50 Playwright tests cover light/dark themes, 320/390/480/768 px widths,
   248/376/504 px heights, masonry, keyboard controls and reduced motion.
-- Beta 3 also checks a blue-grey HA theme, actual selected-button contrast, enlarged
+- Browser tests also check a blue-grey HA theme, actual selected-button contrast, enlarged
   arrowheads and a readable core at 464×376 with the unchanged energy row.
 - Secondary readings are checked with wider fonts in Finnish and English, keeping
   measured values and heater state visible within their own air-stream columns.
@@ -30,15 +33,17 @@ editor and Recorder history have also been checked. Sections cards at 464×376 a
 measurement rather than zero. The production card and the isolated preview have
 separate element names so they can be compared.
 
-Beta 3's visual changes were also confirmed in the real development dashboard after
-correcting its resource registration. Other installed dashboard themes still need
-user testing.
+The clearer airflow and readings were confirmed in the real development dashboard
+after correcting its resource registration. Efficiency and heater history were then
+opened from the installed beta 4 card and verified against the intended HA sensor
+and binary sensor. The core and heater geometry remained unchanged. Other installed
+dashboard themes still need user testing.
 
 Bypass, defrost, supply-stop, missing readings and winter energy situations are also
 covered by the local simulation. The ice effect is illustrative, not measured ice
 quantity or defrost progress.
 
-## Beta limitations
+## Field-validation limits
 
 The optional profile and seasonal companions have **not completed real-device field
 validation**. The YAML tests do not emulate Home Assistant's scheduler or Vallox firmware.
@@ -51,5 +56,7 @@ actual winter defrost histories. The card deliberately withholds conclusions whe
 coverage is insufficient. A ventilation meter alone does not establish whole-home
 energy savings.
 
-These are reasons for an opt-in prerelease, not a stable release. The card can be used
-without either companion, and suggestions never change device settings.
+The card is released as stable. The optional companions remain experimental and
+are not installed or enabled by the HACS card update. The card works without them,
+and suggestions never change device settings. Stable release status does not replace
+the installation-specific and winter field testing described above.

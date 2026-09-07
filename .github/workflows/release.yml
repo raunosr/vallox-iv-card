@@ -38,5 +38,5 @@ jobs:
           if [[ "$GITHUB_REF_NAME" == *-* ]]; then
             gh release create "$GITHUB_REF_NAME" dist/vallox-iv-card.js --verify-tag --title "Vallox IV Card $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md" --prerelease --latest=false
           else
-            gh release create "$GITHUB_REF_NAME" dist/vallox-iv-card.js --verify-tag --title "Vallox IV Card $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md"
+            gh release create "$GITHUB_REF_NAME" dist/vallox-iv-card.js --verify-tag --title "Vallox IV Card $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md" --latest
           fi

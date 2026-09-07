@@ -1,17 +1,17 @@
-# Installation, beta testing and migration
+# Installation and migration to 2.0.0
 
-## HACS beta installation
+## HACS installation
 
 1. Open Vallox IV Card in HACS. If needed, add `raunosr/vallox-iv-card` as a custom
    repository with type **Dashboard**.
-2. Use **⋮ → Update information** to refresh release metadata, then **Redownload**.
-3. Under **Need a different version?**, select **v2.0.0-beta.4** and download it.
+2. Use **⋮ → Update information** to refresh release metadata, then install or update
+   to **v2.0.0** from the normal stable channel.
+3. If selecting a version manually, use **Redownload → Need a different version? → v2.0.0**.
 4. Reload the frontend, including any kiosk/tablet sessions.
 
-For automatic beta update notifications, enable this repository's prerelease switch
-in the HACS integration. These switches may initially be disabled in the entity registry.
-See [version selection](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository)
-and [prerelease switches](https://www.hacs.xyz/docs/use/entities/switch/).
+This is a stable release; no prerelease switch is needed. Users upgrading from a 2.0
+beta can keep their card YAML. Turn off the repository's prerelease switch if you want
+only future stable updates. See [version selection](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository).
 
 The module resource is `/hacsfiles/vallox-iv-card/vallox-iv-card.js`. If an earlier
 installation registered a manually copied `/local/vallox-iv-card.js`, HACS updates a
@@ -53,7 +53,7 @@ editor in `.cache/ha-preview`. Developers can load this beside v1 in an isolated
 view. The standard HACS build uses the original element name and requires only one
 production resource.
 
-## Optional companions — experimental in this beta
+## Optional companions — experimental
 
 Installing through HACS installs the card only. It does not install helpers,
 blueprints or automations, and does not change ventilation settings.

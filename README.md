@@ -4,10 +4,10 @@ A standalone Home Assistant card with a counterflow core, four air streams, inte
 profile controls, measured electricity and explainable suggestions. Lit + TypeScript.
 Finnish and English, dark and light HA themes.
 
-**Version 2.0.0-beta.4 — opt-in prerelease.** The card works independently. Seasonal control
+**Version 2.0.0 — stable release.** The card works independently. Seasonal control
 and custom profile timing are experimental, optional Home Assistant companions that still
 need real-device validation. Installing the card does not install or enable these companions.
-See the [release notes](docs/releases/v2.0.0-beta.4.md) and [validation status](docs/BETA-VALIDATION.md).
+See the [release notes](docs/releases/v2.0.0.md) and [validation status](docs/VALIDATION.md).
 
 ## What you see
 
@@ -15,6 +15,7 @@ See the [release notes](docs/releases/v2.0.0-beta.4.md) and [validation status](
 - A labelled propeller indicator for fan request, separate from core efficiency.
 - Extract temperature with its CO₂ and humidity readings.
 - Supply temperature with core-outlet temperature and a heater symbol on its airflow route.
+- Open entity history directly from temperatures, the efficiency number or heater symbol.
 - Thicker directional paths; stopped or unconfirmed supply flow during defrost.
 - Home/Away/Boost controls and optional Fireplace/Extra/Auto when advertised by the unit.
 - Power, daily/24-hour electricity, seven-day consumption and a shared state/temperature/power timeline.
@@ -26,11 +27,11 @@ button. Keyboard operation, reduced motion and 44-pixel touch targets are suppor
 
 ## Installation
 
-In HACS, open **Vallox IV Card → ⋮ → Redownload → Need a different version?** and select
-**v2.0.0-beta.4**. Use **Update information** first if the release has not appeared yet.
-HACS also offers an optional prerelease switch for beta update notifications.
-See the [HACS version selector](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository)
-and [prerelease switch](https://www.hacs.xyz/docs/use/entities/switch/) documentation.
+In HACS, open **Vallox IV Card** and install or update to **v2.0.0**.
+Use **⋮ → Update information** first if the release has not appeared yet. This release
+is available on the normal stable channel; enabling prereleases is not required.
+You can also choose **Redownload → Need a different version? → v2.0.0**.
+See the [HACS version selector](https://hacs.xyz/docs/use/repositories/dashboard/#downloading-a-specific-version-of-a-repository).
 
 Reload the frontend after updating. The HACS module resource should point to
 `/hacsfiles/vallox-iv-card/vallox-iv-card.js`. A manually registered `/local/` copy is a
