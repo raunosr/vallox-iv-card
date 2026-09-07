@@ -1,37 +1,12 @@
-# Vallox IV Card – Master TODO
+# Beta field validation
 
-## Milestone 1 – Core Diagram
-- [x] Card skeleton & registration
-- [x] Config validation
-- [x] Hass state helpers
-- [x] Airflow ducts SVG
-- [x] 4 temperature chips
+The implementation and automated checks cover the v2 behavior in README and docs.
+These checks require an actual installation, beyond synthetic data:
 
-## Milestone 2 – Heat Recovery
-- [x] Center cell rendering
-- [x] Efficiency ring
-- [x] Efficiency normalization
+- Native timer completion and manual override before retiring an existing timer chain.
+- At least 24 hours of seasonal sampling before opting into Auto.
+- Replacement energy-meter cadence, readings and HA Recorder retention.
+- Winter defrost and energy observations to evaluate house-specific thresholds.
+- Review of the isolated HA test view before promoting v2 to the everyday dashboard.
 
-## Milestone 3 – Secondary Metrics
-- [x] Profile chip
-- [x] Cell state chip
-- [x] Post-heater indicator
-- [x] CO / CO₂ chip
-
-## Milestone 4 – Editor & Sections
-- [x] getConfigForm() schema
-- [x] Selector grouping
-- [x] Sections grid tuning
-- [x] Compact mode
-
-## Milestone 5 – UX Polish
-- [x] Theme variable audit
-- [x] Typography normalization
-- [x] Spacing & alignment
-- [ ] Accessibility review
-
-## Milestone 6 – Hardening
-- [x] Missing entity handling
-- [x] Unavailable state handling
-- [ ] Performance review
-- [x] Final build verification
+Suggestions never change target temperature or frost-protection parameters.

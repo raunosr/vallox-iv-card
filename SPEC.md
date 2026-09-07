@@ -1,5 +1,8 @@
 # Vallox IV Card – Specification
 
+> Historical v1 specification. The implemented v2 contract is documented in
+> [README](README.md), [architecture](docs/ARCHITECTURE.md) and [migration](docs/MIGRATION.md).
+
 ## Overview
 
 The Vallox IV Card is a custom Lovelace card for Home Assistant that provides a visual representation of a Vallox IV heat recovery ventilation unit's airflow, temperatures, and efficiency.

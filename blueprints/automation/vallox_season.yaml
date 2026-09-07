@@ -1,0 +1,282 @@
+blueprint:
+  name: Vallox IV Card — slow seasonal winter lock
+  description: >-
+    Optional winter-lock control, initially Off. Requires the supplied 5-minute
+    sampling helpers, 24-hour mean and count, and persistent text helpers.
+    Summer releases the lock; Vallox still chooses bypass or cool recovery.
+    Missing data resets the pending six-hour qualification. Last switch time is
+    persisted. External lock changes pause Auto. No temperature or defrost
+    parameters are written. Thresholds are project defaults, not manufacturer limits.
+  domain: automation
+  source_url: https://github.com/raunosr/vallox-iv-card/blob/v2.0.0/blueprints/automation/vallox_season.yaml
+  homeassistant:
+    min_version: 2025.1.0
+  input:
+    bypass_lock:
+      name: Vallox bypass winter lock
+      selector:
+        entity:
+          domain: switch
+    mode_helper:
+      name: Mode helper (options Off, Auto, Winter, Summer)
+      selector:
+        entity:
+          domain: input_select
+    sampled_outdoor:
+      name: Outdoor temperature sampled every five minutes (°C)
+      selector:
+        entity:
+          domain: sensor
+    mean_sensor:
+      name: 24-hour average_step statistics sensor
+      selector:
+        entity:
+          domain: sensor
+    count_sensor:
+      name: 24-hour valid sample count
+      selector:
+        entity:
+          domain: sensor
+    memory_helper:
+      name: Persistent memory text helper (maximum 255, no initial value)
+      selector:
+        entity:
+          domain: input_text
+    status_helper:
+      name: Status text helper (maximum 255)
+      selector:
+        entity:
+          domain: input_text
+    summer_threshold:
+      name: Release winter lock above (°C)
+      default: 15
+      selector:
+        number:
+          min: -10
+          max: 30
+          step: 0.5
+          unit_of_measurement: °C
+    winter_threshold:
+      name: Lock below (°C)
+      default: 12
+      selector:
+        number:
+          min: -15
+          max: 25
+          step: 0.5
+          unit_of_measurement: °C
+    qualification_hours:
+      name: Continuous qualifying hours
+      default: 6
+      selector:
+        number:
+          min: 1
+          max: 48
+          unit_of_measurement: h
+    minimum_interval_hours:
+      name: Minimum interval between automatic switches
+      default: 24
+      selector:
+        number:
+          min: 1
+          max: 168
+          unit_of_measurement: h
+triggers:
+  - trigger: time_pattern
+    minutes: /5
+    id: tick
+  - trigger: homeassistant
+    event: start
+    id: start
+  - trigger: state
+    entity_id: !input mode_helper
+    id: mode
+  - trigger: state
+    entity_id: !input bypass_lock
+    id: lock
+  - trigger: state
+    entity_id: !input sampled_outdoor
+    to: ['unavailable', 'unknown']
+    id: data_lost
+mode: queued
+max: 5
+max_exceeded: silent
+variables:
+  lock: !input bypass_lock
+  control: !input mode_helper
+  sampled: !input sampled_outdoor
+  mean: !input mean_sensor
+  count: !input count_sensor
+  memory: !input memory_helper
+  status: !input status_helper
+  upper: !input summer_threshold
+  lower: !input winter_threshold
+  hold_hours: !input qualification_hours
+  interval_hours: !input minimum_interval_hours
+actions:
+  - variables:
+      now_ts: "{{ as_timestamp(now()) | int }}"
+      stored: "{{ states(memory).split('|') if states(memory).split('|') | count == 4 else ['unknown', '', '0', '0'] }}"
+      current: "{{ states(lock) }}"
+      mode: "{{ states(control) }}"
+  - if:
+      - condition: template
+        value_template: "{{ current not in ['on', 'off'] or not has_value(control) or states(memory) == 'unavailable' or states(status) == 'unavailable' }}"
+    then:
+      - action: input_text.set_value
+        target:
+          entity_id: "{{ status }}"
+        data:
+          value: unavailable
+      - stop: Required helper or lock unavailable; no equipment changes
+  - if:
+      - condition: template
+        value_template: "{{ mode == 'Off' }}"
+    then:
+      - action: input_text.set_value
+        target:
+          entity_id: "{{ memory }}"
+        data:
+          value: "{{ current ~ '||0|' ~ stored[3] }}"
+      - if:
+          - condition: template
+            value_template: "{{ states(status) not in ['manual_override', 'command_failed'] }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ status }}"
+            data:
+              value: 'off'
+      - stop: Seasonal control is disabled
+  - if:
+      - condition: template
+        value_template: "{{ mode not in ['Auto', 'Winter', 'Summer'] or lower >= upper }}"
+    then:
+      - action: input_text.set_value
+        target:
+          entity_id: "{{ status }}"
+        data:
+          value: invalid_config
+      - stop: Mode options or thresholds are invalid
+  - if:
+      - condition: template
+        value_template: "{{ mode == 'Auto' and stored[0] in ['on', 'off'] and current != stored[0] }}"
+    then:
+      - action: input_text.set_value
+        target:
+          entity_id: "{{ status }}"
+        data:
+          value: manual_override
+      - action: input_select.select_option
+        target:
+          entity_id: "{{ control }}"
+        data:
+          option: 'Off'
+      - stop: External winter-lock change paused Auto
+  - variables:
+      last_switch: "{{ stored[3] | int(0) }}"
+      candidate: "{{ 'summer' if mode == 'Summer' else 'winter' if mode == 'Winter' else 'summer' if states(mean) | float(-999) > upper else 'winter' if states(mean) | float(999) < lower else '' }}"
+      desired: "{{ 'off' if candidate == 'summer' else 'on' }}"
+  - if:
+      - condition: template
+        value_template: "{{ mode == 'Auto' }}"
+    then:
+      - variables:
+          fresh: >-
+            {{ has_value(sampled) and is_number(states(sampled)) and has_value(mean)
+               and is_number(states(mean)) and states(count) | int(0) >= 260
+               and state_attr(mean, 'unit_of_measurement') == '°C'
+               and state_attr(mean, 'source_value_valid') == true
+               and state_attr(mean, 'age_coverage_ratio') | float(0) >= 0.9
+               and now_ts - as_timestamp(states[sampled].last_updated, 0) <= 660 }}
+      - if:
+          - condition: template
+            value_template: "{{ not fresh or (trigger is defined and trigger.id == 'start') }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ memory }}"
+            data:
+              value: "{{ current ~ '||0|' ~ last_switch }}"
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ status }}"
+            data:
+              value: warming_up
+          - stop: Await fresh 24-hour coverage; qualification reset on restart or missing data
+      - if:
+          - condition: template
+            value_template: "{{ candidate == '' or current == desired }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ memory }}"
+            data:
+              value: "{{ current ~ '||0|' ~ last_switch }}"
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ status }}"
+            data:
+              value: "{{ 'winter' if current == 'on' else 'summer' }}"
+          - stop: Within hysteresis band or already in requested season
+      - variables:
+          since: "{{ stored[2] | int(0) if stored[1] == candidate and stored[2] | int(0) > 0 and stored[2] | int(0) <= now_ts else now_ts }}"
+          next_change: "{{ [since + hold_hours * 3600, last_switch + interval_hours * 3600] | max | int }}"
+      - if:
+          - condition: template
+            value_template: "{{ now_ts < next_change }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ memory }}"
+            data:
+              value: "{{ current ~ '|' ~ candidate ~ '|' ~ since ~ '|' ~ last_switch }}"
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ status }}"
+            data:
+              value: "{{ 'waiting_' ~ candidate ~ '|' ~ (upper if candidate == 'summer' else lower) ~ '|' ~ next_change }}"
+          - stop: Qualification or minimum switch interval still pending
+  - if:
+      - condition: template
+        value_template: "{{ current != desired }}"
+    then:
+      # Persist the expected state before the command. A restart between these
+      # actions fails closed via the external-change check on the next run.
+      - action: input_text.set_value
+        target:
+          entity_id: "{{ memory }}"
+        data:
+          value: "{{ desired ~ '||0|' ~ now_ts }}"
+      - action: "{{ 'switch.turn_on' if desired == 'on' else 'switch.turn_off' }}"
+        continue_on_error: true
+        target:
+          entity_id: "{{ lock }}"
+      - wait_template: "{{ states(lock) == desired }}"
+        timeout: '00:00:15'
+        continue_on_timeout: true
+      - if:
+          - condition: template
+            value_template: "{{ not wait.completed }}"
+        then:
+          - action: input_text.set_value
+            target:
+              entity_id: "{{ status }}"
+            data:
+              value: command_failed
+          - action: input_select.select_option
+            target:
+              entity_id: "{{ control }}"
+            data:
+              option: 'Off'
+          - stop: Lock command was not confirmed; controller paused
+  - action: input_text.set_value
+    target:
+      entity_id: "{{ memory }}"
+    data:
+      value: "{{ desired ~ '||0|' ~ (now_ts if current != desired else last_switch) }}"
+  - action: input_text.set_value
+    target:
+      entity_id: "{{ status }}"
+    data:
+      value: "{{ 'winter' if desired == 'on' else 'summer' }}"

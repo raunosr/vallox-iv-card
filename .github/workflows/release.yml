@@ -1,0 +1,42 @@
+name: Release HACS bundle
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r tests/requirements.txt
+      - run: python tests/test_blueprints.py
+      - name: Check tag against the single version source
+        run: node -e "const fs=require('fs'); const v=JSON.parse(fs.readFileSync('package.json')).version; if(process.env.GITHUB_REF_NAME !== 'v'+v) process.exit(1)"
+      - name: Verify bundle and release notes
+        run: |
+          git diff --exit-code -- dist/vallox-iv-card.js
+          test -s "docs/releases/$GITHUB_REF_NAME.md"
+      - name: Publish the tested bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            gh release create "$GITHUB_REF_NAME" dist/vallox-iv-card.js --verify-tag --title "Vallox IV Card $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md" --prerelease --latest=false
+          else
+            gh release create "$GITHUB_REF_NAME" dist/vallox-iv-card.js --verify-tag --title "Vallox IV Card $GITHUB_REF_NAME" --notes-file "docs/releases/$GITHUB_REF_NAME.md" --latest
+          fi

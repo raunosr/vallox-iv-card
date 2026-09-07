@@ -3,4 +3,7 @@ node_modules/
 .DS_Store
 *.local
 .env
+.cache/
+test-results/
+playwright-report/
 

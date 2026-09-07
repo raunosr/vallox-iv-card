@@ -1,0 +1,75 @@
+# Copy to packages only after replacing source entity IDs. Enable packages in
+# configuration.yaml if needed. Import the two blueprints before using this file.
+# Do not add initial values to the text helpers: their state must survive restart.
+input_select:
+  vallox_season_mode:
+    name: Vallox kausiohjaus
+    options: ['Off', Auto, Winter, Summer]
+input_text:
+  vallox_season_memory:
+    name: Vallox seasonal memory
+    max: 255
+  vallox_season_status:
+    name: Vallox seasonal status
+    max: 255
+
+template:
+  - triggers:
+      - trigger: time_pattern
+        minutes: /5
+      - trigger: homeassistant
+        event: start
+    sensor:
+      - name: Vallox outdoor sampled
+        unique_id: vallox_iv_card_outdoor_sampled
+        device_class: temperature
+        unit_of_measurement: °C
+        availability: >-
+          {{ is_number(states('sensor.vallox_outdoor_air'))
+             and state_attr('sensor.vallox_outdoor_air', 'unit_of_measurement') in ['°C', '°F'] }}
+        state: >-
+          {% set value = states('sensor.vallox_outdoor_air') | float(none) %}
+          {{ (value - 32) * 5 / 9 if value is not none and state_attr('sensor.vallox_outdoor_air', 'unit_of_measurement') == '°F' else value }}
+        attributes:
+          # An attribute change makes every valid 5-minute sample observable,
+          # even when the source temperature remains constant.
+          sampled_at: "{{ now().isoformat() }}"
+sensor:
+  - platform: statistics
+    name: Vallox outdoor mean 24h
+    unique_id: vallox_iv_card_outdoor_mean_24h
+    entity_id: sensor.vallox_outdoor_sampled
+    state_characteristic: average_step
+    max_age:
+      hours: 24
+    sampling_size: 600
+    keep_last_sample: true
+  - platform: statistics
+    name: Vallox outdoor count 24h
+    unique_id: vallox_iv_card_outdoor_count_24h
+    entity_id: sensor.vallox_outdoor_sampled
+    state_characteristic: count
+    max_age:
+      hours: 24
+    sampling_size: 600
+
+script:
+  vallox_profile_v2:
+    alias: Vallox profile v2
+    use_blueprint:
+      path: vallox-iv-card/vallox_profile.yaml
+      input:
+        fan: fan.vallox
+automation:
+  - id: vallox_iv_card_season_v2
+    alias: Vallox seasonal winter lock v2
+    use_blueprint:
+      path: vallox-iv-card/vallox_season.yaml
+      input:
+        bypass_lock: switch.vallox_bypass_locked
+        mode_helper: input_select.vallox_season_mode
+        sampled_outdoor: sensor.vallox_outdoor_sampled
+        mean_sensor: sensor.vallox_outdoor_mean_24h
+        count_sensor: sensor.vallox_outdoor_count_24h
+        memory_helper: input_text.vallox_season_memory
+        status_helper: input_text.vallox_season_status

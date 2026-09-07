@@ -1,5 +1,3 @@
-// TODO (Milestone 1): Implement config validation
-
 import type { ValloxIvCardConfig } from './types';
 
 /**
@@ -13,15 +11,20 @@ export const DEFAULT_CONFIG: Partial<ValloxIvCardConfig> = {
   show_co2: true,
   show_humidity: true,
   show_post_heater: true,
+  config_version: 2,
+  modes: ['Home', 'Away', 'Boost'],
+  efficiency_scale: 'percent',
+  boost_duration: 30,
+  fireplace_duration: 15,
   // Alert & dynamic color defaults
   enable_temp_colors: true,
   co2_limit: 1000,
   co2_alert_color: '#ff4444',
-  enable_co2_blink: true,
+  enable_co2_blink: false,
   // Typography defaults
   value_font_size: 48,
   unit_opacity: 0.6,
-  font_weight: 500,
+  font_weight: 600,
 };
 
 /**
@@ -60,6 +63,12 @@ export function validateConfig(config: unknown): ValloxIvCardConfig {
     'co2',
     'humidity',
     'post_heater',
+    'fan_entity',
+    'profile_duration',
+    'profile_action_script',
+    'filter_remaining',
+    'supply_fan_speed',
+    'extract_fan_speed',
   ] as const;
 
   for (const field of entityFields) {
@@ -71,6 +80,27 @@ export function validateConfig(config: unknown): ValloxIvCardConfig {
       throw new Error(`Invalid configuration: ${field} must be a valid entity ID (e.g., sensor.xxx)`);
     }
   }
+
+  if (cfg.fan_entity && !(cfg.fan_entity as string).startsWith('fan.')) throw new Error('fan_entity must be a fan entity');
+  if (cfg.profile_action_script && !(cfg.profile_action_script as string).startsWith('script.')) throw new Error('profile_action_script must be a script entity');
+  if (cfg.modes !== undefined && (!Array.isArray(cfg.modes) || cfg.modes.length > 6 || cfg.modes.some(m => typeof m !== 'string' || !['home', 'away', 'boost', 'fireplace', 'extra', 'auto'].includes(m.toLowerCase())))) throw new Error('modes must contain Home, Away, Boost, Fireplace, Extra or Auto');
+  if (validatedConfig.modes) validatedConfig.modes = [...new Map(validatedConfig.modes.map(m => [m.toLowerCase(), m])).values()];
+  const enums: Record<string, string[]> = { language: ['fi', 'en'], temperature_unit: ['°C', '°F'], efficiency_kind: ['supply', 'extract', 'custom'], efficiency_scale: ['percent', 'ratio'], defrost_mode: ['auto','bypass','supply_stop'] };
+  for (const [key, values] of Object.entries(enums)) if (cfg[key] !== undefined && !values.includes(String(cfg[key]))) throw new Error(`Invalid ${key}`);
+  for (const key of ['boost_duration', 'fireplace_duration']) if (cfg[key] !== undefined && (!Number.isInteger(cfg[key]) || Number(cfg[key]) < 1 || Number(cfg[key]) > 65534)) throw new Error(`Invalid ${key}`);
+  for (const group of ['energy', 'insights', 'seasonal']) {
+    if (cfg[group] === undefined) continue;
+    if (!cfg[group] || typeof cfg[group] !== 'object' || Array.isArray(cfg[group])) throw new Error(`Invalid ${group}`);
+    for (const [key, value] of Object.entries(cfg[group] as Record<string, unknown>)) {
+      if (key.endsWith('_entity') && (typeof value !== 'string' || (value && !/^[a-z_]+\.[a-z0-9_]+$/.test(value)))) throw new Error(`Invalid ${group}.${key}`);
+    }
+  }
+  const insights = validatedConfig.insights;
+  if (insights?.heating_system !== undefined && !['unknown', 'heat_pump', 'district_heating', 'other_efficient', 'electric'].includes(insights.heating_system)) throw new Error('Invalid heating_system');
+  for (const key of ['daily_budget_kwh', 'excess_ratio', 'defrost_minutes'] as const) if (insights?.[key] !== undefined && (!Number.isFinite(insights[key]) || insights[key]! <= 0)) throw new Error(`Invalid insights.${key}`);
+  if (insights?.comfort_floor !== undefined && !Number.isFinite(insights.comfort_floor)) throw new Error('Invalid comfort_floor');
+  if (insights?.enabled !== undefined && typeof insights.enabled !== 'boolean') throw new Error('Invalid insights.enabled');
+  if (cfg.compact !== undefined && typeof cfg.compact !== 'boolean') throw new Error('Invalid compact');
 
   if (cfg.value_color !== undefined && typeof cfg.value_color !== 'string') {
     throw new Error('Invalid configuration: value_color must be a string');

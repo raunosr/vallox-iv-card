@@ -1,738 +1,268 @@
-const t=globalThis,e=t.ShadowRoot&&(void 0===t.ShadyCSS||t.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,o=/* @__PURE__ */Symbol(),i=/* @__PURE__ */new WeakMap;let r=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==o)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const o=this.t;if(e&&void 0===t){const e=void 0!==o&&1===o.length;e&&(t=i.get(o)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&i.set(o,t))}return t}toString(){return this.cssText}};const s=(t,...e)=>{const i=1===t.length?t[0]:e.reduce((e,o,i)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(o)+t[i+1],t[0]);return new r(i,t,o)},a=e?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const o of t.cssRules)e+=o.cssText;return(t=>new r("string"==typeof t?t:t+"",void 0,o))(e)})(t):t,{is:n,defineProperty:l,getOwnPropertyDescriptor:c,getOwnPropertyNames:p,getOwnPropertySymbols:h,getPrototypeOf:d}=Object,u=globalThis,f=u.trustedTypes,_=f?f.emptyScript:"",m=u.reactiveElementPolyfillSupport,v=(t,e)=>t,y={toAttribute(t,e){switch(e){case Boolean:t=t?_:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let o=t;switch(e){case Boolean:o=null!==t;break;case Number:o=null===t?null:Number(t);break;case Object:case Array:try{o=JSON.parse(t)}catch(i){o=null}}return o}},g=(t,e)=>!n(t,e),$={attribute:!0,type:String,converter:y,reflect:!1,useDefault:!1,hasChanged:g};Symbol.metadata??=/* @__PURE__ */Symbol("metadata"),u.litPropertyMetadata??=/* @__PURE__ */new WeakMap;let b=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=$){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const o=/* @__PURE__ */Symbol(),i=this.getPropertyDescriptor(t,o,e);void 0!==i&&l(this.prototype,t,i)}}static getPropertyDescriptor(t,e,o){const{get:i,set:r}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:i,set(e){const s=i?.call(this);r?.call(this,e),this.requestUpdate(t,s,o)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??$}static _$Ei(){if(this.hasOwnProperty(v("elementProperties")))return;const t=d(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(v("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(v("properties"))){const t=this.properties,e=[...p(t),...h(t)];for(const o of e)this.createProperty(o,t[o])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,o]of e)this.elementProperties.set(t,o)}this._$Eh=/* @__PURE__ */new Map;for(const[e,o]of this.elementProperties){const t=this._$Eu(e,o);void 0!==t&&this._$Eh.set(t,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const o=new Set(t.flat(1/0).reverse());for(const t of o)e.unshift(a(t))}else void 0!==t&&e.push(a(t));return e}static _$Eu(t,e){const o=e.attribute;return!1===o?void 0:"string"==typeof o?o:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=/* @__PURE__ */new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=/* @__PURE__ */new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=/* @__PURE__ */new Map,e=this.constructor.elementProperties;for(const o of e.keys())this.hasOwnProperty(o)&&(t.set(o,this[o]),delete this[o]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const o=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((o,i)=>{if(e)o.adoptedStyleSheets=i.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const e of i){const i=document.createElement("style"),r=t.litNonce;void 0!==r&&i.setAttribute("nonce",r),i.textContent=e.cssText,o.appendChild(i)}})(o,this.constructor.elementStyles),o}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,o){this._$AK(t,o)}_$ET(t,e){const o=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,o);if(void 0!==i&&!0===o.reflect){const r=(void 0!==o.converter?.toAttribute?o.converter:y).toAttribute(e,o.type);this._$Em=t,null==r?this.removeAttribute(i):this.setAttribute(i,r),this._$Em=null}}_$AK(t,e){const o=this.constructor,i=o._$Eh.get(t);if(void 0!==i&&this._$Em!==i){const t=o.getPropertyOptions(i),r="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:y;this._$Em=i;const s=r.fromAttribute(e,t.type);this[i]=s??this._$Ej?.get(i)??s,this._$Em=null}}requestUpdate(t,e,o,i=!1,r){if(void 0!==t){const s=this.constructor;if(!1===i&&(r=this[t]),o??=s.getPropertyOptions(t),!((o.hasChanged??g)(r,e)||o.useDefault&&o.reflect&&r===this._$Ej?.get(t)&&!this.hasAttribute(s._$Eu(t,o))))return;this.C(t,e,o)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:o,reflect:i,wrapped:r},s){o&&!(this._$Ej??=/* @__PURE__ */new Map).has(t)&&(this._$Ej.set(t,s??e??this[t]),!0!==r||void 0!==s)||(this._$AL.has(t)||(this.hasUpdated||o||(e=void 0),this._$AL.set(t,e)),!0===i&&this._$Em!==t&&(this._$Eq??=/* @__PURE__ */new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,o]of t){const{wrapped:t}=o,i=this[e];!0!==t||this._$AL.has(e)||void 0===i||this.C(e,void 0,o,i)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(o){throw t=!1,this._$EM(),o}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=/* @__PURE__ */new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};b.elementStyles=[],b.shadowRootOptions={mode:"open"},b[v("elementProperties")]=/* @__PURE__ */new Map,b[v("finalized")]=/* @__PURE__ */new Map,m?.({ReactiveElement:b}),(u.reactiveElementVersions??=[]).push("2.1.2");const w=globalThis,x=t=>t,C=w.trustedTypes,A=C?C.createPolicy("lit-html",{createHTML:t=>t}):void 0,S="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,k="?"+E,T=`<${k}>`,P=document,O=()=>P.createComment(""),H=t=>null===t||"object"!=typeof t&&"function"!=typeof t,M=Array.isArray,L="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,z=/-->/g,I=/>/g,N=RegExp(`>|${L}(?:([^\\s"'>=/]+)(${L}*=${L}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),F=/'/g,R=/"/g,j=/^(?:script|style|textarea|title)$/i,D=t=>(e,...o)=>({_$litType$:t,strings:e,values:o}),B=D(1),V=D(2),q=/* @__PURE__ */Symbol.for("lit-noChange"),W=/* @__PURE__ */Symbol.for("lit-nothing"),G=/* @__PURE__ */new WeakMap,Z=P.createTreeWalker(P,129);function J(t,e){if(!M(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}class K{constructor({strings:t,_$litType$:e},o){let i;this.parts=[];let r=0,s=0;const a=t.length-1,n=this.parts,[l,c]=((t,e)=>{const o=t.length-1,i=[];let r,s=2===e?"<svg>":3===e?"<math>":"",a=U;for(let n=0;n<o;n++){const e=t[n];let o,l,c=-1,p=0;for(;p<e.length&&(a.lastIndex=p,l=a.exec(e),null!==l);)p=a.lastIndex,a===U?"!--"===l[1]?a=z:void 0!==l[1]?a=I:void 0!==l[2]?(j.test(l[2])&&(r=RegExp("</"+l[2],"g")),a=N):void 0!==l[3]&&(a=N):a===N?">"===l[0]?(a=r??U,c=-1):void 0===l[1]?c=-2:(c=a.lastIndex-l[2].length,o=l[1],a=void 0===l[3]?N:'"'===l[3]?R:F):a===R||a===F?a=N:a===z||a===I?a=U:(a=N,r=void 0);const h=a===N&&t[n+1].startsWith("/>")?" ":"";s+=a===U?e+T:c>=0?(i.push(o),e.slice(0,c)+S+e.slice(c)+E+h):e+E+(-2===c?n:h)}return[J(t,s+(t[o]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),i]})(t,e);if(this.el=K.createElement(l,o),Z.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(i=Z.nextNode())&&n.length<a;){if(1===i.nodeType){if(i.hasAttributes())for(const t of i.getAttributeNames())if(t.endsWith(S)){const e=c[s++],o=i.getAttribute(t).split(E),a=/([.?@])?(.*)/.exec(e);n.push({type:1,index:r,name:a[2],strings:o,ctor:"."===a[1]?et:"?"===a[1]?ot:"@"===a[1]?it:tt}),i.removeAttribute(t)}else t.startsWith(E)&&(n.push({type:6,index:r}),i.removeAttribute(t));if(j.test(i.tagName)){const t=i.textContent.split(E),e=t.length-1;if(e>0){i.textContent=C?C.emptyScript:"";for(let o=0;o<e;o++)i.append(t[o],O()),Z.nextNode(),n.push({type:2,index:++r});i.append(t[e],O())}}}else if(8===i.nodeType)if(i.data===k)n.push({type:2,index:r});else{let t=-1;for(;-1!==(t=i.data.indexOf(E,t+1));)n.push({type:7,index:r}),t+=E.length-1}r++}}static createElement(t,e){const o=P.createElement("template");return o.innerHTML=t,o}}function X(t,e,o=t,i){if(e===q)return e;let r=void 0!==i?o._$Co?.[i]:o._$Cl;const s=H(e)?void 0:e._$litDirective$;return r?.constructor!==s&&(r?._$AO?.(!1),void 0===s?r=void 0:(r=new s(t),r._$AT(t,o,i)),void 0!==i?(o._$Co??=[])[i]=r:o._$Cl=r),void 0!==r&&(e=X(t,r._$AS(t,e.values),r,i)),e}class Q{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:o}=this._$AD,i=(t?.creationScope??P).importNode(e,!0);Z.currentNode=i;let r=Z.nextNode(),s=0,a=0,n=o[0];for(;void 0!==n;){if(s===n.index){let e;2===n.type?e=new Y(r,r.nextSibling,this,t):1===n.type?e=new n.ctor(r,n.name,n.strings,this,t):6===n.type&&(e=new rt(r,this,t)),this._$AV.push(e),n=o[++a]}s!==n?.index&&(r=Z.nextNode(),s++)}return Z.currentNode=P,i}p(t){let e=0;for(const o of this._$AV)void 0!==o&&(void 0!==o.strings?(o._$AI(t,o,e),e+=o.strings.length-2):o._$AI(t[e])),e++}}class Y{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,o,i){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=o,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=X(this,t,e),H(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==q&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>M(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&H(this._$AH)?this._$AA.nextSibling.data=t:this.T(P.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:o}=t,i="number"==typeof o?this._$AC(t):(void 0===o.el&&(o.el=K.createElement(J(o.h,o.h[0]),this.options)),o);if(this._$AH?._$AD===i)this._$AH.p(e);else{const t=new Q(i,this),o=t.u(this.options);t.p(e),this.T(o),this._$AH=t}}_$AC(t){let e=G.get(t.strings);return void 0===e&&G.set(t.strings,e=new K(t)),e}k(t){M(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let o,i=0;for(const r of t)i===e.length?e.push(o=new Y(this.O(O()),this.O(O()),this,this.options)):o=e[i],o._$AI(r),i++;i<e.length&&(this._$AR(o&&o._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}let tt=class{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,o,i,r){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=r,o.length>2||""!==o[0]||""!==o[1]?(this._$AH=Array(o.length-1).fill(new String),this.strings=o):this._$AH=W}_$AI(t,e=this,o,i){const r=this.strings;let s=!1;if(void 0===r)t=X(this,t,e,0),s=!H(t)||t!==this._$AH&&t!==q,s&&(this._$AH=t);else{const i=t;let a,n;for(t=r[0],a=0;a<r.length-1;a++)n=X(this,i[o+a],e,a),n===q&&(n=this._$AH[a]),s||=!H(n)||n!==this._$AH[a],n===W?t=W:t!==W&&(t+=(n??"")+r[a+1]),this._$AH[a]=n}s&&!i&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}};class et extends tt{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class ot extends tt{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends tt{constructor(t,e,o,i,r){super(t,e,o,i,r),this.type=5}_$AI(t,e=this){if((t=X(this,t,e,0)??W)===q)return;const o=this._$AH,i=t===W&&o!==W||t.capture!==o.capture||t.once!==o.once||t.passive!==o.passive,r=t!==W&&(o===W||i);i&&this.element.removeEventListener(this.name,this,o),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class rt{constructor(t,e,o){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=o}get _$AU(){return this._$AM._$AU}_$AI(t){X(this,t)}}const st=w.litHtmlPolyfillSupport;st?.(K,Y),(w.litHtmlVersions??=[]).push("3.3.2");const at=globalThis;class nt extends b{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,o)=>{const i=o?.renderBefore??e;let r=i._$litPart$;if(void 0===r){const t=o?.renderBefore??null;i._$litPart$=r=new Y(e.insertBefore(O(),t),t,void 0,o??{})}return r._$AI(t),r})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return q}}nt._$litElement$=!0,nt.finalized=!0,at.litElementHydrateSupport?.({LitElement:nt});const lt=at.litElementPolyfillSupport;lt?.({LitElement:nt}),(at.litElementVersions??=[]).push("4.2.2");const ct=t=>(e,o)=>{void 0!==o?o.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)},pt={attribute:!0,type:String,converter:y,reflect:!1,hasChanged:g},ht=(t=pt,e,o)=>{const{kind:i,metadata:r}=o;let s=globalThis.litPropertyMetadata.get(r);if(void 0===s&&globalThis.litPropertyMetadata.set(r,s=/* @__PURE__ */new Map),"setter"===i&&((t=Object.create(t)).wrapped=!0),s.set(o.name,t),"accessor"===i){const{name:i}=o;return{set(o){const r=e.get.call(this);e.set.call(this,o),this.requestUpdate(i,r,t,!0,o)},init(e){return void 0!==e&&this.C(i,void 0,t,e),e}}}if("setter"===i){const{name:i}=o;return function(o){const r=this[i];e.call(this,o),this.requestUpdate(i,r,t,!0,o)}}throw Error("Unsupported decorator location: "+i)};function dt(t){return(e,o)=>"object"==typeof o?ht(t,e,o):((t,e,o)=>{const i=e.hasOwnProperty(o);return e.constructor.createProperty(o,t),i?Object.getOwnPropertyDescriptor(e,o):void 0})(t,e,o)}function ut(t){return dt({...t,state:!0,attribute:!1})}const ft={show_efficiency:!0,show_profile:!0,show_fan_speed:!0,show_cell_state:!0,show_co2:!0,show_humidity:!0,show_post_heater:!0,enable_temp_colors:!0,co2_limit:1e3,co2_alert_color:"#ff4444",enable_co2_blink:!0,value_font_size:48,unit_opacity:.6,font_weight:500};const _t=["unavailable","unknown","none"];function mt(t,e){if(!t||!e)return null;const o=t.states[e];if(!o)return null;const i=o.state;return _t.includes(i.toLowerCase())?null:i}function vt(t,e){const o=mt(t,e);if(null===o)return null;const i=parseFloat(o);return isNaN(i)||!isFinite(i)?null:i}function yt(t,e){if(!t||!e)return"";const o=t.states[e];return o?.attributes&&o.attributes.unit_of_measurement||""}function gt(t){if(!t||"—"===t)return{value:t,unit:""};const e=t.match(/^(-?\d+(?:\.\d+)?)\s*(.*)$/);return e?{value:e[1],unit:e[2]}:{value:t,unit:""}}function $t(t,e="°C",o=1){return null===t?"—":`${t.toFixed(o)}${e}`}function bt(t,e=0,o=!0){if(null===t)return"—";return`${(o?t:100*t).toFixed(e)}%`}function wt(t){return null===t?"—":`${Math.round(t)} ppm`}function xt(t){return t?t.charAt(0).toUpperCase()+t.slice(1).toLowerCase():"—"}function Ct(t){if(!t)return"—";return{heat_recovery:"Heat Recovery",cool_recovery:"Cool Recovery",bypass:"Bypass",defrost:"Defrost"}[t.toLowerCase()]||xt(t)}function At(t){if(!t)return"—";return{home:"Home",away:"Away",boost:"Boost",fireplace:"Fireplace",extra:"Extra"}[t.toLowerCase()]||xt(t)}const St="#0000FF",Et="#00FFFF",kt="#8892E3",Tt="#FFA500",Pt="#FF4500",Ot=-10,Ht=0,Mt=22,Lt=25;function Ut(t){const e=t.replace("#",""),o=3===e.length?e.split("").map(t=>t+t).join(""):e,i=parseInt(o,16);return{r:i>>16&255,g:i>>8&255,b:255&i}}function zt(t,e,o){const i=t=>Math.round(Math.max(0,Math.min(255,t))).toString(16).padStart(2,"0");return`#${i(t)}${i(e)}${i(o)}`}function It(t){if(t)return"string"==typeof t?t:Array.isArray(t)&&3===t.length?zt(t[0],t[1],t[2]):void 0}function Nt(t,e,o){const i=Ut(t),r=Ut(e),s=Math.max(0,Math.min(1,o));return zt(i.r+(r.r-i.r)*s,i.g+(r.g-i.g)*s,i.b+(r.b-i.b)*s)}function Ft(t,e="°C",o){if(null===t)return;const i="°F"===e?5*(t-32)/9:t,r={cold:It(o?.cold)||St,freeze:It(o?.freeze)||Et,neutral:It(o?.neutral)||kt,warm:It(o?.warm)||Tt,hot:It(o?.hot)||Pt};if(i<=Ot)return r.cold;if(i<Ht){return Nt(r.cold,r.freeze,(i-Ot)/(Ht-Ot))}if(i<Mt){return Nt(r.freeze,r.neutral,(i-Ht)/(Mt-Ht))}if(i<Lt){return Nt(r.neutral,r.warm,(i-Mt)/(Lt-Mt))}if(i>=30)return r.hot;return Nt(r.warm,r.hot,(i-Lt)/(30-Lt))}function Rt(t,e,o,i,r){if(!t)return B``;const s=gt(t),a=Boolean(e&&o),n=i?`color: ${i}`:"",l=["value",a?"clickable":"",""].filter(Boolean).join(" "),c=s.unit?B`<span class="num">${s.value}</span><span class="unit">${s.unit}</span>`:B`${t}`;return a&&e&&o?B`
-      <span
-        class="${l}"
-        style="${n}"
-        role="button"
-        tabindex="0"
-        aria-label="View ${e} details"
-        @click=${()=>o(e)}
-        @keydown=${t=>"Enter"===t.key&&o(e)}
-      >
-        ${c}
-      </span>
-    `:B`<span class="${l}" style="${n}">${c}</span>`}function jt(t,e,o,i,r,s,a){if(!e)return B``;const n=gt(e),l=Boolean(o&&i),c=r?`color: ${r}`:"",p=["label-value",l?"clickable":"",s||""].filter(Boolean).join(" ");let h;h="humidity"===a?B`${B`<ha-icon icon="mdi:water-percent" class="sensor-icon humidity-icon"></ha-icon>`}`:"co2"===a?B`${B`<ha-icon icon="mdi:molecule-co2" class="sensor-icon co2-icon"></ha-icon>`}`:t?B`<span class="label">${t}: </span>`:"";const d=B`
-    ${h}
-    <span class="value" style="${c}">
-      <span class="num">${n.value}</span>${n.unit?B`<span class="unit">${n.unit}</span>`:""}
-    </span>
-  `;return l&&o&&i?B`
-      <div
-        class="${p}"
-        role="button"
-        tabindex="0"
-        aria-label="View ${o} details"
-        @click=${()=>i(o)}
-        @keydown=${t=>"Enter"===t.key&&i(o)}
-      >
-        ${d}
-      </div>
-    `:B`<div class="${p}">${d}</div>`}function Dt(t){const{position:e,title:o,temp:i,tempEntityId:r,tempColor:s,humidity:a,humidityLabel:n,humidityEntityId:l,co2:c,co2Label:p,co2EntityId:h,co2Color:d,co2ClassName:u,onEntityClick:f}=t;return B`
-    <div class="temp-block ${e}">
-      <div class="title">${o}</div>
-      ${Rt(i,r,f,s)}
-      ${a?jt(n||"",a,l,f,void 0,void 0,"humidity"):""}
-      ${c?jt(p||"",c,h,f,d,u,"co2"):""}
-    </div>
-  `}function Bt(t,e,o,i,r,s){const{cellState:a,profile:n,fanSpeed:l,efficiency:c,extractTemp:p,humidity:h,co2:d,supplyTemp:u,supplyCellTemp:f,outdoorTemp:_,exhaustTemp:m,postHeaterActive:v}=t;return B`
-    <div class="text-overlay" style="${r?`--vallox-value-color: ${r}`:""}">
-      <!-- Cell State Header -->
-      ${e.cellStateTitle||a?B`
-            <div class="cell-state-block">
-              ${e.cellStateTitle?B`<div class="cell-state-title">${e.cellStateTitle}</div>`:""}
-              ${a?B`
-                    <div
-                      class="cell-state-value ${o.cellState&&s?"clickable":""}"
-                      @click=${o.cellState&&s?()=>s(o.cellState):W}
-                    >
-                      ${a}
-                    </div>
-                  `:""}
-            </div>
-          `:""}
-
-      <!-- Efficiency Badge (center) -->
-      <div class="efficiency-block">
-        ${Rt(c,o.efficiency,s)}
-      </div>
-
-      <!-- Post-Heater & Supply Cell Temp (on supply arrow, between efficiency and supply label) -->
-      ${f||void 0!==v?B`
-            <div class="supply-cell-block">
-              ${void 0!==v?B`
-                    <span
-                      class="post-heater ${o.postHeater&&s?"clickable":""}"
-                      @click=${o.postHeater&&s?()=>s(o.postHeater):W}
-                    >
-                      ${y=v,B`<ha-icon icon="mdi:radiator" class="post-heater-icon ${y?"active":"inactive"}"></ha-icon>`}
-                    </span>
-                  `:""}
-              ${f?B`
-                    <div
-                      class="supply-cell-temp ${o.supplyCellTemp&&s?"clickable":""}"
-                      style="${i.supplyCellTempColor?`color: ${i.supplyCellTempColor}`:""}"
-                      @click=${o.supplyCellTemp&&s?()=>s(o.supplyCellTemp):W}
-                    >
-                      ${f}
-                    </div>
-                  `:""}
-            </div>
-          `:""}
-
-      <!-- Extract Air (left top) -->
-      ${Dt({position:"extract",title:e.extractAir,temp:p,tempEntityId:o.extractTemp,tempColor:i.extractTempColor,humidity:h,humidityLabel:e.humidity,humidityEntityId:o.humidity,co2:d,co2Label:e.co2,co2EntityId:o.co2,co2Color:i.co2Color,co2ClassName:i.co2ClassName,onEntityClick:s})}
-
-      <!-- Supply Air (left bottom) -->
-      ${Dt({position:"supply",title:e.supplyAir,temp:u,tempEntityId:o.supplyTemp,tempColor:i.supplyTempColor,onEntityClick:s})}
-
-      <!-- Outdoor Air (right top) -->
-      ${Dt({position:"outdoor",title:e.outdoorAir,temp:_,tempEntityId:o.outdoorTemp,tempColor:i.outdoorTempColor,onEntityClick:s})}
-
-      <!-- Exhaust Air (right bottom) -->
-      ${Dt({position:"exhaust",title:e.exhaustAir,temp:m,tempEntityId:o.exhaustTemp,tempColor:i.exhaustTempColor,onEntityClick:s})}
-
-      <!-- Profile & Fan Speed (bottom center) -->
-      ${n||l?B`
-            <div class="profile-fan-block">
-              ${n?B`
-                    <span
-                      class="profile ${o.profile&&s?"clickable":""}"
-                      @click=${o.profile&&s?()=>s(o.profile):W}
-                    >
-                      ${n}
-                    </span>
-                  `:""}
-              ${l?B`
-                    <span
-                      class="fan-speed ${o.fanSpeed&&s?"clickable":""}"
-                      @click=${o.fanSpeed&&s?()=>s(o.fanSpeed):W}
-                    >
-                      (${B`<ha-icon icon="mdi:fan" class="fan-icon"></ha-icon>`}${l})
-                    </span>
-                  `:""}
-            </div>
-          `:""}
-    </div>
-  `;var y}const Vt=s`
-  :host {
-    display: block;
-    --vallox-value-color: var(--primary-text-color, #2a7ebf);
-    --vallox-label-color: var(--secondary-text-color, #2c5e8c);
-    --vallox-unit-opacity: 0.6;
-  }
-
-  ha-card {
-    height: 100%;
-    box-sizing: border-box;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    background: transparent;
-  }
-
-  .card-header {
-    font-size: var(--ha-card-header-font-size, 24px);
-    font-weight: normal;
-    line-height: 1.2;
-    color: var(--ha-card-header-color, var(--primary-text-color));
-    padding: 8px 12px 4px;
-  }
-
-  .card-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-    padding: 0;
-  }
-
-  /* SVG + Overlay Container */
-  .diagram-container {
-    position: relative;
-    width: 100%;
-    max-width: 100%;
-    aspect-ratio: 800 / 500;
-    height: 100%;
-  }
-
-  .diagram-container svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* ==========================================
-     Airflow Animation
-     ========================================== */
-  @keyframes airflow {
-    from { stroke-dashoffset: 30; }
-    to { stroke-dashoffset: 0; }
-  }
-
-  .diagram-container svg.airflow-active .airflow-path {
-    stroke-dasharray: 10, 20;
-    animation: airflow var(--flow-duration, 2s) linear infinite;
-  }
-
-  .diagram-container svg.airflow-stopped .airflow-path {
-    stroke-dasharray: none;
-    animation: none;
-  }
-
-  /* ==========================================
-     HTML Text Overlay
-     ========================================== */
-  .text-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    font-family: var(--ha-card-header-font-family, inherit);
-    color: var(--vallox-label-color);
-  }
-
-  .text-overlay .clickable {
-    pointer-events: auto;
-    cursor: pointer;
-  }
-
-  .text-overlay .clickable:hover {
-    text-decoration: underline;
-  }
-
-  /* Value styling - number + unit separation */
-  .text-overlay .value {
-    color: var(--vallox-value-color);
-    font-weight: 500;
-    font-size: 28px;
-  }
-
-  .text-overlay .value .num {
-    font-weight: 400;
-  }
-
-  .text-overlay .value .unit {
-    font-size: 16px;
-    font-weight: 400;
-    opacity: var(--vallox-unit-opacity);
-  }
-
-  .text-overlay .label {
-    color: var(--vallox-label-color);
-    font-weight: 400;
-    font-size: 16px;
-  }
-
-  /* Cell State Header - top center */
-  .cell-state-block {
-    position: absolute;
-    top: 6%;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-  }
-
-  .cell-state-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--vallox-label-color);
-  }
-
-  .cell-state-value {
-    font-size: 16px;
-    color: var(--vallox-label-color);
-    margin-top: 2px;
-  }
-
-  /* Efficiency Badge - center */
-  .efficiency-block {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-  }
-
-  .efficiency-block .value {
-    font-size: 28px;
-    font-weight: 500;
-  }
-
-  /* Temperature Blocks - positioned in corners */
-  .temp-block {
-    position: absolute;
-    text-align: center;
-    width: 20%;
-  }
-
-  .temp-block .title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--vallox-label-color);
-    margin-bottom: 0;
-    line-height: 1.3;
-  }
-
-  .temp-block .value {
-    display: block;
-    font-size: 28px;
-    font-weight: 500;
-    margin-bottom: 0;
-    line-height: 1.2;
-  }
-
-  .temp-block .label-value {
-    font-size: 14px;
-    margin-top: 0;
-    line-height: 1.3;
-    text-align: center;
-  }
-
-  .temp-block .label-value .sensor-icon {
-    --mdc-icon-size: 14px;
-    vertical-align: -0.15em;
-    margin-right: 2px;
-    color: var(--vallox-label-color);
-  }
-
-  .temp-block .label-value .value {
-    font-size: 14px;
-    display: inline;
-  }
-
-  .temp-block .label-value .value .unit {
-    font-size: 14px;
-  }
-
-  /* Extract air - left top */
-  .temp-block.extract {
-    top: 18%;
-    left: 5%;
-  }
-
-  /* Supply air - left bottom */
-  .temp-block.supply {
-    top: 64%;
-    left: 5%;
-  }
-
-  /* Outdoor air - right top */
-  .temp-block.outdoor {
-    top: 18%;
-    right: 5%;
-  }
-
-  /* Exhaust air - right bottom */
-  .temp-block.exhaust {
-    top: 64%;
-    right: 5%;
-  }
-
-  /* Supply Cell Temperature & Post-Heater - on supply arrow path */
-  /* SVG path: M 490,165 C 440,165 360,335 310,335 
-     Position: between efficiency badge (center) and Tuloilma label (bottom-left) */
-  .supply-cell-block {
-    position: absolute;
-    top: 62%;
-    left: 28%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .supply-cell-block .supply-cell-temp {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--vallox-value-color);
-    white-space: nowrap;
-    background: color-mix(in srgb, var(--vallox-badge-fill, var(--ha-card-background, var(--card-background-color, #ffffff))) 50%, transparent);
-    padding: 2px 6px;
-    border-radius: 4px;
-  }
-
-  .supply-cell-block .supply-cell-temp.clickable {
-    pointer-events: auto;
-    cursor: pointer;
-  }
-
-  .supply-cell-block .supply-cell-temp.clickable:hover {
-    background: color-mix(in srgb, var(--vallox-badge-fill, var(--ha-card-background, var(--card-background-color, #ffffff))) 70%, transparent);
-  }
-
-  .supply-cell-block .post-heater {
-    display: flex;
-    align-items: center;
-  }
-
-  .post-heater-icon {
-    --mdc-icon-size: 20px;
-  }
-
-  .post-heater-icon.active {
-    color: var(--success-color, #4CAF50);
-  }
-
-  .post-heater-icon.inactive {
-    color: var(--disabled-color, #9E9E9E);
-  }
-
-  /* Profile & Fan Speed - bottom center */
-  .profile-fan-block {
-    position: absolute;
-    bottom: 4%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 0.5em;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--vallox-value-color);
-  }
-
-  .profile-fan-block .profile,
-  .profile-fan-block .fan-speed {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.15em;
-  }
-
-  .profile-fan-block .fan-speed {
-    font-weight: 400;
-  }
-
-  .profile-fan-block .fan-icon {
-    --mdc-icon-size: 0.9em;
-    vertical-align: middle;
-  }
-
-  /* CO2 Alert Animation */
-  @keyframes co2-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
-  .text-overlay .co2-alert {
-    animation: co2-pulse 1s ease-in-out infinite;
-  }
-
-  .text-overlay .co2-alert-static {
-    /* No animation, just static alert styling */
-  }
-
-  /* Compact mode */
-  :host([compact]) ha-card {
-    padding: 0;
-  }
-
-  :host([compact]) .card-header {
-    font-size: 16px;
-    padding: 6px 8px 2px;
-  }
-`;s`
-  .diagram-container {
-    aspect-ratio: 800 / 450;
-  }
-`;var qt=Object.defineProperty,Wt=Object.getOwnPropertyDescriptor,Gt=(t,e,o,i)=>{for(var r,s=i>1?void 0:i?Wt(e,o):e,a=t.length-1;a>=0;a--)(r=t[a])&&(s=(i?r(e,o,s):r(s))||s);return i&&s&&qt(e,o,s),s};let Zt=class extends nt{setConfig(t){this._config={...t}}_renderEntitySelector(t,e,o){const i=(this._config||{})[e]||"";return B`
-      <div class="form-row">
-        <ha-selector
-          .hass=${this.hass}
-          .selector=${{entity:{domain:o}}}
-          .value=${i}
-          .label=${t}
-          @value-changed=${t=>this._valueChanged(e,t.detail.value)}
-        ></ha-selector>
-      </div>
-    `}_renderLabelInput(t,e,o){const i=(this._config||{})[e]||"";return B`
-      <div class="form-row">
-        <ha-textfield
-          .label=${t}
-          .value=${i}
-          .placeholder=${o}
-          @input=${t=>this._valueChanged(e,t.target.value)}
-        ></ha-textfield>
-      </div>
-    `}_renderColorSelector(t,e,o){const i=(this._config||{})[e];let r="";if("string"==typeof i)r=i;else if(Array.isArray(i)&&3===i.length){const t=t=>Math.round(Math.max(0,Math.min(255,t))).toString(16).padStart(2,"0");r=`#${t(i[0])}${t(i[1])}${t(i[2])}`}return B`
-      <div class="form-row color-row">
-        <ha-textfield
-          .label=${t}
-          .value=${r}
-          .placeholder=${o}
-          @input=${t=>this._valueChanged(e,t.target.value)}
-        ></ha-textfield>
-        <input
-          type="color"
-          class="color-picker"
-          .value=${r||o}
-          @input=${t=>this._valueChanged(e,t.target.value)}
-        />
-      </div>
-    `}_renderNumberInput(t,e,o){const i=(this._config||{})[e],r=void 0!==i?String(i):"";return B`
-      <div class="form-row">
-        <ha-textfield
-          .label=${t}
-          .value=${r}
-          .placeholder=${String(o)}
-          type="number"
-          @input=${t=>{const o=t.target.value,i=o?Number(o):void 0;this._valueChanged(e,i)}}
-        ></ha-textfield>
-      </div>
-    `}render(){if(!this.hass)return B`<div>Loading...</div>`;const t=this._config||{};return B`
-      <div class="form-row">
-        <ha-textfield
-          label="Card Title"
-          .value=${t.title||""}
-          @input=${t=>this._valueChanged("title",t.target.value)}
-        ></ha-textfield>
-      </div>
-
-      <div class="section-title">Temperature Sensors</div>
-      ${this._renderEntitySelector("Outdoor Air Temperature","outdoor_air_temp",["sensor"])}
-      ${this._renderEntitySelector("Supply Air Temperature","supply_air_temp",["sensor"])}
-      ${this._renderEntitySelector("Extract Air Temperature","extract_air_temp",["sensor"])}
-      ${this._renderEntitySelector("Exhaust Air Temperature","exhaust_air_temp",["sensor"])}
-
-      <div class="section-title">Heat Recovery</div>
-      ${this._renderEntitySelector("Efficiency Sensor","efficiency",["sensor"])}
-      ${this._renderEntitySelector("Cell State","cell_state",["sensor","select"])}
-      ${this._renderEntitySelector("Supply Cell Temperature","supply_cell_temp",["sensor"])}
-      ${this._renderEntitySelector("Post-Heater","post_heater",["binary_sensor","sensor","switch"])}
-
-      <div class="section-title">Additional Sensors</div>
-      ${this._renderEntitySelector("Ventilation Profile","profile",["sensor","select"])}
-      ${this._renderEntitySelector("Fan Speed","fan_speed",["sensor"])}
-      ${this._renderEntitySelector("CO₂ Sensor","co2",["sensor"])}
-      ${this._renderEntitySelector("Humidity Sensor","humidity",["sensor"])}
-
-      <div class="section-title">Labels (optional)</div>
-      ${this._renderLabelInput("Cell State Title","label_cell_state_title","LTO-Cell State")}
-      ${this._renderLabelInput("Extract Air Label","label_extract_air","Extract air")}
-      ${this._renderLabelInput("Supply Air Label","label_supply_air","Supply air")}
-      ${this._renderLabelInput("Outdoor Air Label","label_outdoor_air","Outdoor air")}
-      ${this._renderLabelInput("Exhaust Air Label","label_exhaust_air","Exhaust air")}
-      ${this._renderLabelInput("Efficiency Label","label_efficiency","Efficiency")}
-      ${this._renderLabelInput("Profile Label","label_profile","Profile")}
-      ${this._renderLabelInput("Fan Speed Label","label_fan_speed","Fan speed")}
-
-      <div class="section-title">Colors (optional)</div>
-
-      <div class="toggle-row">
-        <span>Enable Temperature Color Scaling</span>
-        <ha-switch
-          .checked=${!1!==t.enable_temp_colors}
-          @change=${t=>this._valueChanged("enable_temp_colors",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      ${!1!==t.enable_temp_colors?B`
-        ${this._renderColorSelector("Cold (≤-10°C)","temp_color_cold","#0000FF")}
-        ${this._renderColorSelector("Freeze (0°C)","temp_color_freeze","#00FFFF")}
-        ${this._renderColorSelector("Neutral (22°C)","temp_color_neutral","#8892E3")}
-        ${this._renderColorSelector("Warm (25°C)","temp_color_warm","#FFA500")}
-        ${this._renderColorSelector("Hot (≥25°C)","temp_color_hot","#FF4500")}
-      `:""}
-
-      <div class="section-title">Alert Settings</div>
-
-      ${this._renderNumberInput("CO₂ Alert Threshold (ppm)","co2_limit",1e3)}
-      ${this._renderColorSelector("CO₂ Alert Color","co2_alert_color","#ff4444")}
-
-      <div class="toggle-row">
-        <span>Enable CO₂ Alert Animation</span>
-        <ha-switch
-          .checked=${!1!==t.enable_co2_blink}
-          @change=${t=>this._valueChanged("enable_co2_blink",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="section-title">Display Options</div>
-
-      <div class="toggle-row">
-        <span>Show Efficiency</span>
-        <ha-switch
-          .checked=${!1!==t.show_efficiency}
-          @change=${t=>this._valueChanged("show_efficiency",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Profile</span>
-        <ha-switch
-          .checked=${!1!==t.show_profile}
-          @change=${t=>this._valueChanged("show_profile",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Fan Speed</span>
-        <ha-switch
-          .checked=${!1!==t.show_fan_speed}
-          @change=${t=>this._valueChanged("show_fan_speed",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show CO₂</span>
-        <ha-switch
-          .checked=${!1!==t.show_co2}
-          @change=${t=>this._valueChanged("show_co2",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Humidity</span>
-        <ha-switch
-          .checked=${!1!==t.show_humidity}
-          @change=${t=>this._valueChanged("show_humidity",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Cell State</span>
-        <ha-switch
-          .checked=${!1!==t.show_cell_state}
-          @change=${t=>this._valueChanged("show_cell_state",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Supply Cell Temperature</span>
-        <ha-switch
-          .checked=${!1!==t.show_supply_cell_temp}
-          @change=${t=>this._valueChanged("show_supply_cell_temp",t.target.checked)}
-        ></ha-switch>
-      </div>
-
-      <div class="toggle-row">
-        <span>Show Post-Heater</span>
-        <ha-switch
-          .checked=${!1!==t.show_post_heater}
-          @change=${t=>this._valueChanged("show_post_heater",t.target.checked)}
-        ></ha-switch>
-      </div>
-    `}_valueChanged(t,e){const o={...this._config||{type:"custom:vallox-iv-card"},[t]:e};""!==e&&void 0!==e||delete o[t],this._config=o;const i=new CustomEvent("config-changed",{detail:{config:o},bubbles:!0,composed:!0});this.dispatchEvent(i)}};Zt.styles=s`
-    .form-row {
-      margin-bottom: 16px;
-    }
-    .form-row ha-selector {
-      width: 100%;
-    }
-    ha-textfield {
-      width: 100%;
-    }
-    ha-select {
-      width: 100%;
-    }
-    .section-title {
-      font-weight: 500;
-      margin: 16px 0 8px 0;
-      color: var(--primary-text-color);
-      border-bottom: 1px solid var(--divider-color);
-      padding-bottom: 4px;
-    }
-    .toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-    }
-    .toggle-row span {
-      flex: 1;
-    }
-    .color-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .color-row ha-textfield {
-      flex: 1;
-    }
-    .color-picker {
-      width: 40px;
-      height: 40px;
-      padding: 0;
-      border: 1px solid var(--divider-color);
-      border-radius: 6px;
-      cursor: pointer;
-      background: transparent;
-    }
-    .color-picker::-webkit-color-swatch-wrapper {
-      padding: 2px;
-    }
-    .color-picker::-webkit-color-swatch {
-      border-radius: 4px;
-      border: none;
-    }
-  `,Gt([dt({attribute:!1})],Zt.prototype,"hass",2),Gt([ut()],Zt.prototype,"_config",2),Zt=Gt([ct("vallox-iv-card-editor")],Zt);var Jt=Object.defineProperty,Kt=Object.getOwnPropertyDescriptor,Xt=(t,e,o,i)=>{for(var r,s=i>1?void 0:i?Kt(e,o):e,a=t.length-1;a>=0;a--)(r=t[a])&&(s=(i?r(e,o,s):r(s))||s);return i&&s&&Jt(e,o,s),s};const Qt="Vallox IV Card";let Yt=class extends nt{setConfig(t){try{this._config=function(t){if(!t||"object"!=typeof t)throw new Error("Invalid configuration: config must be an object");const e=t;if(!e.type)throw new Error("Invalid configuration: type is required");const o={...ft,...e,type:e.type},i=["outdoor_air_temp","supply_air_temp","supply_cell_temp","extract_air_temp","exhaust_air_temp","efficiency","cell_state","profile","fan_speed","co2","humidity","post_heater"];for(const r of i){const t=e[r];if(void 0!==t&&"string"!=typeof t)throw new Error(`Invalid configuration: ${r} must be a string`);if("string"==typeof t&&t.length>0&&!t.includes("."))throw new Error(`Invalid configuration: ${r} must be a valid entity ID (e.g., sensor.xxx)`)}if(void 0!==e.value_color&&"string"!=typeof e.value_color)throw new Error("Invalid configuration: value_color must be a string");if(void 0!==e.co2_limit&&("number"!=typeof e.co2_limit||e.co2_limit<0))throw new Error("Invalid configuration: co2_limit must be a positive number");if(void 0!==e.co2_alert_color&&"string"!=typeof e.co2_alert_color)throw new Error("Invalid configuration: co2_alert_color must be a string");if(void 0!==e.enable_co2_blink&&"boolean"!=typeof e.enable_co2_blink)throw new Error("Invalid configuration: enable_co2_blink must be a boolean");if(void 0!==e.enable_temp_colors&&"boolean"!=typeof e.enable_temp_colors)throw new Error("Invalid configuration: enable_temp_colors must be a boolean");if(void 0!==e.value_font_size&&("number"!=typeof e.value_font_size||e.value_font_size<10||e.value_font_size>100))throw new Error("Invalid configuration: value_font_size must be a number between 10 and 100");if(void 0!==e.unit_opacity&&("number"!=typeof e.unit_opacity||e.unit_opacity<0||e.unit_opacity>1))throw new Error("Invalid configuration: unit_opacity must be a number between 0 and 1");if(void 0!==e.font_weight&&("number"!=typeof e.font_weight||![400,500,600,700].includes(e.font_weight)))throw new Error("Invalid configuration: font_weight must be 400, 500, 600, or 700");return o}(t),this._error=void 0}catch(e){throw this._error=e instanceof Error?e.message:"Unknown configuration error",e}}getGridOptions(){return{columns:4,rows:3,min_columns:2,min_rows:2}}static getConfigElement(){return document.createElement("vallox-iv-card-editor")}static getStubConfig(){return{type:"custom:vallox-iv-card",title:"Vallox Ventilation",show_efficiency:!0,show_profile:!0,show_fan_speed:!0,show_cell_state:!0,show_co2:!0,show_post_heater:!0}}willUpdate(t){super.willUpdate(t),(t.has("hass")||t.has("_config"))&&this._config&&this.hass&&(this._cardState=function(t,e){const o=vt(t,e.outdoor_air_temp),i=vt(t,e.supply_air_temp),r=vt(t,e.supply_cell_temp),s=vt(t,e.extract_air_temp),a=vt(t,e.exhaust_air_temp);let n=vt(t,e.efficiency);null!==n&&(n>=0&&n<=1&&(n*=100),n=Math.max(0,Math.min(100,n)));const l=mt(t,e.cell_state),c=mt(t,e.profile),p=vt(t,e.fan_speed),h=vt(t,e.co2),d=vt(t,e.humidity),u=mt(t,e.post_heater);return{outdoorTemp:o,supplyTemp:i,supplyCellTemp:r,extractTemp:s,exhaustTemp:a,efficiency:n,cellState:l,profile:c,fanSpeed:p,co2:h,humidity:d,postHeaterActive:null!==u&&["on","true","1","active","heating"].includes(u.toLowerCase()),tempUnit:yt(t,e.outdoor_air_temp)||yt(t,e.supply_air_temp)||yt(t,e.extract_air_temp)||yt(t,e.exhaust_air_temp)||"°C"}}(this.hass,this._config))}render(){if(this._error)return B`
-        <ha-card>
-          <div class="card-content">
-            <ha-alert alert-type="error">${this._error}</ha-alert>
-          </div>
-        </ha-card>
-      `;if(!this._config)return B`
-        <ha-card>
-          <div class="card-content">
-            <p>Card not configured</p>
-          </div>
-        </ha-card>
-      `;if(!this.hass||!this._cardState)return B`
-        <ha-card>
-          <div class="card-content">
-            <p>Loading...</p>
-          </div>
-        </ha-card>
-      `;const{model:t,labels:e,entities:o,dynamicColors:i,valueColor:r}=function(t,e){const o=t.tempUnit||"°C",i={cellState:e.cell_state,profile:e.profile,fanSpeed:e.fan_speed,efficiency:e.efficiency,extractTemp:e.extract_air_temp,supplyTemp:e.supply_air_temp,supplyCellTemp:e.supply_cell_temp,outdoorTemp:e.outdoor_air_temp,exhaustTemp:e.exhaust_air_temp,humidity:e.humidity,co2:e.co2,postHeater:e.post_heater},r={cellState:!1!==e.show_cell_state&&i.cellState?Ct(t.cellState):"",profile:!1!==e.show_profile&&i.profile?At(t.profile):"",fanSpeed:!1!==e.show_fan_speed&&i.fanSpeed?bt(t.fanSpeed):"",efficiency:!1!==e.show_efficiency&&i.efficiency?bt(t.efficiency):"",extractTemp:i.extractTemp?$t(t.extractTemp,o):"",humidity:!1!==e.show_humidity&&i.humidity?(s=t.humidity,null===s?"—":`${Math.round(s)}%`):"",co2:!1!==e.show_co2&&i.co2?wt(t.co2):"",supplyTemp:i.supplyTemp?$t(t.supplyTemp,o):"",supplyCellTemp:!1!==e.show_supply_cell_temp&&i.supplyCellTemp?$t(t.supplyCellTemp,o):"",outdoorTemp:i.outdoorTemp?$t(t.outdoorTemp,o):"",exhaustTemp:i.exhaustTemp?$t(t.exhaustTemp,o):"",postHeaterActive:!1!==e.show_post_heater&&i.postHeater?t.postHeaterActive:void 0};var s;const a=function(t){return{cellStateTitle:t.label_cell_state_title||"LTO-Cell State",extractAir:t.label_extract_air||"Extract air",supplyAir:t.label_supply_air||"Supply air",outdoorAir:t.label_outdoor_air||"Outdoor air",exhaustAir:t.label_exhaust_air||"Exhaust air",efficiency:t.label_efficiency||"Efficiency",profile:t.label_profile||"Profile",fanSpeed:t.label_fan_speed||"Fan speed",humidity:t.label_humidity||"Humidity",co2:t.label_co2||"CO₂"}}(e),n={};if(!1!==e.enable_temp_colors){const i={cold:e.temp_color_cold,freeze:e.temp_color_freeze,neutral:e.temp_color_neutral,warm:e.temp_color_warm,hot:e.temp_color_hot};n.extractTempColor=Ft(t.extractTemp,o,i),n.supplyTempColor=Ft(t.supplyTemp,o,i),n.supplyCellTempColor=Ft(t.supplyCellTemp,o,i),n.outdoorTempColor=Ft(t.outdoorTemp,o,i),n.exhaustTempColor=Ft(t.exhaustTemp,o,i)}const l=(c=t.co2,p=e.co2_limit,h=e.co2_alert_color,d=e.enable_co2_blink,null===c||void 0===p?{isAlert:!1}:c>p?{isAlert:!0,color:h||"#ff4444",className:!1!==d?"co2-alert":"co2-alert-static"}:{isAlert:!1});var c,p,h,d;return l.isAlert&&(n.co2Color=l.color,n.co2ClassName=l.className),{model:r,labels:{...a,cellStateTitle:!1===e.show_cell_state?"":a.cellStateTitle,humidity:!1!==e.show_humidity&&i.humidity?a.humidity:"",co2:!1!==e.show_co2&&i.co2?a.co2:""},entities:i,dynamicColors:n,valueColor:e.value_color}}(this._cardState,this._config);return B`
-      <ha-card>
-        ${this._config.title?B`<div class="card-header">${this._config.title}</div>`:""}
-        <div class="card-content">
-          <div class="diagram-container">
-            ${function(t){const e="var(--vallox-glow-start, #e1f0ff)",o="var(--vallox-arrow-dark, #2a7ebf)",i="var(--vallox-arrow-light, #5cb8ff)",r=null!=t&&t>0,s=r?Math.max(.5,4-t/100*3.5):0;return V`
-    <svg
-      viewBox="0 0 ${800} ${500}"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      style="${r?`--flow-duration: ${s}s;`:""}"
-      class="${r?"airflow-active":"airflow-stopped"}"
-    >
-      <defs>
-        <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="${e}" stop-opacity="0.45"/>
-          <stop offset="60%" stop-color="${e}" stop-opacity="0.18"/>
-          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-
-      <!-- Center glow -->
-      <circle cx="${400}" cy="${250}" r="200" fill="url(#centerGlow)"/>
-
-      <!-- Rotated square rings -->
-      <g transform="translate(${400}, ${250}) rotate(45)">
-        <rect x="-100" y="-100" width="200" height="200" fill="none" stroke="${"var(--vallox-ring-stroke, #dcdcdc)"}" stroke-width="7" rx="2"/>
-        <rect x="-82" y="-82" width="164" height="164" fill="none" stroke="${"var(--vallox-ring-stroke-inner, #e6e6e6)"}" stroke-width="4" rx="1"/>
-      </g>
-
-      <!-- Dark arrow base (extract to exhaust) -->
-      <path d="M 310,165 C 360,165 440,335 490,335" fill="none" stroke="${o}" stroke-width="15" stroke-linecap="round" opacity="0.3"/>
-      <!-- Dark arrow animated flow -->
-      <path class="airflow-path airflow-extract" d="M 310,165 C 360,165 440,335 490,335" fill="none" stroke="${o}" stroke-width="15" stroke-linecap="round"/>
-      <path d="M 490,325 L 520,335 L 490,345 Z" fill="${o}" />
-
-      <!-- Light arrow base (outdoor to supply) -->
-      <path d="M 490,165 C 440,165 360,335 310,335" fill="none" stroke="${i}" stroke-width="15" stroke-linecap="round" opacity="0.3"/>
-      <!-- Light arrow animated flow -->
-      <path class="airflow-path airflow-supply" d="M 490,165 C 440,165 360,335 310,335" fill="none" stroke="${i}" stroke-width="15" stroke-linecap="round"/>
-      <path d="M 310,325 L 280,335 L 310,345 Z" fill="${i}" />
-
-      <!-- Efficiency badge box -->
-      <g transform="translate(${400}, ${250})">
-        <rect x="-60" y="-28" width="120" height="56" rx="10" fill="${"var(--vallox-badge-fill, var(--ha-card-background, var(--card-background-color, rgba(255,255,255,0.72))))"}" fill-opacity="0.5" stroke="${"var(--vallox-badge-stroke, var(--divider-color, #d1e8ff))"}" stroke-width="2"/>
-      </g>
-    </svg>
-  `}(this._cardState.fanSpeed)}
-            ${Bt(t,e,o,i,r,t=>{this.dispatchEvent(new CustomEvent("hass-more-info",{detail:{entityId:t},bubbles:!0,composed:!0}))})}
-          </div>
+const t=globalThis,e=t.ShadowRoot&&(void 0===t.ShadyCSS||t.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,i=/* @__PURE__ */Symbol(),a=/* @__PURE__ */new WeakMap;let o=class{constructor(t,e,a){if(this._$cssResult$=!0,a!==i)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const i=this.t;if(e&&void 0===t){const e=void 0!==i&&1===i.length;e&&(t=a.get(i)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),e&&a.set(i,t))}return t}toString(){return this.cssText}};const n=(t,...e)=>{const a=1===t.length?t[0]:e.reduce((e,i,a)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[a+1],t[0]);return new o(a,t,i)},s=e?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new o("string"==typeof t?t:t+"",void 0,i))(e)})(t):t,{is:r,defineProperty:l,getOwnPropertyDescriptor:c,getOwnPropertyNames:u,getOwnPropertySymbols:p,getPrototypeOf:h}=Object,d=globalThis,m=d.trustedTypes,f=m?m.emptyScript:"",y=d.reactiveElementPolyfillSupport,g=(t,e)=>t,_={toAttribute(t,e){switch(e){case Boolean:t=t?f:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(a){i=null}}return i}},v=(t,e)=>!r(t,e),b={attribute:!0,type:String,converter:_,reflect:!1,useDefault:!1,hasChanged:v};Symbol.metadata??=/* @__PURE__ */Symbol("metadata"),d.litPropertyMetadata??=/* @__PURE__ */new WeakMap;let $=class extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=b){if(e.state&&(e.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(t)&&((e=Object.create(e)).wrapped=!0),this.elementProperties.set(t,e),!e.noAccessor){const i=/* @__PURE__ */Symbol(),a=this.getPropertyDescriptor(t,i,e);void 0!==a&&l(this.prototype,t,a)}}static getPropertyDescriptor(t,e,i){const{get:a,set:o}=c(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get:a,set(e){const n=a?.call(this);o?.call(this,e),this.requestUpdate(t,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??b}static _$Ei(){if(this.hasOwnProperty(g("elementProperties")))return;const t=h(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(g("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(g("properties"))){const t=this.properties,e=[...u(t),...p(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=/* @__PURE__ */new Map;for(const[e,i]of this.elementProperties){const t=this._$Eu(e,i);void 0!==t&&this._$Eh.set(t,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(s(t))}else void 0!==t&&e.push(s(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(t=>this.enableUpdating=t),this._$AL=/* @__PURE__ */new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(t=>t(this))}addController(t){(this._$EO??=/* @__PURE__ */new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=/* @__PURE__ */new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const i=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((i,a)=>{if(e)i.adoptedStyleSheets=a.map(t=>t instanceof CSSStyleSheet?t:t.styleSheet);else for(const e of a){const a=document.createElement("style"),o=t.litNonce;void 0!==o&&a.setAttribute("nonce",o),a.textContent=e.cssText,i.appendChild(a)}})(i,this.constructor.elementStyles),i}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(t=>t.hostConnected?.())}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach(t=>t.hostDisconnected?.())}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$ET(t,e){const i=this.constructor.elementProperties.get(t),a=this.constructor._$Eu(t,i);if(void 0!==a&&!0===i.reflect){const o=(void 0!==i.converter?.toAttribute?i.converter:_).toAttribute(e,i.type);this._$Em=t,null==o?this.removeAttribute(a):this.setAttribute(a,o),this._$Em=null}}_$AK(t,e){const i=this.constructor,a=i._$Eh.get(t);if(void 0!==a&&this._$Em!==a){const t=i.getPropertyOptions(a),o="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:_;this._$Em=a;const n=o.fromAttribute(e,t.type);this[a]=n??this._$Ej?.get(a)??n,this._$Em=null}}requestUpdate(t,e,i,a=!1,o){if(void 0!==t){const n=this.constructor;if(!1===a&&(o=this[t]),i??=n.getPropertyOptions(t),!((i.hasChanged??v)(o,e)||i.useDefault&&i.reflect&&o===this._$Ej?.get(t)&&!this.hasAttribute(n._$Eu(t,i))))return;this.C(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(t,e,{useDefault:i,reflect:a,wrapped:o},n){i&&!(this._$Ej??=/* @__PURE__ */new Map).has(t)&&(this._$Ej.set(t,n??e??this[t]),!0!==o||void 0!==n)||(this._$AL.has(t)||(this.hasUpdated||i||(e=void 0),this._$AL.set(t,e)),!0===a&&this._$Em!==t&&(this._$Eq??=/* @__PURE__ */new Set).add(t))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t){const{wrapped:t}=i,a=this[e];!0!==t||this._$AL.has(e)||void 0===a||this.C(e,void 0,i,a)}}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach(t=>t.hostUpdate?.()),this.update(e)):this._$EM()}catch(i){throw t=!1,this._$EM(),i}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach(t=>t.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EM(){this._$AL=/* @__PURE__ */new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Eq&&=this._$Eq.forEach(t=>this._$ET(t,this[t])),this._$EM()}updated(t){}firstUpdated(t){}};$.elementStyles=[],$.shadowRootOptions={mode:"open"},$[g("elementProperties")]=/* @__PURE__ */new Map,$[g("finalized")]=/* @__PURE__ */new Map,y?.({ReactiveElement:$}),(d.reactiveElementVersions??=[]).push("2.1.2");const k=globalThis,x=t=>t,w=k.trustedTypes,A=w?w.createPolicy("lit-html",{createHTML:t=>t}):void 0,C="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,S="?"+E,M=`<${S}>`,j=document,T=()=>j.createComment(""),O=t=>null===t||"object"!=typeof t&&"function"!=typeof t,P=Array.isArray,z="[ \t\n\f\r]",H=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,L=/-->/g,U=/>/g,I=RegExp(`>|${z}(?:([^\\s"'>=/]+)(${z}*=${z}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),N=/'/g,V=/"/g,R=/^(?:script|style|textarea|title)$/i,F=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),W=F(1),D=F(2),K=/* @__PURE__ */Symbol.for("lit-noChange"),B=/* @__PURE__ */Symbol.for("lit-nothing"),q=/* @__PURE__ */new WeakMap,Z=j.createTreeWalker(j,129);function Q(t,e){if(!P(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}class Y{constructor({strings:t,_$litType$:e},i){let a;this.parts=[];let o=0,n=0;const s=t.length-1,r=this.parts,[l,c]=((t,e)=>{const i=t.length-1,a=[];let o,n=2===e?"<svg>":3===e?"<math>":"",s=H;for(let r=0;r<i;r++){const e=t[r];let i,l,c=-1,u=0;for(;u<e.length&&(s.lastIndex=u,l=s.exec(e),null!==l);)u=s.lastIndex,s===H?"!--"===l[1]?s=L:void 0!==l[1]?s=U:void 0!==l[2]?(R.test(l[2])&&(o=RegExp("</"+l[2],"g")),s=I):void 0!==l[3]&&(s=I):s===I?">"===l[0]?(s=o??H,c=-1):void 0===l[1]?c=-2:(c=s.lastIndex-l[2].length,i=l[1],s=void 0===l[3]?I:'"'===l[3]?V:N):s===V||s===N?s=I:s===L||s===U?s=H:(s=I,o=void 0);const p=s===I&&t[r+1].startsWith("/>")?" ":"";n+=s===H?e+M:c>=0?(a.push(i),e.slice(0,c)+C+e.slice(c)+E+p):e+E+(-2===c?r:p)}return[Q(t,n+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),a]})(t,e);if(this.el=Y.createElement(l,i),Z.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(a=Z.nextNode())&&r.length<s;){if(1===a.nodeType){if(a.hasAttributes())for(const t of a.getAttributeNames())if(t.endsWith(C)){const e=c[n++],i=a.getAttribute(t).split(E),s=/([.?@])?(.*)/.exec(e);r.push({type:1,index:o,name:s[2],strings:i,ctor:"."===s[1]?et:"?"===s[1]?it:"@"===s[1]?at:tt}),a.removeAttribute(t)}else t.startsWith(E)&&(r.push({type:6,index:o}),a.removeAttribute(t));if(R.test(a.tagName)){const t=a.textContent.split(E),e=t.length-1;if(e>0){a.textContent=w?w.emptyScript:"";for(let i=0;i<e;i++)a.append(t[i],T()),Z.nextNode(),r.push({type:2,index:++o});a.append(t[e],T())}}}else if(8===a.nodeType)if(a.data===S)r.push({type:2,index:o});else{let t=-1;for(;-1!==(t=a.data.indexOf(E,t+1));)r.push({type:7,index:o}),t+=E.length-1}o++}}static createElement(t,e){const i=j.createElement("template");return i.innerHTML=t,i}}function G(t,e,i=t,a){if(e===K)return e;let o=void 0!==a?i._$Co?.[a]:i._$Cl;const n=O(e)?void 0:e._$litDirective$;return o?.constructor!==n&&(o?._$AO?.(!1),void 0===n?o=void 0:(o=new n(t),o._$AT(t,i,a)),void 0!==a?(i._$Co??=[])[a]=o:i._$Cl=o),void 0!==o&&(e=G(t,o._$AS(t,e.values),o,a)),e}class J{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,a=(t?.creationScope??j).importNode(e,!0);Z.currentNode=a;let o=Z.nextNode(),n=0,s=0,r=i[0];for(;void 0!==r;){if(n===r.index){let e;2===r.type?e=new X(o,o.nextSibling,this,t):1===r.type?e=new r.ctor(o,r.name,r.strings,this,t):6===r.type&&(e=new ot(o,this,t)),this._$AV.push(e),r=i[++s]}n!==r?.index&&(o=Z.nextNode(),n++)}return Z.currentNode=j,a}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class X{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,a){this.type=2,this._$AH=B,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=a,this._$Cv=a?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=G(this,t,e),O(t)?t===B||null==t||""===t?(this._$AH!==B&&this._$AR(),this._$AH=B):t!==this._$AH&&t!==K&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>P(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==B&&O(this._$AH)?this._$AA.nextSibling.data=t:this.T(j.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,a="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(Q(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===a)this._$AH.p(e);else{const t=new J(a,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=q.get(t.strings);return void 0===e&&q.set(t.strings,e=new Y(t)),e}k(t){P(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,a=0;for(const o of t)a===e.length?e.push(i=new X(this.O(T()),this.O(T()),this,this.options)):i=e[a],i._$AI(o),a++;a<e.length&&(this._$AR(i&&i._$AB.nextSibling,a),e.length=a)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class tt{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,a,o){this.type=1,this._$AH=B,this._$AN=void 0,this.element=t,this.name=e,this._$AM=a,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=B}_$AI(t,e=this,i,a){const o=this.strings;let n=!1;if(void 0===o)t=G(this,t,e,0),n=!O(t)||t!==this._$AH&&t!==K,n&&(this._$AH=t);else{const a=t;let s,r;for(t=o[0],s=0;s<o.length-1;s++)r=G(this,a[i+s],e,s),r===K&&(r=this._$AH[s]),n||=!O(r)||r!==this._$AH[s],r===B?t=B:t!==B&&(t+=(r??"")+o[s+1]),this._$AH[s]=r}n&&!a&&this.j(t)}j(t){t===B?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class et extends tt{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===B?void 0:t}}class it extends tt{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==B)}}class at extends tt{constructor(t,e,i,a,o){super(t,e,i,a,o),this.type=5}_$AI(t,e=this){if((t=G(this,t,e,0)??B)===K)return;const i=this._$AH,a=t===B&&i!==B||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,o=t!==B&&(i===B||a);a&&this.element.removeEventListener(this.name,this,i),o&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){G(this,t)}}const nt=k.litHtmlPolyfillSupport;nt?.(Y,X),(k.litHtmlVersions??=[]).push("3.3.2");const st=globalThis;let rt=class extends ${constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const a=i?.renderBefore??e;let o=a._$litPart$;if(void 0===o){const t=i?.renderBefore??null;a._$litPart$=o=new X(e.insertBefore(T(),t),t,void 0,i??{})}return o._$AI(t),o})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return K}};rt._$litElement$=!0,rt.finalized=!0,st.litElementHydrateSupport?.({LitElement:rt});const lt=st.litElementPolyfillSupport;lt?.({LitElement:rt}),(st.litElementVersions??=[]).push("4.2.2");const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}):customElements.define(t,e)},ut={attribute:!0,type:String,converter:_,reflect:!1,hasChanged:v},pt=(t=ut,e,i)=>{const{kind:a,metadata:o}=i;let n=globalThis.litPropertyMetadata.get(o);if(void 0===n&&globalThis.litPropertyMetadata.set(o,n=/* @__PURE__ */new Map),"setter"===a&&((t=Object.create(t)).wrapped=!0),n.set(i.name,t),"accessor"===a){const{name:a}=i;return{set(i){const o=e.get.call(this);e.set.call(this,i),this.requestUpdate(a,o,t,!0,i)},init(e){return void 0!==e&&this.C(a,void 0,t,e),e}}}if("setter"===a){const{name:a}=i;return function(i){const o=this[a];e.call(this,i),this.requestUpdate(a,o,t,!0,i)}}throw Error("Unsupported decorator location: "+a)};function ht(t){return(e,i)=>"object"==typeof i?pt(t,e,i):((t,e,i)=>{const a=e.hasOwnProperty(i);return e.constructor.createProperty(i,t),a?Object.getOwnPropertyDescriptor(e,i):void 0})(t,e,i)}function dt(t){return ht({...t,state:!0,attribute:!1})}const mt=1;let ft=class{constructor(t){}get _$AU(){return this._$AM._$AU}_$AT(t,e,i){this._$Ct=t,this._$AM=e,this._$Ci=i}_$AS(t,e){return this.update(t,e)}update(t,e){return this.render(...e)}};const yt="important",gt=" !"+yt,_t=(vt=class extends ft{constructor(t){if(super(t),t.type!==mt||"style"!==t.name||t.strings?.length>2)throw Error("The `styleMap` directive must be used in the `style` attribute and must be the only part in the attribute.")}render(t){return Object.keys(t).reduce((e,i)=>{const a=t[i];return null==a?e:e+`${i=i.includes("-")?i:i.replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g,"-$&").toLowerCase()}:${a};`},"")}update(t,[e]){const{style:i}=t.element;if(void 0===this.ft)return this.ft=new Set(Object.keys(e)),this.render(e);for(const a of this.ft)null==e[a]&&(this.ft.delete(a),a.includes("-")?i.removeProperty(a):i[a]=null);for(const a in e){const t=e[a];if(null!=t){this.ft.add(a);const e="string"==typeof t&&t.endsWith(gt);a.includes("-")||e?i.setProperty(a,e?t.slice(0,-11):t,e?yt:""):i[a]=t}}return K}},(...t)=>({_$litDirective$:vt,values:t}));var vt;const bt={show_efficiency:!0,show_profile:!0,show_fan_speed:!0,show_cell_state:!0,show_co2:!0,show_humidity:!0,show_post_heater:!0,config_version:2,modes:["Home","Away","Boost"],efficiency_scale:"percent",boost_duration:30,fireplace_duration:15,enable_temp_colors:!0,co2_limit:1e3,co2_alert_color:"#ff4444",enable_co2_blink:!1,value_font_size:48,unit_opacity:.6,font_weight:600};function $t(t){if(!t||"object"!=typeof t)throw new Error("Invalid configuration: config must be an object");const e=t;if(!e.type)throw new Error("Invalid configuration: type is required");const i={...bt,...e,type:e.type},a=["outdoor_air_temp","supply_air_temp","supply_cell_temp","extract_air_temp","exhaust_air_temp","efficiency","cell_state","profile","fan_speed","co2","humidity","post_heater","fan_entity","profile_duration","profile_action_script","filter_remaining","supply_fan_speed","extract_fan_speed"];for(const s of a){const t=e[s];if(void 0!==t&&"string"!=typeof t)throw new Error(`Invalid configuration: ${s} must be a string`);if("string"==typeof t&&t.length>0&&!t.includes("."))throw new Error(`Invalid configuration: ${s} must be a valid entity ID (e.g., sensor.xxx)`)}if(e.fan_entity&&!e.fan_entity.startsWith("fan."))throw new Error("fan_entity must be a fan entity");if(e.profile_action_script&&!e.profile_action_script.startsWith("script."))throw new Error("profile_action_script must be a script entity");if(void 0!==e.modes&&(!Array.isArray(e.modes)||e.modes.length>6||e.modes.some(t=>"string"!=typeof t||!["home","away","boost","fireplace","extra","auto"].includes(t.toLowerCase()))))throw new Error("modes must contain Home, Away, Boost, Fireplace, Extra or Auto");i.modes&&(i.modes=[...new Map(i.modes.map(t=>[t.toLowerCase(),t])).values()]);const o={language:["fi","en"],temperature_unit:["°C","°F"],efficiency_kind:["supply","extract","custom"],efficiency_scale:["percent","ratio"],defrost_mode:["auto","bypass","supply_stop"]};for(const[s,r]of Object.entries(o))if(void 0!==e[s]&&!r.includes(String(e[s])))throw new Error(`Invalid ${s}`);for(const s of["boost_duration","fireplace_duration"])if(void 0!==e[s]&&(!Number.isInteger(e[s])||Number(e[s])<1||Number(e[s])>65534))throw new Error(`Invalid ${s}`);for(const s of["energy","insights","seasonal"])if(void 0!==e[s]){if(!e[s]||"object"!=typeof e[s]||Array.isArray(e[s]))throw new Error(`Invalid ${s}`);for(const[t,i]of Object.entries(e[s]))if(t.endsWith("_entity")&&("string"!=typeof i||i&&!/^[a-z_]+\.[a-z0-9_]+$/.test(i)))throw new Error(`Invalid ${s}.${t}`)}const n=i.insights;if(void 0!==n?.heating_system&&!["unknown","heat_pump","district_heating","other_efficient","electric"].includes(n.heating_system))throw new Error("Invalid heating_system");for(const s of["daily_budget_kwh","excess_ratio","defrost_minutes"])if(void 0!==n?.[s]&&(!Number.isFinite(n[s])||n[s]<=0))throw new Error(`Invalid insights.${s}`);if(void 0!==n?.comfort_floor&&!Number.isFinite(n.comfort_floor))throw new Error("Invalid comfort_floor");if(void 0!==n?.enabled&&"boolean"!=typeof n.enabled)throw new Error("Invalid insights.enabled");if(void 0!==e.compact&&"boolean"!=typeof e.compact)throw new Error("Invalid compact");if(void 0!==e.value_color&&"string"!=typeof e.value_color)throw new Error("Invalid configuration: value_color must be a string");if(void 0!==e.co2_limit&&("number"!=typeof e.co2_limit||e.co2_limit<0))throw new Error("Invalid configuration: co2_limit must be a positive number");if(void 0!==e.co2_alert_color&&"string"!=typeof e.co2_alert_color)throw new Error("Invalid configuration: co2_alert_color must be a string");if(void 0!==e.enable_co2_blink&&"boolean"!=typeof e.enable_co2_blink)throw new Error("Invalid configuration: enable_co2_blink must be a boolean");if(void 0!==e.enable_temp_colors&&"boolean"!=typeof e.enable_temp_colors)throw new Error("Invalid configuration: enable_temp_colors must be a boolean");if(void 0!==e.value_font_size&&("number"!=typeof e.value_font_size||e.value_font_size<10||e.value_font_size>100))throw new Error("Invalid configuration: value_font_size must be a number between 10 and 100");if(void 0!==e.unit_opacity&&("number"!=typeof e.unit_opacity||e.unit_opacity<0||e.unit_opacity>1))throw new Error("Invalid configuration: unit_opacity must be a number between 0 and 1");if(void 0!==e.font_weight&&("number"!=typeof e.font_weight||![400,500,600,700].includes(e.font_weight)))throw new Error("Invalid configuration: font_weight must be 400, 500, 600, or 700");return i}const kt=["unavailable","unknown","none"];function xt(t,e){if(!t||!e)return null;const i=t.states[e];if(!i)return null;if(!0===i.attributes.restored)return null;const a=i.state;return kt.includes(a.toLowerCase())?null:a}function wt(t,e){const i=xt(t,e);if(null===i)return null;const a=""===i.trim()?NaN:Number(i);return isNaN(a)||!isFinite(a)?null:a}function At(t,e){if(!t||!e)return"";const i=t.states[e];return i?.attributes&&i.attributes.unit_of_measurement||""}const Ct=(t,e,i)=>"fi"===t?e:i;function Et(t,e){return e?.language??(t?.language?.startsWith("fi")?"fi":"en")}const St={heat_recovery:["Lämmöntalteenotto","Heat recovery","Poistoilman lämpö siirtyy tuloilmaan.","Heat from extracted air warms the incoming air."],bypass:["Kennon ohitus","Core bypass","Tuloilma kulkee kennon ohitse. Ohituksen aste ei ole tiedossa.","Incoming air bypasses the core. The bypass position is not measured."],cool_recovery:["Viileyden talteenotto","Cool recovery","Viileämpi poistoilma jäähdyttää kuumaa ulkoilmaa.","Cooler extracted air tempers the hot outdoor air."],defrost:["Kennon sulatus","Defrosting","Poistoilman lämpö sulattaa kennoa. Lisälämmitys voi olla käytössä.","Extracted air warms the core. Supplemental heating may be active."],stopped:["Pysäytetty","Stopped","Ilmanvaihto on pysäytetty.","Ventilation is stopped."],unknown:["Tila ei tiedossa","State unavailable","Kennon toimintatilaa ei saada laitteelta.","The unit is not reporting its core state."]},Mt=(t,e)=>St[t]["fi"===e?0:1];function jt(t,e){return t?"fi"===e?{home:"Kotona",away:"Poissa",boost:"Tehostus",fireplace:"Takka",extra:"Extra",auto:"Auto"}[t.toLowerCase()]??t:t[0].toUpperCase()+t.slice(1).toLowerCase():"—"}function Tt(t,e,i=1){return null!=t&&Number.isFinite(t)?new Intl.NumberFormat(e,{minimumFractionDigits:i,maximumFractionDigits:i}).format(t):"—"}function Ot(t){const e=t?.toLowerCase().replace(/[ _-]/g,"");return"heatrecovery"===e?"heat_recovery":"coolrecovery"===e?"cool_recovery":"bypass"===e?"bypass":"defrost"===e||"defrosting"===e?"defrost":"unknown"}function Pt(t,e,i="°C"){if(null===t||!["°C","°F","C","F","K"].includes(e))return null;const a="K"===e?t-273.15:e.endsWith("F")?5*(t-32)/9:t;return"°F"===i?9*a/5+32:a}function zt(t,e){return null===t||t<0?null:"kWh"===e?t:"Wh"===e?t/1e3:"MWh"===e?1e3*t:null}function Ht(t,e){return null===t||t<0?null:"W"===e?t:"kW"===e?1e3*t:null}function Lt(t){return!(!t||!["on","true","1","active","heating"].includes(t.toLowerCase()))||(!t||!["off","false","0","inactive","idle"].includes(t.toLowerCase()))&&null}function Ut(t,e){const i=e.temperature_unit??("°F"===t?.config?.unit_system?.temperature?"°F":"°C"),a=e=>Pt(wt(t,e),At(t,e),i),o=e.fan_entity?t?.states[e.fan_entity]:void 0,n=Array.isArray(o?.attributes.preset_modes)?o.attributes.preset_modes.filter(t=>"string"==typeof t):[],s=Lt(xt(t,e.fan_entity)),r=xt(t,e.cell_state),l=!1===s?"stopped":Ot(r),c=[];e.supply_cell_temp&&e.supply_cell_temp===e.supply_air_temp&&c.push("same_sensor");const u=wt(t,e.efficiency),p=null===u?null:u*("ratio"===e.efficiency_scale?100:1);null!==p&&(p<0||p>100)&&c.push("efficiency_range"),e.energy?.power_entity&&At(t,e.energy.power_entity)&&!["W","kW"].includes(At(t,e.energy.power_entity))&&c.push("power_unit"),e.energy?.energy_entity&&At(t,e.energy.energy_entity)&&!["Wh","kWh","MWh"].includes(At(t,e.energy.energy_entity))&&c.push("energy_unit");const h=wt(t,e.profile_duration),d=wt(t,e.supply_fan_speed),m=wt(t,e.extract_fan_speed),f="bypass"===e.defrost_mode||"supply_stop"===e.defrost_mode?e.defrost_mode:0===d&&null!==m&&m>0?"supply_stop":null!==d&&d>0?"bypass":"unknown",y=e.fan_entity?s:null===wt(t,e.fan_speed)?null:wt(t,e.fan_speed)>0,g={outdoorTemp:a(e.outdoor_air_temp),supplyTemp:a(e.supply_air_temp),supplyCellTemp:a(e.supply_cell_temp),extractTemp:a(e.extract_air_temp),exhaustTemp:a(e.exhaust_air_temp),efficiency:p,efficiencyEstimated:!1,efficiencyKind:e.efficiency_kind??"custom",cellState:r,operation:l,running:s,supportedModes:n,availableModes:(e.modes??["Home","Away","Boost"]).flatMap(t=>n.filter(e=>e.toLowerCase()===t.toLowerCase())),profile:o&&null!==s?o.attributes.preset_mode??null:xt(t,e.profile),fanSpeed:wt(t,e.fan_speed)??("number"==typeof o?.attributes.percentage?o.attributes.percentage:null),co2:wt(t,e.co2),humidity:wt(t,e.humidity),postHeaterActive:Lt(xt(t,e.post_heater)),tempUnit:i,duration:null!==h&&h>=0?h:null,power:Ht(wt(t,e.energy?.power_entity),At(t,e.energy?.power_entity)),energy:zt(wt(t,e.energy?.energy_entity),At(t,e.energy?.energy_entity)),issues:c,defrostMethod:f,supplyFlow:!1!==s&&("defrost"===l?"unknown"===f?null:"bypass"===f:null===d?y:d>0),extractFlow:!1!==s&&(null===m?y:m>0)};return e.efficiency||c.includes("same_sensor")||(g.efficiency=function(t){const{outdoorTemp:e,supplyCellTemp:i,extractTemp:a,operation:o,tempUnit:n}=t;if("heat_recovery"!==o||null===e||null===i||null===a)return null;const s=a-e;if(s<("°F"===n?5.4:3))return null;const r=(i-e)/s*100;return r>=0&&r<=100?r:null}(g),g.efficiencyEstimated=null!==g.efficiency,g.efficiencyKind="supply"),g}const It="#0000FF",Nt="#00FFFF",Vt="#8892E3",Rt="#FFA500",Ft="#FF4500",Wt=-10,Dt=0,Kt=22,Bt=25;function qt(t){const e=t.replace("#",""),i=3===e.length?e.split("").map(t=>t+t).join(""):e,a=parseInt(i,16);return{r:a>>16&255,g:a>>8&255,b:255&a}}function Zt(t,e,i){const a=t=>Math.round(Math.max(0,Math.min(255,t))).toString(16).padStart(2,"0");return`#${a(t)}${a(e)}${a(i)}`}function Qt(t){if(t)return"string"==typeof t?t:Array.isArray(t)&&3===t.length?Zt(t[0],t[1],t[2]):void 0}function Yt(t,e,i){const a=qt(t),o=qt(e),n=Math.max(0,Math.min(1,i));return Zt(a.r+(o.r-a.r)*n,a.g+(o.g-a.g)*n,a.b+(o.b-a.b)*n)}function Gt(t,e,i,a="text"){if(i.value_color)return i.value_color;if(!1===i.enable_temp_colors)return"var(--primary-text-color, #dce7ef)";if(null===t)return"var(--secondary-text-color, #8293a3)";const o="#559cff",n="#30b5ff",s="#ffb34d",r="#ff9353",l="#ff685b";let c;if([i.temp_color_cold,i.temp_color_freeze,i.temp_color_neutral,i.temp_color_warm,i.temp_color_hot].some(t=>void 0!==t))c=function(t,e="°C",i){if(null===t)return;const a="°F"===e?5*(t-32)/9:t,o={cold:Qt(i?.cold)||It,freeze:Qt(i?.freeze)||Nt,neutral:Qt(i?.neutral)||Vt,warm:Qt(i?.warm)||Rt,hot:Qt(i?.hot)||Ft};if(a<=Wt)return o.cold;if(a<Dt)return Yt(o.cold,o.freeze,(a-Wt)/(Dt-Wt));if(a<Kt)return Yt(o.freeze,o.neutral,(a-Dt)/(Kt-Dt));if(a<Bt)return Yt(o.neutral,o.warm,(a-Kt)/(Bt-Kt));return a>=30?o.hot:Yt(o.warm,o.hot,(a-Bt)/(30-Bt))}(t,e.tempUnit,{cold:i.temp_color_cold??o,freeze:i.temp_color_freeze??n,neutral:i.temp_color_neutral??s,warm:i.temp_color_warm??r,hot:i.temp_color_hot??l});else{const i="°F"===e.tempUnit?5*(t-32)/9:t,a=[[-10,o],[0,n],[15,"#36c8ec"],[22,s],[25,r],[30,l]],u=a.findIndex(([t])=>i<=t);if(u<0)c=l;else if(0===u)c=o;else{const[t,e]=a[u-1],[o,n]=a[u];c=`color-mix(in srgb, ${e}, ${n} ${100*(i-t)/(o-t)}%)`}}return"flow"===a?c:`color-mix(in srgb, ${c} 45%, var(--primary-text-color, #dce7ef))`}const Jt={home:"M3 11 12 3l9 8M5 10v11h5v-7h4v7h5V10",away:"M3 11 12 3l9 8M5 10v11h8M16 15l4 3-4 3M12 18h8",boost:"m13 2-8 12h6l-1 8 9-13h-7z",fireplace:"M12 3c1 5-5 6-5 11a5 5 0 0 0 10 0c0-3-2-5-2-5 0 4-4 4-3-6z",extra:"M12 4v16M4 12h16",auto:"m4 16 4-9 4 9m-6-3h4M15 8h5m-2-3v6M16 16h4",energy:"m13 2-8 12h6l-1 8 9-13h-7z",fan:"M10 10C3 11 2 5 6 3c4-2 6 2 6 6M14 10c2-7 8-5 8-1 0 5-4 5-8 4M12 14c5 5 1 10-3 8-4-2-2-6 1-9M14 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0",info:"M12 11v6M12 7v.1M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0"},Xt=t=>D`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d=${Jt[t.toLowerCase()]??Jt.info}/></svg>`,te=n`
+  :host { display:block; height:100%; min-width:0; color:var(--primary-text-color,#dfebf2); container-type:inline-size; --accent:var(--vallox-accent,color-mix(in srgb,#7bcfc1 45%,var(--primary-text-color,#dfebf2))); --core-plate-start:color-mix(in srgb,var(--primary-text-color,#dfebf2) 14%,var(--ha-card-background,var(--card-background-color,#12212b))); --core-plate-end:color-mix(in srgb,var(--primary-text-color,#dfebf2) 7%,var(--ha-card-background,var(--card-background-color,#12212b))); --muted:var(--secondary-text-color,#91a5b3); --line:color-mix(in srgb,var(--primary-text-color,#d8e6f0) 11%,transparent); }
+  * { box-sizing:border-box; }
+  ha-card { display:block; height:100%; overflow:hidden; border:1px solid var(--ha-card-border-color,var(--line)); border-radius:var(--ha-card-border-radius,24px); background:var(--ha-card-background,var(--card-background-color,#12212b)); box-shadow:var(--ha-card-box-shadow,0 8px 32px #00000014); }
+  .surface { height:100%; display:flex; flex-direction:column; padding:16px; gap:8px; background:radial-gradient(ellipse at 70% 30%,#79cfbd09,transparent 65%); overflow:hidden; }
+  button,select,input { font:inherit; color:inherit; }
+  button { cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  button:disabled { opacity:.4; cursor:default; }
+  button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  button { min-height:44px; border:0; background:none; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:8px; flex:none; min-height:44px; }
+  .identity { min-width:0; }
+  .eyebrow { display:flex; align-items:center; gap:7px; font-size:10px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); }
+  .dot { width:5px;height:5px;border-radius:50%;background:var(--accent); flex:none; }
+  .fan-readout { display:inline-flex;align-items:center;gap:4px;letter-spacing:.04em; }
+  .fan-readout svg { width:16px;height:16px;flex:none; }
+  .stopped .dot,.unknown .dot { background:var(--muted); }
+  h2 { font-size:15px; font-weight:600; line-height:1.4; margin:3px 0 0; letter-spacing:-.02em; }
+  .profile-chip { flex:none; border:1px solid var(--line); border-radius:30px; padding:0 12px; font-size:12px; display:flex; gap:6px; align-items:center; background:color-mix(in srgb,var(--accent) 6%,transparent); }
+  .profile-chip svg { width:18px; height:18px; }
+  .description { margin:0; color:var(--muted); font-size:11.5px; line-height:1.35; flex:none; height:2lh; display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden; }
+  .scene { display:grid; flex:1 1 175px; min-height:0; grid-template-columns:minmax(0,1fr) minmax(106px,2.1fr) minmax(0,1fr); grid-template-rows:1fr 1fr; align-items:center; position:relative; }
+  .air { text-align:left; min-width:0; padding:4px 0; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:2px; }
+  .air.right { text-align:right; align-items:flex-end; }
+  .air-label { font-size:12px; font-weight:600; line-height:1.25; }
+  .air-value { white-space:nowrap; font-size:clamp(22px,calc(var(--value-scale,1) * 7cqw),36px); letter-spacing:-.04em; line-height:1.08; font-weight:var(--value-weight,600); font-variant-numeric:tabular-nums; }
+  .unit { font-size:.4em; opacity:var(--unit-opacity,.65); margin-left:2px; letter-spacing:0; }
+  .air-helper { font-size:10px; color:var(--muted); line-height:1.3; }
+  .air-quality,.supply-chain { display:flex;flex-direction:column;max-width:100%;gap:0;font-size:11px;line-height:1.2;color:var(--muted);margin-top:2px; }
+  .reading { display:flex;min-width:0;gap:3px;white-space:nowrap; }
+  .reading-label { overflow:hidden;text-overflow:ellipsis;min-width:0; }
+  .reading-value { flex:none; }
+  .extract { grid-area:1 / 1; } .outdoor { grid-area:1 / 3; } .supply { grid-area:2 / 1; } .exhaust { grid-area:2 / 3; }
+  .core { grid-area:1 / 2 / 3 / 3; width:100%; height:100%; min-height:0; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; container-type:size; }
+  /* Match the SVG's contained viewBox so native, unscaled buttons follow its symbols. */
+  .core-graphic { position:relative; flex:none; width:min(100cqw,calc(100cqh * 208 / 190),calc(290px * 208 / 190)); aspect-ratio:208 / 190; }
+  .core-svg { display:block; width:100%; height:100%; overflow:visible; }
+  .core-history { position:absolute; transform:translate(-50%,-50%); min-width:44px; min-height:44px; padding:0; border-radius:12px; }
+  .core-history:hover { box-shadow:inset 0 0 0 1px var(--accent); }
+  .efficiency-history { left:43.269%; top:43.947%; width:37.5%; height:21.579%; }
+  /* Separate the 44px touch areas even when the core is drawn small. */
+  .heater-history { left:20.192%; top:max(75.789%,calc(43.947% + 44px)); width:16.346%; height:12.632%; }
+  .core-frame { stroke:color-mix(in srgb,var(--primary-text-color,#deedf5) 55%,transparent);stroke-width:1.8; }
+  .fin { stroke:var(--primary-text-color,#afc0ce);stroke-width:1;opacity:.18; }
+  .air-track { fill:none;stroke:var(--ha-card-background,var(--card-background-color,#14232d));stroke-width:15;stroke-linecap:round; }
+  .crossing-track { stroke-width:20; }
+  .air-route { fill:none;stroke-width:10;stroke-linecap:round; }
+  .air-motion { fill:none;stroke:#fff;stroke-width:5;stroke-dasharray:10 20;stroke-linecap:round;opacity:.85; }
+  .flowing .air-motion { animation:airflow 2.4s linear infinite; }
+  .resting .air-motion { display:none; } .resting .air-route { stroke:var(--muted);opacity:.2; }
+  .efficiency-glass { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--line); }
+  .core-value { font-size:27px; font-weight:600; fill:var(--primary-text-color,#e2ecf5); letter-spacing:-1px; }
+  .core-unit { font-size:12px; fill:var(--muted); }
+  .core-center { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--line); }
+  .core-symbol { fill:none;stroke:var(--muted);stroke-width:1.5; }
+  .defrost .core-frame { stroke:color-mix(in srgb,#bcecff 75%,var(--primary-text-color,#deedf5));stroke-width:2;filter:drop-shadow(0 0 1.4px #a1dfff66); }
+  .defrost .fin { stroke:#d6f3ff;opacity:.3; }
+  .closed-channel { fill:none;stroke:var(--muted);stroke-width:5;stroke-dasharray:2 5;opacity:.24; }
+  .gate-seat { fill:none;stroke:var(--ha-card-background,var(--card-background-color,#14232d));stroke-width:8;stroke-linecap:round; }
+  .gate-bar { fill:none;stroke:var(--muted);stroke-width:3;stroke-linecap:round; }
+  .melt-drop { fill:color-mix(in srgb,#74c6ee 65%,var(--primary-text-color,#deedf5));stroke:color-mix(in srgb,#c9efff 50%,var(--primary-text-color,#deedf5));stroke-width:.8;animation:melt-drop 4.4s ease-in infinite; }
+  .air-route.no-flow { opacity:.25;stroke-dasharray:5 5; }
+  .heater-symbol rect { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--muted);stroke-width:1.2; }
+  .heater-symbol path { fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linejoin:round; }
+  .heater-symbol text { fill:var(--muted);font-size:14px; }
+  .heater-symbol.active rect { fill:#3a2e22;stroke:#f1b775; }
+  .heater-symbol.active path { stroke:#ffd295;stroke-width:2.2; }
+  .efficiency-label { position:absolute; bottom:0; text-align:center; font-size:10px; color:var(--muted); line-height:1.2; height:2.4em; width:100%; }
+  .efficiency-label[aria-hidden=true] { visibility:hidden; }
+  .metrics { display:flex; flex:none; align-items:center; gap:7px; font-size:11px; color:var(--muted); flex-wrap:wrap; }
+  .metric { min-height:24px; border-radius:8px; padding:3px 6px; background:color-mix(in srgb,var(--primary-text-color,#fff) 4%,transparent); }
+  .heater-path { margin-left:auto; font-variant-numeric:tabular-nums; }
+  .heater-on { color:color-mix(in srgb,#e7ad6f 50%,var(--primary-text-color,#dfebf2)); }
+  .co2-high { color:var(--co2-color,#e6ae75); }
+  .co2-blink { animation:attention 2s ease-in-out infinite; }
+  .modes { display:grid; grid-template-columns:repeat(var(--mode-count,3),minmax(0,1fr)); gap:5px; flex:none; padding-top:7px; border-top:1px solid var(--line); }
+  .mode { min-width:0; display:flex; align-items:center; justify-content:center; gap:6px; padding:5px; font-size:11px; border-radius:12px; border:1px solid transparent; color:var(--muted); }
+  .mode svg { width:20px; height:20px; flex:none; }
+  .mode span { overflow-wrap:anywhere; }
+  .mode:hover:not(:disabled) { background:color-mix(in srgb,var(--accent) 6%,transparent); }
+  .mode[aria-pressed=true],.profile-chip[data-running=true] { color:var(--primary-text-color,#dfebf2);font-weight:700;background:color-mix(in srgb,#20cbb0 18%,transparent);border-color:color-mix(in srgb,#20cbb0 65%,var(--primary-text-color,#dfebf2)); }
+  .mode[aria-pressed=true] svg,.profile-chip[data-running=true] svg { color:var(--accent);stroke-width:2; }
+  .mode[aria-pressed=true][data-profile=boost],.mode[aria-pressed=true][data-profile=fireplace],.profile-chip[data-running=true][data-profile=boost],.profile-chip[data-running=true][data-profile=fireplace] { background:color-mix(in srgb,#ffb347 18%,transparent);border-color:color-mix(in srgb,#ffb347 65%,var(--primary-text-color,#dfebf2)); }
+  [data-profile=boost] svg,[data-profile=fireplace] svg { --accent:color-mix(in srgb,#ffb347 55%,var(--primary-text-color,#dfebf2)); }
+  .footer { flex:none; min-height:44px; display:flex; align-items:center; gap:8px; text-align:left; padding:8px 10px; border-radius:12px; background:color-mix(in srgb,var(--primary-text-color,#fff) 4%,transparent); width:100%; font-size:11px; }
+  .footer svg { width:17px; height:17px; flex:none; color:var(--accent); }
+  .footer .energy-value { font-weight:600; font-variant-numeric:tabular-nums;white-space:nowrap; }
+  .footer .footer-text { color:var(--muted);flex:1;min-width:0; }
+  .notice-dot { width:6px; height:6px; border-radius:50%; background:#e7ad6f; flex:none; }
+  .arrow { margin-left:auto; color:var(--muted); }
+  .compact { padding:8px; gap:4px; }
+  .compact .air-quality,.compact .supply-chain { font-size:9.5px;margin-top:2px;gap:0; }
+  .compact .description,.compact .efficiency-label,.compact .air-helper { display:none; }
+  .compact .metrics { font-size:9px;gap:4px;flex-wrap:nowrap; }
+  .compact .metric { min-height:20px;padding:2px 4px;white-space:nowrap; }
+  .compact .heater-path { font-size:9px; }
+  .compact .scene { flex-basis:108px; }
+  .compact .eyebrow { font-size:9px; } .compact h2 { font-size:13px; }
+  .compact .top { min-height:36px; }
+  .compact .profile-chip { min-height:44px; padding:0 9px; font-size:11px; }
+  .compact .air-value { font-size:clamp(18px,calc(var(--value-scale,1) * 7cqw),24px); }
+  .compact .air-label { font-size:11px; }
+  .compact .air { padding:0;gap:0; }
+  .dense .air-helper { display:none; }
+  .dense:not(.compact) { gap:6px; }
+  .dense:not(.compact) .air { padding:0;gap:0; }
+  .dense:not(.compact) .air-quality,.dense:not(.compact) .supply-chain { font-size:10px;margin-top:2px;gap:0; }
+  .dense:not(.compact) .air-value { font-size:clamp(22px,calc(var(--value-scale,1) * 6.5cqw),28px); }
+  .compact .footer { display:none; }
+  .compact .modes { padding-top:4px; }
+  .compact .core-graphic { width:min(100cqw,calc(100cqh * 208 / 190),calc(145px * 208 / 190)); }
+  .tiny .scene,.tiny .footer { display:none; }
+  .many .mode { flex-direction:column; gap:2px; }
+  .error-inline { color:#e6ae75; font-size:11px; margin:0; }
+  dialog { color:var(--primary-text-color,#dfebf2); background:var(--ha-card-background,var(--card-background-color,#12212b)); border:1px solid var(--line); border-radius:24px; width:min(680px,calc(100vw - 24px)); max-height:calc(100dvh - 32px); padding:0; box-shadow:0 20px 100px #0006; }
+  dialog::backdrop { background:#0008;backdrop-filter:blur(5px); }
+  .dialog-header { display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line); }
+  .dialog-header h2 { font-size:18px; }
+  .close { width:44px; border-radius:50%; font-size:25px; }
+  .dialog-body { padding:20px; }
+  .tabs { display:flex;gap:5px;padding:0 16px;border-bottom:1px solid var(--line); }
+  .tabs button { border-bottom:2px solid transparent; font-size:12px; flex:1; }
+  .tabs button[aria-selected=true] { border-bottom-color:var(--accent);color:var(--accent); }
+  .stat-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px; }
+  .stat { padding:12px;border-radius:12px;background:color-mix(in srgb,var(--primary-text-color,#fff) 4%,transparent); }
+  .stat small { display:block;color:var(--muted);font-size:10px;margin-bottom:5px; }
+  .stat b { font-size:21px;font-weight:500;font-variant-numeric:tabular-nums; }
+  h3 { font-size:13px;font-weight:600;margin:22px 0 10px; }
+  .note { color:var(--muted);font-size:12px;line-height:1.6; }
+  .chart { width:100%;height:auto;display:block; }
+  .chart-grid { stroke:var(--line);stroke-width:1; }
+  .chart text { fill:var(--muted);font-size:10px; }
+  .legend { display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin:7px 0; }
+  .legend span::before { content:'';display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:var(--swatch); }
+  .state-band { display:flex;height:9px;gap:1px;border-radius:3px;overflow:hidden; }
+  .state-band span { flex:1;background:var(--state-color); }
+  .timeline-label { margin:8px 0 4px;font-size:10px;color:var(--muted); }
+  .hour-band { display:flex;gap:1px; }
+  .hour-band span { flex:1;min-width:0;text-align:center;font-size:9px;line-height:22px;background:color-mix(in srgb,var(--primary-text-color,#fff) 4%,transparent); }
+  .day-bars { display:grid;grid-template-columns:repeat(7,1fr);gap:9px;align-items:end;height:115px;padding-top:20px; }
+  .day { display:flex;flex-direction:column;align-items:center;height:100%;gap:5px;justify-content:flex-end;font-size:10px;color:var(--muted); }
+  .day .bar { width:100%;max-width:35px;min-height:2px;border-radius:5px 5px 2px 2px;background:color-mix(in srgb,var(--accent) 35%,transparent); }
+  .day:last-child .bar { background:var(--accent); }
+  .insight { border:1px solid var(--line);border-radius:14px;padding:15px;margin:10px 0; }
+  .insight.notice { border-left:3px solid #e7ad6f; }
+  .insight h3 { margin:0 0 8px; }
+  .insight p { font-size:12px;line-height:1.65;margin:7px 0; }
+  .insight .limitation { color:var(--muted);font-size:11px; }
+  a { color:var(--accent);font-size:12px; }
+  .control-row { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;flex-wrap:wrap; }
+  .control-row label { font-size:12px;color:var(--muted); }
+  select,input { background:var(--ha-card-background,var(--card-background-color,#12212b));border:1px solid var(--line);padding:10px;border-radius:10px;min-height:44px;max-width:100%; }
+  input[type=number] { width:90px; }
+  .action { padding:8px 14px;border:1px solid var(--line);border-radius:10px;font-size:12px; }
+  .status-box { padding:12px;border-radius:12px;background:color-mix(in srgb,var(--accent) 5%,transparent);font-size:12px;line-height:1.7; }
+  table { width:100%;border-collapse:collapse;font-size:11px; }
+  th,td { padding:8px 4px;text-align:right;border-bottom:1px solid var(--line); } th:first-child,td:first-child { text-align:left; }
+  summary { cursor:pointer;font-size:12px;min-height:44px;display:flex;align-items:center; }
+  .table-scroll { overflow-x:auto; }
+  @container (max-width:360px) { .surface:not(.compact) { padding:13px;gap:8px; } .many .modes { grid-template-columns:repeat(3,minmax(0,1fr)); } .mode { font-size:10px;gap:4px; } .profile-chip { max-width:135px; } .air-helper { display:none; } }
+  @keyframes airflow { to { stroke-dashoffset:-60; } }
+  @keyframes attention { 50% { opacity:.55; } }
+  @keyframes melt-drop { 0%,15% { opacity:0;transform:translateY(-3px) scale(.4); } 35% { opacity:1;transform:translateY(0) scale(1); } 85%,100% { opacity:0;transform:translateY(19px) scale(.75); } }
+  @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important;transition:none !important; } }
+`,ee=36e5,ie=6e4;function ae(t){if(void 0===t||""===t.trim())return null;const e=Number(t);return Number.isFinite(e)?e:null}function oe(t,e){return new Intl.DateTimeFormat("en-CA",{timeZone:e,year:"numeric",month:"2-digit",day:"2-digit"}).format(t)}function ne(t,e){const i=oe(t,e);let a=Date.parse(`${i}T00:00:00Z`);const o=new Intl.DateTimeFormat("en-GB",{timeZone:e,year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"});for(let n=0;n<4;n++){const t=Object.fromEntries(o.formatToParts(a).map(t=>[t.type,t.value])),e=Date.parse(`${t.year}-${t.month}-${t.day}T${t.hour}:${t.minute}:${t.second}Z`);a+=Date.parse(`${i}T00:00:00Z`)-e}return a}function se(t,e,i){if(i<=e)return{kwh:null,coverage:0};let a=0,o=0;for(const n of t){if(n.end<=e||n.start>=i)continue;const t=Math.min(n.end,i)-Math.max(n.start,e);o+=t,a+=n.kwh*t/(n.end-n.start)}return{kwh:o?a:null,coverage:Math.min(1,o/(i-e))}}function re(t,e,i,a="UTC"){const o=e=>e?t[e]??[]:[],n=function(t){const e=[];for(let i=1;i<t.length;i++){const a=t[i-1],o=t[i],n=zt(ae(a.state),a.unit??""),s=zt(ae(o.state),o.unit??"");null===n||null===s||o.time<=a.time||o.time-a.time>9e5||a.unit!==o.unit||s<n||e.push({start:a.time,end:o.time,kwh:s-n})}return e}(o(e.energy?.energy_entity)),s=o(e.cell_state),r=o(e.post_heater),l=Math.floor((i-192*ee)/ee)*ee,c=[],u=(t,e)=>function(t,e){let i=0,a=t.length;for(;i<a;){const o=i+a>>>1;t[o].time<=e?i=o+1:a=o}return t[i-1]}(o(t),e);let p=0,h=0,d=0,m=0,f=0,y=0;for(let S=l;S<i;S+=ee){const t=Math.min(i,S+ee);let a=0,o=0,s=0,r=0,l=0,p=0,h=0,d=0,g=0,_=0,v=0,b=0,$=0,k=0,x=0,w=0,A=0;const C=/* @__PURE__ */new Map,E=/* @__PURE__ */new Map;for(let n=S;n<t;n+=ie){const c=Math.min(ie,t-n)/ie,S=n+c*ie/2,M=u(e.fan_entity,S),j=u(e.energy?.power_entity,S),T=Ht(ae(j?.state),j?.unit??"");null!==T&&(w+=T*c,A+=c);const O=u(e.cell_state,S),P="off"===M?.state?"stopped":Ot(O?.state??null),z=Lt(u(e.post_heater,S)?.state??null);null!==z&&(b+=c),!0===z&&(v+=c),E.set(P,(E.get(P)??0)+c);const H=u(e.profile,S)?.state??("string"==typeof M?.attributes?.preset_mode?M.attributes.preset_mode:void 0);H&&!["unknown","unavailable"].includes(H)&&C.set(H,(C.get(H)??0)+c);const L=ae(u(e.fan_speed,S)?.state)??("number"==typeof M?.attributes?.percentage?M.attributes.percentage:null);null!==L&&(h+=L*c,d+=c);const U=t=>{const e=u(t,S);return Pt(ae(e?.state),e?.unit??"")},I=U(e.outdoor_air_temp),N=U(e.supply_air_temp),V=U(e.supply_cell_temp);null!==I&&(a+=I*c,o+=c),null!==N&&(s+=N*c,r+=c),null!==V&&(l+=V*c,p+=c),"unknown"!==P&&null!==z&&(k+=c),"unknown"!==P&&"stopped"!==P&&(x+=c),"defrost"===P&&(g+=c),"unknown"!==P&&"defrost"!==P&&"stopped"!==P&&null!==z&&($+=c,z&&(_+=c),S>=i-6*ee&&(f+=c,z&&(m+=c))),S>=i-6*ee&&"unknown"!==P&&null!==z&&(y+=c)}const M=(t-S)/ie,j=t=>[...t.entries()].sort((t,e)=>e[1]-t[1])[0],T=j(C),O=se(n,S,t);c.push({start:S,...O,outdoor:o/M>=.9?a/o:null,supply:r/M>=.9?s/r:null,cell:p/M>=.9?l/p:null,power:A/M>=.9?w/A:null,fan:d/M>=.9?h/d:null,profile:T&&T[1]/M>=.9?T[0]:null,operation:j(E)?.[0]??"unknown",defrostMinutes:g,heaterMinutes:_,heaterActiveMinutes:b/M>=.9?v:null,normalMinutes:$,contextCoverage:k/M,operationCoverage:x/M})}let g=0;for(let S=0;S<s.length;S++){if("defrost"!==Ot(s[S].state))continue;const t=s[S].time;for(;S+1<s.length&&"defrost"===Ot(s[S+1].state);)S++;const a=Math.min(i,s[S+1]?.time??i);if(a<=i-24*ee)continue;const o=Math.max(t,i-24*ee),r=se(n,o,a);d+=a-o,h+=(a-o)*r.coverage,p+=r.kwh??0,a-t>(e.insights?.defrost_minutes??60)*ie&&g++}const _=c.filter(t=>t.start+ee<=i).slice(-3),v=(t,e)=>e.start<t.start-24*ee&&e.start>=t.start-168*ee&&e.profile===t.profile&&null!==e.fan&&null!==t.fan&&null!==e.outdoor&&null!==t.outdoor&&Math.abs(e.fan-t.fan)<=5&&Math.abs(e.outdoor-t.outdoor)<=2,b=_.map(t=>{if(null===t.kwh||t.coverage<.9||null===t.profile||null===t.fan||null===t.outdoor)return null;const e=c.filter(e=>v(t,e)&&e.coverage>=.9&&null!==e.kwh);if(e.length<6||new Set(e.map(t=>oe(t.start,a))).size<3)return null;const i=e.reduce((t,e)=>t+e.kwh,0)/e.length;return i>0?t.kwh/i:null}),$=_.map(t=>{if(t.operationCoverage<.9||null===t.profile||null===t.fan||null===t.outdoor)return null;const e=c.filter(e=>v(t,e)&&e.operationCoverage>=.9);if(e.length<6||new Set(e.map(t=>oe(t.start,a))).size<3)return null;const i=e.reduce((t,e)=>t+e.defrostMinutes,0)/e.length;return i>0?t.defrostMinutes/i:null}),k=3===$.length&&$.every(t=>null!==t&&t>1+(e.insights?.excess_ratio??.5))?Math.min(...$):null,x=ne(i,a),w=se(n,x,i),A=se(n,i-24*ee,i),C=[];let E=x;for(let S=0;S<7;S++){const t=0===S?i:E,e=0===S?E:ne(E-1,a);C.unshift({date:oe(e,a),...se(n,e,t)}),E=e}return{today:w.coverage>=.9?w.kwh:null,last24h:A.coverage>=.9?A.kwh:null,todayCoverage:w.coverage,hours:c,daily:C,defrostKwh:d>0&&h/d>=.9?p:null,defrostMinutes:d/ie,longDefrosts:g,defrostIncreaseRatio:k,heaterShare:y>=324&&f>=60?m/f:null,elevated:3===b.length&&b.every(t=>null!==t&&t>1+(e.insights?.excess_ratio??.5)),baselineReady:3===b.length&&b.every(t=>null!==t),historyAvailable:s.length>1||n.length>0||r.length>1}}const le={heat_recovery:"#80cabb",bypass:"#7aaff0",cool_recovery:"#b499e2",defrost:"#e7ad6f",stopped:"#677885",unknown:"#39444b"};const ce=/* @__PURE__ */new WeakMap;function ue(t,e,i=Date.now()){const a=[...new Set([e.energy?.energy_entity,e.energy?.power_entity,e.outdoor_air_temp,e.supply_air_temp,e.supply_cell_temp,e.extract_air_temp,e.cell_state,e.post_heater,e.profile,e.fan_speed,e.fan_entity].filter(t=>!!t))].sort();if(!a.length)return Promise.resolve({});const o=t.connection??t,n=ce.get(o)??/* @__PURE__ */new Map;ce.set(o,n);const s=a.join("|"),r=n.get(s);if(r&&r.until>i)return r.promise;const l=36e5*Math.floor((i-6912e5)/36e5),c=t.callWS({type:"history/history_during_period",start_time:new Date(l).toISOString(),end_time:new Date(i).toISOString(),entity_ids:a,include_start_time_state:!0,significant_changes_only:!1,minimal_response:!1,no_attributes:!1}).then(e=>{const o=function(t,e){return Object.fromEntries(Object.entries(t).map(([t,i])=>{let a={};const o=[];for(const n of i){a=n.a??n.attributes??a;const i=void 0!==n.lu?1e3*n.lu:void 0!==n.lc?1e3*n.lc:Date.parse(n.last_updated??n.last_changed??""),s=n.s??n.state;Number.isFinite(i)&&"string"==typeof s&&o.push({time:i,state:s,unit:String(a.unit_of_measurement??e.states[t]?.attributes.unit_of_measurement??""),attributes:a})}return[t,o.sort((t,e)=>t.time-e.time)]}))}(e,t);for(const n of a){const e=t.states[n];e&&(o[n]??=[]).push({time:i,state:e.state,unit:e.attributes.unit_of_measurement??"",attributes:e.attributes})}return o}).catch(t=>{throw n.delete(s),t});return n.set(s,{until:i+3e5,promise:c}),n.size>12&&n.delete(n.keys().next().value),c}const pe="https://www.vallox.com/laskuri-ilmanvaihdon-energiankulutukseen-vallox/",he="https://vallox.techmanuals.info/ValloxMV/FIN/help/webhelp/user_manual/topics/cloud/cloud_sulatusasetukset.html";async function de(t,e,i,a=!1,o){const n=Ut(t,e),s=n.supportedModes.find(t=>t.toLowerCase()===i.toLowerCase());if(!s||!e.fan_entity||null===n.running)throw new Error("unavailable");if(a||n.profile?.toLowerCase()!==s.toLowerCase())if(e.profile_action_script){const i=o??("boost"===s.toLowerCase()?e.boost_duration??30:"fireplace"===s.toLowerCase()?e.fireplace_duration??15:void 0);if(void 0!==i&&(!Number.isInteger(i)||i<1||i>65534))throw new Error("duration_invalid");await t.callService("script",e.profile_action_script.slice(7),{profile:s.toLowerCase(),restart:a,...void 0===i?{}:{duration:i}})}else{if(a||void 0!==o)throw new Error("duration_requires_script");await t.callService("fan","set_preset_mode",{entity_id:e.fan_entity,preset_mode:s})}}const me="vallox-iv-card",fe=`${me}-editor`,ye=(t,e,i,a="sensor")=>({name:t,fi:e,en:i,selector:{entity:{domain:a}}}),ge=(t,e,i,a)=>({name:t,fi:e,en:i,selector:{select:{options:a}}}),_e=(t,e,i,a,o,n=1)=>({name:t,fi:e,en:i,selector:{number:{min:a,max:o,step:n,mode:"box"}}}),ve=(t,e,i)=>({name:t,fi:e,en:i,selector:{boolean:{}}}),be=(t,e,i)=>({name:t,fi:e,en:i,selector:{text:{}}}),$e=[{fi:"Laite ja käyttötilat",en:"Unit and profiles",fields:[be("title","Otsikko","Title"),ye("fan_entity","Valloxin puhallin","Vallox fan","fan"),{name:"modes",fi:"Näytettävät profiilit",en:"Visible profiles",selector:{select:{multiple:!0,options:["Home","Away","Boost","Fireplace","Extra","Auto"]}}},ye("profile_duration","Profiilin jäljellä oleva aika","Remaining profile duration"),ye("profile_action_script","Valinnainen ajastuksen ohjausskripti","Optional timer control script","script"),_e("boost_duration","Tehostuksen kesto skriptille (min)","Boost duration for script (min)",1,65534),_e("fireplace_duration","Takkaprofiilin kesto skriptille (min)","Fireplace duration for script (min)",1,65534)]},{fi:"Ilmavirrat ja kenno",en:"Airflow and core",fields:[ye("outdoor_air_temp","Ulkoilma","Outdoor air"),ye("extract_air_temp","Poistoilma huoneista","Extract air from rooms"),ye("supply_air_temp","Tuloilma huoneisiin","Supply air to rooms"),ye("exhaust_air_temp","Jäteilma ulos","Exhaust air outside"),ye("supply_cell_temp","Tuloilma kennon jälkeen, ennen vastusta","Supply air after core, before heater"),ye("cell_state","Kennon toimintatila","Core state"),ye("post_heater","Jälkilämmittimen tila","Post-heater state","binary_sensor"),ye("efficiency","Valinnainen hyötysuhdeanturi","Optional efficiency sensor"),ge("efficiency_kind","Anturin hyötysuhteen laji","Sensor efficiency kind",["custom","supply","extract"]),ge("efficiency_scale","Anturin asteikko","Sensor scale",["percent","ratio"]),ge("temperature_unit","Näytettävä lämpötilayksikkö","Display temperature unit",["°C","°F"])]},{fi:"Muut anturit",en:"Other sensors",fields:[ye("profile","Profiili historiavertailuun","Profile for history comparison"),ye("fan_speed","Puhallinpyyntö (%)","Fan request (%)"),ye("supply_fan_speed","Tulopuhaltimen kierrosluku","Supply fan RPM"),ye("extract_fan_speed","Poistopuhaltimen kierrosluku","Extract fan RPM"),ge("defrost_mode","Sulatustapa (auto = kierroslukujen perusteella)","Defrost method (auto = from fan RPM)",["auto","bypass","supply_stop"]),ye("co2","Hiilidioksidi","Carbon dioxide"),ye("humidity","Kosteus","Humidity"),ye("filter_remaining","Suodattimien tila / jäljellä olevat päivät","Filter status / days remaining")]},{key:"energy",fi:"Energiamittaus",en:"Energy measurement",fields:[ye("power_entity","Teho (W tai kW)","Power (W or kW)"),ye("energy_entity","Kertyvä energia (Wh tai kWh)","Cumulative energy (Wh or kWh)")]},{key:"insights",fi:"Ehdotukset",en:"Suggestions",fields:[ve("enabled","Näytä ehdotukset","Show suggestions"),ge("heating_system","Talon lämmitystapa","Home heating system",["unknown","heat_pump","district_heating","other_efficient","electric"]),_e("daily_budget_kwh","Oma kulutustavoite (kWh/vrk), valinnainen","Your daily energy budget (kWh), optional",.1,1e3,.1),_e("comfort_floor","Oma mukavuusraja (°C), valinnainen","Your comfort floor (°C), optional",-50,50,.5),_e("excess_ratio","Vertailutason ylitys (0,5 = 50 %)","Excess over baseline (0.5 = 50%)",.01,10,.01),_e("defrost_minutes","Pitkän sulatuksen havaintoraja (min)","Long defrost observation threshold (min)",1,1440)]},{key:"seasonal",fi:"Valinnainen kausiohjaus",en:"Optional seasonal control",fields:[ye("mode_entity","Blueprintin ohjaustapa","Blueprint control mode","input_select"),ye("status_entity","Blueprintin tilatieto","Blueprint status","input_text"),ye("mean_entity","Ulkolämpötilan 24 h keskiarvo","24 h mean outdoor temperature"),ye("bypass_lock_entity","Valloxin talvilukko","Vallox winter lock","switch")]},{fi:"Ulkoasu",en:"Appearance",fields:[ge("language","Kieli","Language",["fi","en"]),ve("compact","Tiivis näkymä","Compact view"),ve("show_efficiency","Näytä hyötysuhde","Show efficiency"),ve("show_cell_state","Näytä kennon tila","Show core state"),ve("show_profile","Näytä profiili","Show profile"),ve("show_fan_speed","Näytä puhallinpyyntö","Show fan request"),ve("show_co2","Näytä CO₂","Show CO₂"),ve("show_humidity","Näytä kosteus","Show humidity"),ve("show_post_heater","Näytä vastuksen tila","Show heater state"),ve("show_supply_cell_temp","Näytä kennon jälkeinen lämpötila","Show core outlet temperature"),ve("enable_temp_colors","Lämpötilojen värit","Temperature colours"),_e("value_font_size","Lukujen suhteellinen koko (48 = oletus)","Relative value size (48 = default)",10,100),_e("font_weight","Lukujen fonttipaino","Value font weight",400,700,100),_e("unit_opacity","Yksikön peittävyys","Unit opacity",0,1,.05),_e("co2_limit","CO₂-korostuksen raja (ppm)","CO₂ highlight threshold (ppm)",0,1e4),ve("enable_co2_blink","CO₂-huomion animointi","Animate CO₂ attention")]},{fi:"Omat tekstit ja värit",en:"Custom labels and colours",fields:[...["extract_air","outdoor_air","supply_air","exhaust_air","efficiency","humidity"].map(t=>be(`label_${t}`,`Oma teksti: ${t}`,`Custom label: ${t}`)),...["cold","freeze","neutral","warm","hot"].map(t=>({name:`temp_color_${t}`,fi:`Lämpötilaväri: ${t}`,en:`Temperature colour: ${t}`,selector:{color_rgb:{}}}))]}];function ke(t,e){const i=t.selector.select;if(!i||"modes"===t.name)return t.selector;const a={unknown:["Ei määritetty","Not specified"],heat_pump:["Lämpöpumppu / maalämpö","Heat pump / ground source"],district_heating:["Kaukolämpö","District heating"],other_efficient:["Muu tehokkaampi lämmitystapa","Other more efficient heating"],electric:["Suora sähkölämmitys","Direct electric heating"],custom:["Anturin oma hyötysuhde","Sensor-defined efficiency"],supply:["Tuloilman lämpötilahyötysuhde","Supply temperature efficiency"],extract:["Poistoilman hyötysuhde","Extract efficiency"],percent:["Prosentti (1 = 1 %)","Percent (1 = 1%)"],ratio:["Suhdeluku (1 = 100 %)","Ratio (1 = 100%)"],auto:["Tunnista kierrosluvuista","Detect from fan RPM"],bypass:["Ohitussulatus","Bypass defrost"],supply_stop:["Tulopuhaltimen pysäytys","Supply fan stop"],fi:["Suomi","Finnish"],en:["English","English"]};return{select:{...i,options:i.options.map(t=>({value:t,label:a[t]?Ct(e,...a[t]):t}))}}}var xe=Object.defineProperty,we=Object.getOwnPropertyDescriptor,Ae=(t,e,i,a)=>{for(var o,n=a>1?void 0:a?we(e,i):e,s=t.length-1;s>=0;s--)(o=t[s])&&(n=(a?o(e,i,n):o(n))||n);return a&&n&&xe(e,i,n),n};let Ce=class extends rt{constructor(){super(...arguments),this._error=""}setConfig(t){this._config={...t}}_changed(t,e){e.stopPropagation();const i=Object.fromEntries(Object.entries(e.detail.value).filter(([,t])=>null!=t&&""!==t)),a=this._config??{type:"custom:vallox-iv-card"},o=t.key?{...a,[t.key]:i}:{...a};if(!t.key)for(const s of t.fields)s.name in i?o[s.name]=i[s.name]:delete o[s.name];if(JSON.stringify(o)!==JSON.stringify(a)){try{$t(o),this._error=""}catch(n){return void(this._error=n instanceof Error?n.message:String(n))}this._config=o,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:o},bubbles:!0,composed:!0}))}}render(){if(!this.hass||!this._config)return B;const t=Et(this.hass,this._config),e=this._config.fan_entity?this.hass.states[this._config.fan_entity]:void 0,i=e?.attributes.preset_modes??[];return W`<p>${Ct(t,"Valitse puhallin ja anturit. Takka on valinnainen. Ehdotukset eivät muuta laitteen asetuksia. Kausiohjaus tarvitsee erikseen käyttöönotettavan blueprintin.","Select the fan and sensors. Fireplace is optional. Suggestions never change settings. Seasonal control needs the separately installed blueprint.")}</p>
+      ${this._error?W`<p class="error" role="alert">${this._error}</p>`:B}
+      ${$e.map((e,a)=>W`<details ?open=${0===a}><summary>${Ct(t,e.fi,e.en)}</summary><ha-form .hass=${this.hass} .data=${e.key?this._config[e.key]??{}:this._config}
+        .schema=${e.fields.map(e=>({name:e.name,selector:"modes"===e.name&&i.length?{select:{multiple:!0,options:i.map(e=>({value:e,label:jt(e,t)}))}}:ke(e,t)}))}
+        .computeLabel=${e=>function(t,e){const i=$e.flatMap(t=>t.fields).find(t=>t.name===e.name);return i?Ct(t,i.fi,i.en):e.name}(t,e)} @value-changed=${t=>this._changed(e,t)}></ha-form></details>`)}`}};Ce.styles=n`details{border:1px solid var(--divider-color,#8883);border-radius:12px;margin:12px 0;padding:0 14px 14px}summary{cursor:pointer;min-height:48px;display:flex;align-items:center;font-weight:500;font-size:14px}p{color:var(--secondary-text-color);font-size:13px;line-height:1.6}.error{color:var(--error-color,#f88)}`,Ae([ht({attribute:!1})],Ce.prototype,"hass",2),Ae([dt()],Ce.prototype,"_config",2),Ae([dt()],Ce.prototype,"_error",2),Ce=Ae([ct(fe)],Ce);var Ee=Object.defineProperty,Se=Object.getOwnPropertyDescriptor,Me=(t,e,i,a)=>{for(var o,n=a>1?void 0:a?Se(e,i):e,s=t.length-1;s>=0;s--)(o=t[s])&&(n=(a?o(e,i,n):o(n))||n);return a&&n&&Ee(e,i,n),n};let je=0,Te=class extends rt{constructor(){super(...arguments),this._height=376,this._width=400,this._historyError=!1,this._busy=!1,this._actionError="",this._tab="energy",this._minutes=30,this._id="vallox-"+ ++je,this._fetchedAt=0,this._generation=0,this._loading=!1,this._visibilityChanged=()=>{"visible"===document.visibilityState&&this._refresh()}}setConfig(t){this._config=$t(t)}getGridOptions(){return{columns:12,rows:this._config?.compact?4:6,min_columns:6,min_rows:4}}getCardSize(){return this._config?.compact?4:6}static getConfigElement(){return document.createElement(fe)}static getStubConfig(){return{type:`custom:${me}`,config_version:2}}connectedCallback(){super.connectedCallback(),this._observer=new ResizeObserver(t=>{const e=t[0].contentRect;e.height>0&&(this._height=e.height),this._width=e.width}),this._observer.observe(this),this._interval=setInterval(()=>{"visible"===document.visibilityState&&this._refresh()},3e5),document.addEventListener("visibilitychange",this._visibilityChanged)}disconnectedCallback(){super.disconnectedCallback(),this._observer?.disconnect(),clearInterval(this._interval),document.removeEventListener("visibilitychange",this._visibilityChanged),this._generation++,this._loading=!1}willUpdate(t){t.has("_config")&&(this._generation++,this._fetchedAt=0,this._loading=!1,this._analysis=void 0,this._historyError=!1),(t.has("hass")||t.has("_config"))&&this._refresh()}async _refresh(t=!1){if(!this.hass||!this._config||this._loading||!t&&Date.now()-this._fetchedAt<3e5)return;this._loading=!0;const e=this._generation,i=Date.now(),a=this._config,o=this.hass;try{const t=await ue(o,a,i);if(e!==this._generation||!this.isConnected)return;this._analysis=re(t,a,i,o.config?.time_zone??"UTC"),this._historyError=!1}catch{e===this._generation&&(this._historyError=!0)}finally{e===this._generation&&(this._loading=!1,this._fetchedAt=i)}}get _language(){return Et(this.hass,this._config)}_t(t,e){return Ct(this._language,t,e)}_n(t,e=1){return Tt(t,this._language,e)}_moreInfo(t){t&&this.dispatchEvent(new CustomEvent("hass-more-info",{detail:{entityId:t},bubbles:!0,composed:!0}))}async _open(t="energy"){this._tab=t,await this.updateComplete;const e=this.renderRoot.querySelector("dialog");e&&!e.open&&e.showModal()}async _command(t){if(!this._busy){this._busy=!0,this._actionError="";try{await t()}catch(e){this._actionError=this._t("Ohjaus epäonnistui. Tarkista laitteen ja ohjausskriptin saatavuus.","The command failed. Check unit and control script availability."),await this._open("controls"),console.warn("Vallox IV Card command failed",e)}finally{this._busy=!1}}}async _tabKey(t){const e=["energy","insights","controls"];if(!["ArrowLeft","ArrowRight","Home","End"].includes(t.key))return;t.preventDefault();const i=e.indexOf(this._tab);this._tab=e["Home"===t.key?0:"End"===t.key?2:(i+("ArrowRight"===t.key?1:2))%3],await this.updateComplete,this.renderRoot.querySelector(`#${this._id}-${this._tab}`)?.focus()}render(){if(!this._config||!this.hass)return W`<ha-card><div class="surface"><p>${this._t("Valitse Valloxin anturit kortin asetuksista.","Select your Vallox sensors in the card settings.")}</p></div></ha-card>`;const t=this._config,e=this.hass,i=Ut(e,t),a=this._language,o=function(t,e,i,a){if(!1===i.insights?.enabled)return[];const o=(t,e)=>Ct(a,t,e),n=[];for(const s of t.issues)n.push({id:s,level:"notice",title:o("Tarkista mittauksen määritys","Check the sensor binding"),observation:"same_sensor"===s?o("Kennon jälkeinen ja lopullinen tuloilma käyttävät samaa anturia.","Core outlet and final supply air use the same sensor."):"efficiency_range"===s?o("Hyötysuhde on alueen 0–100 % ulkopuolella.","Efficiency is outside 0–100%."):o("Energia- tai tehoanturin yksikköä ei tunnisteta.","The energy or power sensor unit is unsupported."),suggestion:o("Tarkista kortin anturivalinnat ja yksiköt.","Check the card’s sensor selections and units."),limitation:o("Tämä on havainto mittauksesta, ei laitevian diagnoosi.","This concerns measurement, not a diagnosis of a unit fault.")});if(i.energy?.energy_entity&&null!==t.energy){if(e){const t=i.insights?.daily_budget_kwh,s=void 0!==t&&null!==e.today&&e.today>t;s&&n.push({id:"daily_budget",level:"notice",title:o("Oma kulutustavoite ylittyi","Your daily energy budget was exceeded"),observation:`${Tt(e.today,a)} / ${Tt(t,a)} kWh`,suggestion:o("Tarkastele aikajanalta, liittyikö kulutus sulatukseen vai lämmitykseen sen ulkopuolella.","Use the timeline to check whether consumption coincided with defrosting or heating outside defrost."),limitation:o("Raja on itse määrittämäsi tavoite, ei Valloxin vikakriteeri.","This is your budget, not a Vallox fault threshold."),source:pe}),e.elevated&&n.push({id:"elevated",level:"notice",title:o("Kulutus ylittää oman vertailutason","Consumption is above your baseline"),observation:o("Kolme peräkkäistä tuntia ylittää vastaavien olosuhteiden vertailutason.","Three consecutive hours exceed the baseline for comparable conditions."),suggestion:o("Vertaa profiilia, ulkolämpötilaa, sulatusjaksoja ja jälkilämmitystä aikajanalla.","Compare profile, outdoor temperature, defrost cycles and post-heating on the timeline."),limitation:o("Vertailu ei yksin osoita vikaa tai koko talon energiansäästöä.","This comparison alone does not establish a fault or whole-home energy savings.")}),["heat_pump","district_heating","other_efficient"].includes(i.insights?.heating_system??"")&&(s||e.elevated)&&null!==e.heaterShare&&e.heaterShare>.5&&n.push({id:"post_heat",level:"notice",title:o("Vastus lämmittää myös sulatusten ulkopuolella","The heater runs outside defrost cycles"),observation:o("Vastus on ollut aktiivinen yli puolet kelvollisesta sulatusten ulkopuolisesta ajasta viimeisen kuuden tunnin aikana. Myös kulutus on koholla.","The heater was active for over half of the valid non-defrost time in the last six hours, with elevated consumption."),suggestion:o("Tarkista, voisiko talon tehokkaampi lämmitysjärjestelmä hoitaa lämmittämisen. Voit itse vertailla alempaa tuloilman tavoitetta sekä seurata kulutusta, huonelämpöä ja vetoa.","Check whether your more efficient heating system could supply this heat. You can manually compare a lower supply target while monitoring consumption, room temperature and drafts.")+(void 0===i.insights?.comfort_floor?"":o(` Itse määrittämäsi mukavuusraja on ${i.insights.comfort_floor} °C.`,` Your own comfort limit is ${i.insights.comfort_floor} °C.`)),limitation:o("Kortti ei muuta asetuksia eikä aseta yleistä minimilämpötilaa. Sulatuksen tarvitsema lisälämmitys on eri asia.","The card does not change settings or impose a general minimum temperature. Supplemental heat needed for defrost is a separate function."),source:pe}),e.baselineReady||n.push({id:"learning",level:"info",title:o("Vertailutaso muodostuu","Building a baseline"),observation:o("Vastaavia mittaustunteja tarvitaan vähintään kuusi kolmelta päivältä.","At least six comparable hours from three days are required."),suggestion:o("Jatka mittausta. Oma kulutustavoite toimii jo ilman vertailuhistoriaa.","Continue measuring. Your daily budget works without a baseline."),limitation:o("Puutteellinen historia ei tarkoita, että kulutus olisi normaali.","Insufficient history does not mean consumption is normal.")}),e.todayCoverage<.9&&n.push({id:"coverage",level:"info",title:o("Kulutushistoriassa on aukkoja","Energy history has gaps"),observation:o("Tämän päivän mittauskattavuus jää alle 90 prosentin.","Today’s measurement coverage is below 90%."),suggestion:o("Tarkista mittarin saatavuus ja historian tallennus.","Check meter availability and history recording."),limitation:o("Aukkoja ei täytetä nollilla eikä koko päivän lukua esitetä täydellisenä.","Gaps are not filled with zeros or presented as a complete daily total.")})}}else n.push({id:"meter_missing",level:"info",title:o("Energiamittaus puuttuu","Energy measurement unavailable"),observation:o("Kulutukseen perustuvat päätelmät odottavat toimivaa kWh-anturia.","Consumption findings need a working kWh sensor."),suggestion:i.energy?.power_entity&&!i.energy.energy_entity?o("Luo HA:ssa tehoanturista integraalianturi ja valitse se kortin energia-anturiksi.","Create an Integral helper from the power sensor in HA, then select it as the energy sensor."):o("Valitse toimiva energiamittari kortin asetuksista, kun se on käytettävissä.","Select a working energy meter in the card settings when available."),limitation:o("Puuttuva mittaus ei tarkoita nollakulutusta. Vastuksen nimellistehosta ei arvioida kulutusta.","Missing readings are not zero consumption. Heater ratings are not used to estimate electricity.")});return e&&e.longDefrosts>=2&&n.push({id:"long_defrost",level:"notice",title:o("Toistuvia pitkiä sulatusjaksoja","Repeated long defrost cycles"),observation:o(`${e.longDefrosts} sulatusjaksoa ylitti asetetun ${i.insights?.defrost_minutes??60} minuutin havaintorajan viimeisen vuorokauden aikana.`,`${e.longDefrosts} defrost cycles exceeded the configured ${i.insights?.defrost_minutes??60} minute observation threshold in the last day.`),suggestion:o("Tarkista suodattimet, anturilukemat ja valmistajan ohjeet. Ilmavirtojen ja sulatusasetusten arviointi voi vaatia LVI-ammattilaisen.","Check filters, sensor readings and manufacturer instructions. Airflow and defrost settings may need an HVAC professional’s assessment."),limitation:o("Kesto yksin ei todista vikaa. Kortti ei ehdota yleisiä muutoksia jäätymisenestoon.","Duration alone does not prove a fault. The card does not suggest universal frost-protection changes."),source:he}),null!=e?.defrostIncreaseRatio&&n.push({id:"defrost_increase",level:"notice",title:o("Sulatusaika lisääntyi","Time spent defrosting increased"),observation:o(`Sulatuksiin käytetty aika on ollut kolmella peräkkäisellä tunnilla vähintään ${Tt(100*(e.defrostIncreaseRatio-1),a,0)} % omaa vertailutasoa suurempi.`,`Time spent defrosting was at least ${Tt(100*(e.defrostIncreaseRatio-1),a,0)}% above your baseline for three consecutive hours.`),suggestion:o("Vertaa sulatusjaksoja aikajanalla ja tarkista suodattimet, ilmavirrat sekä anturilukemat valmistajan ohjeiden mukaan.","Compare defrost intervals on the timeline and check filters, airflow and sensor readings using the manufacturer’s instructions."),limitation:o("Vertailussa on sama profiili ja samankaltaiset ulkolämpötila sekä puhallinpyyntö. Muutos ei yksin osoita vikaa tai sulatuksen lisäenergiankulutusta.","The comparison uses the same profile and similar outdoor temperature and fan demand. An increase alone does not establish a fault or additional defrost electricity."),source:he}),n}(i,this._analysis,t,a),n=o.some(t=>"notice"===t.level),s=t.compact||this._height<330||this._width<360&&i.availableModes.length>3&&this._height<430,r=this._height<210||this._width<360&&i.availableModes.length>3&&this._height<310,l=jt(i.profile,a),c=["boost","fireplace","extra"].includes(i.profile?.toLowerCase()??""),u="defrost"===i.operation?"bypass"===i.defrostMethod?this._t("Poistoilma sulattaa kennoa. Tuloilma kulkee ohituksen ja lämmittimen kautta.","Extracted air thaws the core. Supply air takes the bypass and heater route."):"supply_stop"===i.defrostMethod?this._t("Poistoilma sulattaa kennoa. Tuloilmapuhallin on pysäytetty sulatuksen ajaksi.","Extracted air thaws the core. The supply fan is stopped during defrost."):this._t("Poistoilma sulattaa kennoa. Tuloilman kulkua ei ole varmennettu: valitse puhaltimien kierroslukuanturit.","Extracted air thaws the core. Supply airflow is unconfirmed: select the fan RPM sensors."):((t,e)=>St[t]["fi"===e?2:3])(i.operation,a),p=t.label_efficiency??("supply"===i.efficiencyKind?this._t("Tuloilman lämpötilahyötysuhde","Supply temperature efficiency"):"extract"===i.efficiencyKind?this._t("Poistoilman hyötysuhde","Extract efficiency"):this._t("Hyötysuhde · anturi","Efficiency · sensor")),h=null===i.postHeaterActive?"?":i.postHeaterActive?this._t("lämmittää","heating"):this._t("pois","off"),d=(t,e,i="")=>W`<span class=${`reading ${i}`} title=${`${t} ${e}`}><span class="reading-label">${t}</span> <span class="reading-value">${e}</span></span>`,m=(e,a,o,n,s)=>W`<button class=${`air ${e} ${["outdoor","exhaust"].includes(e)?"right":""}`} @click=${()=>this._moreInfo(n)} aria-label=${`${a} ${this._n(o)} ${i.tempUnit}`}><span class="air-label">${a}</span><span class="air-value" style=${_t({color:Gt(o,i,t)})}>${this._n(o)}<span class="unit">${null!==o?i.tempUnit:""}</span></span>${s?W`<span class="air-helper">${s}</span>`:B}
+      ${"extract"===e?W`<span class="air-quality">${!1!==t.show_co2&&t.co2?d("CO₂",`${this._n(i.co2,0)} ppm`,null!==i.co2&&i.co2>(t.co2_limit??1e3)?"co2-high "+(t.enable_co2_blink?"co2-blink":""):""):B}${!1!==t.show_humidity&&t.humidity?d(t.label_humidity??this._t("Kosteus","Humidity"),`${this._n(i.humidity,0)} %`):B}</span>`:B}
+      ${"supply"===e?W`<span class=${"supply-chain "+(i.postHeaterActive?"heater-on":"")}>${!1!==t.show_supply_cell_temp&&t.supply_cell_temp?d(this._t("Kennolta","After core"),`${this._n(i.supplyCellTemp)}°`):B}${!1!==t.show_post_heater&&t.post_heater?d(this._t("Vastus","Heater"),h):B}</span>`:B}
+    </button>`,f=null!==i.energy;return W`<ha-card>
+      <div class=${`surface ${s?"compact":""} ${this._height<480?"dense":""} ${r?"tiny":""} ${i.availableModes.length>3?"many":""} ${i.operation}`} style=${_t({"--value-scale":String((t.value_font_size??48)/48),"--unit-opacity":String(t.unit_opacity??.65),"--value-weight":String(t.font_weight??600),"--mode-count":String(Math.max(1,i.availableModes.length)),"--co2-color":t.co2_alert_color??"#e6ae75"})}>
+        <header class="top"><div class="identity"><div class="eyebrow"><span class="dot"></span>${t.title??"VALLOX"} ${!1!==t.show_fan_speed&&null!==i.fanSpeed?W`<span class="fan-readout">${Xt("fan")} ${t.label_fan_speed??this._t("Puhallin","Fan")} ${this._n(i.fanSpeed,0)} %</span>`:B}</div><h2>${!1!==t.show_cell_state?Mt(i.operation,a):this._t("Ilmanvaihto","Ventilation")}</h2></div>
+          <button class="profile-chip" data-profile=${i.profile?.toLowerCase()??""} data-running=${String(!0===i.running)} aria-label=${this._t("Avaa ohjaus ja lisätiedot","Open controls and details")} @click=${()=>this._open("controls")}>${Xt(i.profile??"info")}${!1!==t.show_profile?l:this._t("Lisää","More")}${c?W`<span>· ${65535===i.duration?"∞":null===i.duration?"—":`${this._n(i.duration,0)}′`}</span>`:B}</button></header>
+        ${!1!==t.show_cell_state?W`<p class="description" title=${u}>${u}</p>`:B}
+        <div class="scene">
+          ${m("extract",t.label_extract_air??this._t("Poistoilma","Extract air"),i.extractTemp,t.extract_air_temp,this._t("Huoneista →","From rooms →"))}
+          ${m("outdoor",t.label_outdoor_air??this._t("Ulkoilma","Outdoor air"),i.outdoorTemp,t.outdoor_air_temp,this._t("← Ulkoa","← From outside"))}
+          <div class="core"><div class="core-graphic">
+            ${function(t,e,i,a){const o="bypass"===t.operation||"defrost"===t.operation&&"supply_stop"!==t.defrostMethod,n="bypass"===t.operation||"defrost"===t.operation&&"bypass"===t.defrostMethod,s="unknown"!==t.operation&&"stopped"!==t.operation,r=o?"M190 24 H159 Q146 24 146 37 Q146 42 152 48 L170 66 Q187 83 171 101 L121 153 Q108 167 90 167 H66 Q55 167 50 156 Q45 144 32 144 H10":"M190 24 H151 Q139 24 130 36 L53 133 Q44 144 28 144 H10",l="M10 24 L29 24 Q41 24 50 36 L127 133 Q137 144 151 144 L174 144",c=[t.extractTemp,t.exhaustTemp,t.outdoorTemp,t.supplyCellTemp].map(i=>Gt(i,t,e,"flow")),u=!1!==e.show_efficiency&&"heat_recovery"===t.operation?t.efficiency:null;return D`<svg class="core-svg ${s?"flowing":"resting"} ${t.operation}" viewBox="0 0 208 190" role="img" aria-label=${Mt(t.operation,i)}>
+    <defs>
+      <linearGradient id=${`${a}-extract`} x1="0" y1="0" x2="1" y2="1"><stop stop-color=${c[0]}/><stop offset="1" stop-color=${c[1]}/></linearGradient>
+      <linearGradient id=${`${a}-supply`} x1="1" y1="0" x2="0" y2="1"><stop stop-color=${c[2]}/><stop offset="1" stop-color=${c[3]}/></linearGradient>
+      <linearGradient id=${`${a}-plate`} x1="0" y1="0" x2="1" y2="1"><stop stop-color=${"defrost"===t.operation?"color-mix(in srgb, #c5eeff 25%, var(--core-plate-start, #253944))":"var(--core-plate-start, #253944)"}/><stop offset="1" stop-color=${"defrost"===t.operation?"color-mix(in srgb, #85c5e2 12%, var(--core-plate-end, #14232d))":"var(--core-plate-end, #14232d)"}/></linearGradient>
+      <marker id=${`${a}-arrow`} markerUnits="userSpaceOnUse" markerWidth="26" markerHeight="26" refX="19" refY="13" orient="auto"><path d="M0 0 L26 13 L0 26 L6 13 Z" fill="context-stroke"/></marker>
+    </defs>
+    <path class="core-frame" d=${"M88 13 L145 69 Q158 82 145 95 L88 153 L32 97 Q18 83 32 69 Z"} fill=${`url(#${a}-plate)`}/>
+    ${Array.from({length:8},(t,e)=>D`<path class="fin" d=${`M${42+7*e} ${65-5*e} l48 49`}/>`)}
+    ${n?D`<g class="bypass-gate">
+      <title>${"fi"===i?"Ohituksen reittimerkki. Pellin asentoa ei mitata.":"Bypass routing symbol. Damper position is not measured."}</title>
+      <path class="closed-channel" d="M140 30 L120 55"/>
+      <path class="gate-seat" d="M124 36 L136 46"/>
+      <path class="gate-bar" d="M124 36 L136 46"/>
+    </g>`:""}
+    <g class="supply-channel">
+      <path class="air-track" d=${r}/>
+      <path class=${"air-route supply-route "+(t.supplyFlow?"":"no-flow")} d=${r} stroke=${`url(#${a}-supply)`} marker-end=${`url(#${a}-arrow)`}/>
+      ${t.supplyFlow?D`<path class="air-motion supply-motion" d=${r}/>`:""}
+    </g>
+    <!-- The outlined extract channel passes over the supply route; the streams stay separate. -->
+    <g class="extract-channel">
+      <path class="air-track crossing-track" d=${l}/>
+      <path class=${"air-route extract-route "+(t.extractFlow?"":"no-flow")} d=${l} stroke=${`url(#${a}-extract)`} marker-end=${`url(#${a}-arrow)`}/>
+      ${t.extractFlow?D`<path class="air-motion extract-motion" d=${l}/>`:""}
+    </g>
+    ${!1!==e.show_post_heater&&e.post_heater?D`<g class=${"heater-symbol "+(!0===t.postHeaterActive?"active":!1===t.postHeaterActive?"inactive":"unavailable")} role="img" aria-label=${"fi"===i?"Vastus "+(null===t.postHeaterActive?"ei tiedossa":t.postHeaterActive?"lämmittää":"pois"):"Heater "+(null===t.postHeaterActive?"unknown":t.postHeaterActive?"heating":"off")}>
+      <rect x=${25} y=${132} width="34" height="24" rx="6"/>
+      ${null===t.postHeaterActive?D`<text x=${42} y=${149} text-anchor="middle">?</text>`:D`<path d=${"M30 144 l3 -5 4 10 4 -10 4 10 4 -10 3 5"}/>`}
+    </g>`:""}
+    ${null!==u?D`<rect class="efficiency-glass" x="51" y="63" width="78" height="41" rx="15"/><text class="core-value" x="90" y="90" text-anchor="middle">${Tt(u,i,0)}<tspan class="core-unit">%</tspan></text>`:"defrost"!==t.operation?D`<circle class="core-center" cx="89" cy="83" r="15"/><path class="core-symbol" d=${"stopped"===t.operation?"M84 77 L84 89 M94 77 L94 89":"M81 87 L97 79 M81 79 L97 87"}/>`:""}
+    ${"defrost"===t.operation?D`<g class="thaw">
+      <title>${"fi"===i?"Jäinen sävy ja vesipisarat havainnollistavat sulatusta, eivät mitattua jäämäärää tai edistymistä.":"The icy tint and water drops illustrate defrost, not measured ice quantity or progress."}</title>
+      ${[[64,132],[88,156],[116,128]].map(([t,e],i)=>D`<g transform=${`translate(${t} ${e})`}><path class="melt-drop" style=${`animation-delay:${1.45*-i}s`} d="M0-7 C-1-3-4 0-4 3 A4 4 0 0 0 4 3 C4 0 1-3 0-7 Z"/></g>`)}
+    </g>`:""}
+  </svg>`}(i,t,a,this._id)}
+            ${!1!==t.show_efficiency&&"heat_recovery"===i.operation&&null!==i.efficiency&&!i.efficiencyEstimated&&t.efficiency?W`<button class="core-history efficiency-history" title=${this._t("Avaa hyötysuhteen historia","Open efficiency history")} aria-label=${`${p} ${this._n(i.efficiency,0)} % · ${this._t("Avaa historia","Open history")}`} @click=${()=>this._moreInfo(t.efficiency)}></button>`:B}
+            ${!1!==t.show_post_heater&&t.post_heater?W`<button class="core-history heater-history" title=${this._t("Avaa vastuksen tilahistoria","Open heater history")} aria-label=${`${this._t("Vastus","Heater")} ${null===i.postHeaterActive?this._t("ei tiedossa","unknown"):h} · ${this._t("Avaa historia","Open history")}`} @click=${()=>this._moreInfo(t.post_heater)}></button>`:B}
+          </div><span class="efficiency-label" aria-hidden=${!1===t.show_efficiency||"heat_recovery"!==i.operation?"true":"false"}>${p}${i.efficiencyEstimated?this._t(" · arvio"," · estimate"):""}</span></div>
+          ${m("supply",t.label_supply_air??this._t("Tuloilma","Supply air"),i.supplyTemp,t.supply_air_temp,this._t("← Huoneisiin","← To rooms"))}
+          ${m("exhaust",t.label_exhaust_air??this._t("Jäteilma","Exhaust air"),i.exhaustTemp,t.exhaust_air_temp,this._t("Ulos →","To outside →"))}
         </div>
-      </ha-card>
-    `}getCardSize(){return 4}};Yt.styles=Vt,Xt([dt({attribute:!1})],Yt.prototype,"hass",2),Xt([ut()],Yt.prototype,"_config",2),Xt([ut()],Yt.prototype,"_cardState",2),Xt([ut()],Yt.prototype,"_error",2),Yt=Xt([ct("vallox-iv-card")],Yt),window.customCards=window.customCards||[],window.customCards.push({type:"vallox-iv-card",name:Qt,description:"Visualizes Vallox IV airflow, temperatures, and heat recovery",preview:!0,documentationURL:"https://github.com/your-repo/vallox-iv-card"}),console.info(`%c ${Qt} %c v1.0.0 `,"color: white; background: #039be5; font-weight: 700;","color: #039be5; background: white; font-weight: 700;");export{Yt as ValloxIvCard,Zt as ValloxIvCardEditor};
+        ${i.availableModes.length?W`<nav class="modes" aria-label=${this._t("Ilmanvaihdon profiili","Ventilation profile")}>${i.availableModes.map(o=>W`<button class="mode" data-profile=${o.toLowerCase()} aria-pressed=${String(!1!==i.running&&i.profile?.toLowerCase()===o.toLowerCase())} ?disabled=${this._busy||null===i.running} @click=${()=>this._command(()=>de(e,t,o))}>${Xt(o)}<span>${jt(o,a)}</span></button>`)}</nav>`:B}
+        <button class="footer" @click=${()=>this._open(n?"insights":"energy")} aria-label=${this._t("Avaa energia ja havainnot","Open energy and insights")}>${Xt("energy")}${null!==i.power?W`<span class="energy-value">${this._n(i.power,0)} W</span>`:B}<span class="footer-text">${f&&null!==this._analysis?.today&&void 0!==this._analysis?.today?W`<span class="energy-value">${this._n(this._analysis.today)} kWh</span> ${this._t("tänään","today")}`:f?this._historyError?this._t("Historiaa ei saatu","History unavailable"):this._analysis?this._t("Kulutushistoria ei vielä riitä","More energy history needed"):this._t("Ladataan historiaa…","Loading history…"):this._t("Energiamittaus puuttuu","Energy measurement unavailable")}</span>${n?W`<span class="notice-dot"></span>`:B}<span class="arrow">↗</span></button>
+      </div>
+    </ha-card>
+    <dialog @click=${t=>{t.target===t.currentTarget&&t.currentTarget.close()}}>
+      <header class="dialog-header"><h2>${t.title??this._t("Vallox · ilmanvaihto","Vallox · ventilation")}</h2><button class="close" aria-label=${this._t("Sulje","Close")} @click=${()=>this.renderRoot.querySelector("dialog")?.close()}>×</button></header>
+      <div class="tabs" role="tablist" @keydown=${this._tabKey}>${["energy","insights","controls"].map(t=>W`<button role="tab" tabindex=${this._tab===t?0:-1} id=${`${this._id}-${t}`} aria-controls=${`${this._id}-panel`} aria-selected=${String(this._tab===t)} @click=${()=>this._tab=t}>${"energy"===t?this._t("Energia","Energy"):"insights"===t?this._t("Havainnot","Insights"):this._t("Ohjaus","Controls")}${"insights"===t&&n?" ·":""}</button>`)}</div>
+      <div class="dialog-body" id=${`${this._id}-panel`} role="tabpanel" aria-labelledby=${`${this._id}-${this._tab}`}>
+        ${this._actionError?W`<p class="error-inline" role="alert">${this._actionError}</p>`:B}
+        ${"energy"===this._tab?W`
+          <div class="stat-grid"><div class="stat"><small>${this._t("Teho nyt","Power now")}</small><b>${this._n(i.power,0)}</b> W</div><div class="stat"><small>${this._t("Tänään","Today")}</small><b>${f?this._n(this._analysis?.today):"—"}</b> kWh</div><div class="stat"><small>24 h</small><b>${f?this._n(this._analysis?.last24h):"—"}</b> kWh</div></div>
+          ${f?B:W`<p class="note">${this._t("Energiamittaus puuttuu. Kulutusta ei arvioida vastuksen tilasta.","Energy measurement is unavailable. Consumption is not estimated from heater state.")}</p>`}
+          ${this._historyError?W`<p class="note">${this._t("Historiaa ei saatu Home Assistantista. Tarkista Recorder ja käyttöoikeudet.","History could not be loaded. Check Recorder and access permissions.")}</p><button class="action" @click=${()=>this._refresh(!0)}>${this._t("Yritä uudelleen","Retry")}</button>`:this._analysis?function(t,e,i){const a=(t,i)=>Ct(e,t,i),o=t.hours.slice(-24),n=[...new Set(o.map(t=>t.profile).filter(t=>null!==t))],s=t=>null===t?"—":jt(t,e).slice(0,2),r=t=>new Intl.DateTimeFormat(e,{timeZone:i,hour:"2-digit",minute:"2-digit"}).format(t),l=o.flatMap(t=>[t.outdoor,t.supply,t.cell]).filter(t=>null!==t),c=5*Math.floor(Math.min(0,...l)/5),u=5*Math.ceil(Math.max(20,...l)/5),p=Math.max(100,...o.map(t=>t.power??0)),h=(t,e,i)=>{let a=!1;return t.map((o,n)=>{if(null===o)return a=!1,"";const s=a?"L":"M";return a=!0,`${s}${32+496*n/Math.max(1,t.length-1)} ${134-(o-e)/(i-e)*112}`}).join(" ")},d=Math.max(1,...t.daily.map(t=>t.kwh??0));return W`
+    <h3>${a("Lämpötilat ja teho · 24 h","Temperatures and power · 24 h")}</h3>
+    <svg class="chart" viewBox="0 0 560 158" role="img" aria-label=${a("Tuntikeskiarvot. Tarkat luvut avattavassa taulukossa.","Hourly means. Values are available in the expandable table.")}>
+      ${[0,.5,1].map(t=>D`<line class="chart-grid" x1="32" y1=${134-112*t} x2="528" y2=${134-112*t}/><text x="0" y=${138-112*t}>${Math.round(c+t*(u-c))}°</text><text text-anchor="end" x="560" y=${138-112*t}>${Math.round(t*p)}</text>`)}
+      ${[{key:"outdoor",color:"#7aaff0"},{key:"cell",color:"#80cabb"},{key:"supply",color:"#e7ad6f"}].map(t=>D`<path fill="none" stroke=${t.color} stroke-width="2" d=${h(o.map(e=>e[t.key]),c,u)}/>`)}
+      <path fill="none" stroke="#b499e2" stroke-dasharray="4 3" stroke-width="1.7" d=${h(o.map(t=>t.power),0,p)}/>
+      ${[0,6,12,18,23].filter(t=>o[t]).map(t=>D`<text x=${32+496*t/Math.max(1,o.length-1)} y="155" text-anchor="middle">${r(o[t].start)}</text>`)}
+    </svg>
+    <div class="legend"><span style="--swatch:#7aaff0">${a("Ulkoilma","Outdoor")} °C</span><span style="--swatch:#80cabb">${a("Kennon jälkeen","After core")} °C</span><span style="--swatch:#e7ad6f">${a("Tuloilma","Supply")} °C</span><span style="--swatch:#b499e2">${a("Teho (oikea asteikko)","Power (right axis)")} W</span></div>
+    <div class="state-band" aria-label=${a("Kennon pääasiallinen tila tunneittain","Dominant core state by hour")}>${o.map(t=>W`<span style=${`--state-color:${le[t.operation]}`} title=${`${r(t.start)} · ${Mt(t.operation,e)}`}></span>`)}</div>
+    <div class="legend">${["heat_recovery","bypass","cool_recovery","defrost","stopped","unknown"].map(t=>W`<span style=${`--swatch:${le[t]}`}>${Mt(t,e)}</span>`)}</div>
+    <p class="timeline-label">${a("Profiili","Profile")}</p>
+    <div class="hour-band" aria-label=${a("Profiili tunneittain","Profile by hour")}>${o.map(t=>W`<span title=${`${r(t.start)} · ${jt(t.profile,e)}`}>${s(t.profile)}</span>`)}</div>
+    <p class="timeline-label">${n.map(t=>`${s(t)} = ${jt(t,e)}`).join(" · ")}</p>
+    <p class="timeline-label">${a("Vastus aktiivinen · min/tunti, sisältää sulatukset","Heater active · minutes/hour, including defrost")}</p>
+    <div class="hour-band heater-band" aria-label=${a("Vastuksen käyntiminuutit tunneittain","Heater active minutes by hour")}>${o.map(t=>W`<span class=${t.heaterActiveMinutes?"heater-on":""} title=${`${r(t.start)} · ${Tt(t.heaterActiveMinutes,e,0)} min`}>${Tt(t.heaterActiveMinutes,e,0)}</span>`)}</div>
+    <h3>${a("Päivittäinen sähkö · 7 vrk","Daily electricity · 7 days")}</h3>
+    <div class="day-bars">${t.daily.map(t=>W`<div class="day"><span>${t.coverage>=.9?Tt(t.kwh,e):"—"}</span><div class="bar" style=${`height:${t.coverage>=.9&&null!==t.kwh?t.kwh/d*68:2}px;opacity:${t.coverage>=.9?1:.25}`}></div><span>${t.date.slice(8)}.${t.date.slice(5,7)}</span></div>`)}</div>
+    <p class="note">kWh · ${a("Puuttuvat tai vajaat päivät merkitään viivalla. Teho ja lämpötilat ovat tuntikeskiarvoja.","Missing or incomplete days are shown as dashes. Power and temperatures are hourly means.")}</p>
+    <details><summary>${a("Avaa mittaustaulukko","Open measurement table")}</summary><div class="table-scroll"><table><thead><tr><th>${a("Aika","Time")}</th><th>${a("Tila","State")}</th><th>${a("Profiili","Profile")}</th><th>${a("Vastus min","Heater min")}</th><th>°C ${a("ulko","out")}</th><th>°C ${a("tulo","supply")}</th><th>W</th><th>kWh</th></tr></thead><tbody>${o.map(t=>W`<tr><td>${r(t.start)}–${r(t.start+ee)}</td><td>${Mt(t.operation,e)}</td><td>${jt(t.profile,e)}</td><td>${Tt(t.heaterActiveMinutes,e,0)}</td><td>${Tt(t.outdoor,e)}</td><td>${Tt(t.supply,e)}</td><td>${Tt(t.power,e,0)}</td><td>${t.coverage>=.9?Tt(t.kwh,e,2):"—"}</td></tr>`)}</tbody></table></div></details>`}(this._analysis,a,e.config?.time_zone??"UTC"):W`<p class="note">${this._t("Ladataan historiaa…","Loading history…")}</p>`}
+          ${this._analysis?W`<p class="note">${this._t("Sulatusten aikana (24 h)","During defrost (24 h)")}: ${this._n(this._analysis.defrostMinutes,0)} min · ${f?this._n(this._analysis.defrostKwh,2):"—"} kWh. ${this._t("Tämä on koko laitteen sähkö kyseisiltä jaksoilta, ei sulatuksen erillinen lisäkulutus.","This is whole-unit electricity during those intervals, not the incremental cost of defrost.")}</p>`:B}
+        `:"insights"===this._tab?W`
+          <p class="note">${this._t("Havainnot ovat ehdotuksia omaa harkintaasi varten. Kortti ei muuta lämpötila- tai sulatusasetuksia.","Findings are suggestions for your own assessment. The card does not change temperature or defrost settings.")}</p>
+          ${o.length?o.map(t=>W`<article class=${`insight ${t.level}`}><h3>${t.title}</h3><p>${t.observation}</p><p>${t.suggestion}</p><p class="limitation">${t.limitation}</p>${t.source?W`<a href=${t.source} target="_blank" rel="noopener noreferrer">${this._t("Valmistajan ohje ↗","Manufacturer guidance ↗")}</a>`:B}</article>`):W`<p class="note">${this._t("Ei näytettäviä ehdotuksia. Tämä ei yksin vahvista laitteen kuntoa.","No suggestions to display. This alone does not establish the condition of the unit.")}</p>`}
+        `:W`
+          <div class="status-box">${Mt(i.operation,a)}<br>${u}<br>${this._t("Kennon jälkeen","After the core")}: ${this._n(i.supplyCellTemp)} ${i.tempUnit} → ${this._t("Vastus","Heater")} ${h} → ${this._n(i.supplyTemp)} ${i.tempUnit}</div>
+          ${c?W`<p class="note">${this._t("Laitteen ajastinta jäljellä","Unit timer remaining")}: ${65535===i.duration?"∞":`${this._n(i.duration,0)} min`}. ${this._t("Ajastus toimii myös kortin ollessa suljettuna.","The timer runs even when the card is closed.")}</p>`:B}
+          ${t.profile_action_script?W`<div class="control-row"><label for="duration">${this._t("Kesto (min)","Duration (min)")}</label><input id="duration" type="number" min="1" max="65534" step="1" .value=${String(this._minutes)} @change=${t=>this._minutes=Number(t.target.value)}>${i.availableModes.filter(t=>["boost","fireplace"].includes(t.toLowerCase())).map(o=>W`<button class="action" ?disabled=${this._busy||null===i.running||!Number.isInteger(this._minutes)||this._minutes<1||this._minutes>65534} @click=${()=>this._command(()=>de(e,t,o,!0,this._minutes))}>${jt(o,a)} · ${this._t("aloita alusta","restart")}</button>`)}</div>`:W`<p class="note">${this._t("Tehostus ja takkaprofiili käyttävät laitteen tallentamaa kestoa. Vapaavalintainen kesto vaatii ohjausblueprintin.","Boost and fireplace use the duration stored in the unit. A custom duration requires the control blueprint.")}</p>`}
+          ${this._renderSeasonal()}
+          ${t.filter_remaining?W`<h3>${this._t("Suodattimet","Filters")}</h3><button class="action" @click=${()=>this._moreInfo(t.filter_remaining)}>${e.states[t.filter_remaining]?.attributes.friendly_name??this._t("Suodattimien tila","Filter status")}: ${xt(e,t.filter_remaining)??"—"} ${e.states[t.filter_remaining]?.attributes.unit_of_measurement??""}</button>`:B}
+          ${t.fan_entity?W`<h3>${this._t("Laitteen ohjaus","Unit control")}</h3><button class="action" ?disabled=${this._busy||null===i.running} @click=${()=>this._command(()=>async function(t,e,i){if(!e.fan_entity||null===Ut(t,e).running)throw new Error("unavailable");await t.callService("fan",i?"turn_on":"turn_off",{entity_id:e.fan_entity})}(e,t,!i.running))}>${!1===i.running?this._t("Käynnistä ilmanvaihto","Start ventilation"):this._t("Pysäytä ilmanvaihto","Stop ventilation")}</button><button class="action" @click=${()=>this._moreInfo(t.fan_entity)}>${this._t("Avaa laitteen tiedot","Open unit details")}</button>`:B}
+        `}
+      </div>
+    </dialog>`}_renderSeasonal(){const t=this._config,e=this.hass,i=t.seasonal;if(!i?.mode_entity)return B;const a=e.states[i.mode_entity],o=Array.isArray(a?.attributes.options)?a.attributes.options:[],n={Off:this._t("Pois käytöstä","Off"),Auto:this._t("Automaatti","Automatic"),Winter:this._t("Talvi","Winter"),Summer:this._t("Kesä","Summer")},s=xt(e,i.status_entity);return W`<h3>${this._t("Kausiohjaus","Seasonal control")}</h3><div class="control-row"><label for="season">${this._t("Ohjaustapa","Control mode")}</label><select id="season" .value=${a?.state??""} ?disabled=${this._busy||!xt(e,i.mode_entity)} @change=${t=>this._command(()=>e.callService("input_select","select_option",{entity_id:i.mode_entity,option:t.target.value}))}>${o.map(t=>W`<option value=${t}>${n[t]??t}</option>`)}</select></div><p class="note">${this._t("Ulkolämpötilan 24 h keskiarvo","24 h mean outdoor temperature")}: ${xt(e,i.mean_entity)??"—"} °C<br>${this._t("Talvilukko","Winter lock")}: ${xt(e,i.bypass_lock_entity)??"—"}<br>${function(t,e,i){const a=t?.split("|")??[];if(["waiting_summer","waiting_winter"].includes(a[0])&&Number.isFinite(Number(a[1]))&&Number(a[2])>0){const t=new Intl.DateTimeFormat(e,{timeZone:i,day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"}).format(1e3*Number(a[2]));return"waiting_summer"===a[0]?Ct(e,`Kesä aikaisintaan ${t}, jos vuorokauden keskiarvo pysyy yli ${a[1]} °C.`,`Summer no earlier than ${t}, if the daily mean stays above ${a[1]} °C.`):Ct(e,`Talvi aikaisintaan ${t}, jos vuorokauden keskiarvo pysyy alle ${a[1]} °C.`,`Winter no earlier than ${t}, if the daily mean stays below ${a[1]} °C.`)}return{off:["Kausiohjaus on pois käytöstä.","Seasonal control is off."],winter:["Talvilukko on käytössä.","The winter lock is enabled."],summer:["Lukko on vapaa. Vallox valitsee kennon toimintatavan.","The lock is released. Vallox chooses the core operation."],warming_up:["Odotetaan riittävää ja tuoretta vuorokauden mittaushistoriaa.","Waiting for sufficient, fresh 24-hour measurements."],manual_override:["Käsiohitus: automaatti on pysäytetty. Voit palauttaa Auto-ohjauksen itse.","Manual override: automatic control is paused. Select Auto to resume."],command_failed:["Lukon muutosta ei vahvistettu. Ohjaus on pysäytetty.","The lock change was not confirmed. Control is paused."],unavailable:["Ohjaus odottaa puuttuvaa laite- tai apuritietoa.","Control is waiting for unavailable unit or helper data."],invalid_config:["Tarkista kausiohjauksen tilavaihtoehdot ja lämpötilarajat.","Check the controller mode options and temperature thresholds."]}[a[0]]?.["fi"===e?0:1]??t??Ct(e,"Ohjauksen tila ei saatavilla.","Controller status unavailable.")}(s,this._language,e.config?.time_zone??"UTC")}</p><p class="note">${this._t("Kesä vapauttaa lukon. Vallox päättää kennon ohituksesta ja viileyden talteenotosta.","Summer releases the lock. Vallox decides when to bypass the core or recover cool air.")}</p>`}};Te.styles=te,Me([ht({attribute:!1})],Te.prototype,"hass",2),Me([dt()],Te.prototype,"_config",2),Me([dt()],Te.prototype,"_height",2),Me([dt()],Te.prototype,"_width",2),Me([dt()],Te.prototype,"_analysis",2),Me([dt()],Te.prototype,"_historyError",2),Me([dt()],Te.prototype,"_busy",2),Me([dt()],Te.prototype,"_actionError",2),Me([dt()],Te.prototype,"_tab",2),Me([dt()],Te.prototype,"_minutes",2),Te=Me([ct(me)],Te),window.customCards=window.customCards??[],window.customCards.push({type:me,name:"Vallox IV Card",description:"Airflow, controls and measured energy — locally in Home Assistant",preview:!0,documentationURL:"https://github.com/raunosr/vallox-iv-card"}),console.info("Vallox IV Card 2.0.0");export{Te as ValloxIvCard,Ce as ValloxIvCardEditor};
