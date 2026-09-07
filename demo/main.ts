@@ -1,3 +1,4 @@
+import './ha-card';
 import '../src/index';
 import { fixture } from './fixtures';
 import type { ValloxIvCard } from '../src/card/vallox-iv-card';
@@ -23,6 +24,7 @@ const apply=()=>{
   slot.style.width=`${input('width').value}px`;slot.style.height=params.get('layout')==='masonry'?'auto':`${input('height').value}px`;
   document.body.classList.toggle('light',input('theme').value==='light');
   document.body.classList.toggle('slate',input('theme').value==='slate');
+  document.body.classList.toggle('glass',input('theme').value==='glass');
 };
 for(const id of ['scenario','width','height','theme','language']) { if(params.has(id))input(id).value=params.get(id)!; input(id).addEventListener(['width','height'].includes(id)?'input':'change',apply); }
 document.getElementById('all-modes')!.addEventListener('click',()=>{allModes=!allModes;apply();});

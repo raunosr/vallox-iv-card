@@ -50,7 +50,7 @@ An electricity meter is optional; the card works without one.
 3. Find **Vallox IV Card** in HACS and download the latest stable version.
 4. Reload Home Assistant in your browser or Companion App.
 
-Already installed? Update to **2.0.0** in HACS. If it has not appeared, use
+Already installed? Update to **2.0.1** in HACS. If it has not appeared, use
 **⋮ → Update information** on the repository. This is a stable release; no beta
 opt-in is needed.
 
@@ -163,7 +163,7 @@ install or enable them. [Companion setup and validation](docs/MIGRATION.md#optio
   bound to the pre-heater sensor.
 
 See the [user guide](docs/USER-GUIDE.md), [migration and rollback](docs/MIGRATION.md),
-[release notes](docs/releases/v2.0.0.md) and [validation scope](docs/VALIDATION.md).
+[release notes](docs/releases/v2.0.1.md) and [validation scope](docs/VALIDATION.md).
 For a problem, [open an issue](https://github.com/raunosr/vallox-iv-card/issues) with
 your card/HA/browser versions, card dimensions, anonymized YAML and a screenshot.
 
