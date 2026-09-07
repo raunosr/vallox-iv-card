@@ -1,10 +1,22 @@
 import { css } from 'lit';
 
 export const cardStyles = css`
-  :host { display:block; height:100%; min-width:0; color:var(--primary-text-color,#dfebf2); container-type:inline-size; --accent:var(--vallox-accent,color-mix(in srgb,#7bcfc1 45%,var(--primary-text-color,#dfebf2))); --core-plate-start:color-mix(in srgb,var(--primary-text-color,#dfebf2) 14%,var(--ha-card-background,var(--card-background-color,#12212b))); --core-plate-end:color-mix(in srgb,var(--primary-text-color,#dfebf2) 7%,var(--ha-card-background,var(--card-background-color,#12212b))); --muted:var(--secondary-text-color,#91a5b3); --line:color-mix(in srgb,var(--primary-text-color,#d8e6f0) 11%,transparent); }
+  :host {
+    display:block; height:100%; min-width:0; color:var(--primary-text-color,#dfebf2); container-type:inline-size;
+    --accent:var(--vallox-accent,var(--primary-color,var(--accent-color,#7bcfc1)));
+    --accent-text:color-mix(in srgb,var(--accent) 45%,var(--primary-text-color,#dfebf2));
+    /* SVG paint requires a colour; ha-card-background can be an image/gradient. */
+    --diagram-surface:var(--card-background-color,#12212b);
+    --core-plate-start:color-mix(in srgb,var(--primary-text-color,#dfebf2) 14%,var(--diagram-surface));
+    --core-plate-end:color-mix(in srgb,var(--primary-text-color,#dfebf2) 7%,var(--diagram-surface));
+    --muted:var(--secondary-text-color,#91a5b3);
+    --line:var(--divider-color,color-mix(in srgb,var(--primary-text-color,#d8e6f0) 11%,transparent));
+  }
   * { box-sizing:border-box; }
-  ha-card { display:block; height:100%; overflow:hidden; border:1px solid var(--ha-card-border-color,var(--line)); border-radius:var(--ha-card-border-radius,24px); background:var(--ha-card-background,var(--card-background-color,#12212b)); box-shadow:var(--ha-card-box-shadow,0 8px 32px #00000014); }
-  .surface { height:100%; display:flex; flex-direction:column; padding:16px; gap:8px; background:radial-gradient(ellipse at 70% 30%,#79cfbd09,transparent 65%); overflow:hidden; }
+  /* HA owns the frame. Outer background/border rules override even themed
+     :host rules inside ha-card, covering glass layers and custom backgrounds. */
+  ha-card { height:100%; overflow:hidden; }
+  .surface { height:100%; display:flex; flex-direction:column; padding:16px; gap:8px; overflow:hidden; }
   button,select,input { font:inherit; color:inherit; }
   button { cursor:pointer; -webkit-tap-highlight-color:transparent; }
   button:disabled { opacity:.4; cursor:default; }
@@ -17,7 +29,7 @@ export const cardStyles = css`
   .fan-readout { display:inline-flex;align-items:center;gap:4px;letter-spacing:.04em; }
   .fan-readout svg { width:16px;height:16px;flex:none; }
   .stopped .dot,.unknown .dot { background:var(--muted); }
-  h2 { font-size:15px; font-weight:600; line-height:1.4; margin:3px 0 0; letter-spacing:-.02em; }
+  h2 { font-family:var(--ha-card-header-font-family,inherit); color:var(--ha-card-header-color,var(--primary-text-color,#dfebf2)); font-size:15px; font-weight:600; line-height:1.4; margin:3px 0 0; letter-spacing:-.02em; }
   .profile-chip { flex:none; border:1px solid var(--line); border-radius:30px; padding:0 12px; font-size:12px; display:flex; gap:6px; align-items:center; background:color-mix(in srgb,var(--accent) 6%,transparent); }
   .profile-chip svg { width:18px; height:18px; }
   .description { margin:0; color:var(--muted); font-size:11.5px; line-height:1.35; flex:none; height:2lh; display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden; }
@@ -44,25 +56,25 @@ export const cardStyles = css`
   .heater-history { left:20.192%; top:max(75.789%,calc(43.947% + 44px)); width:16.346%; height:12.632%; }
   .core-frame { stroke:color-mix(in srgb,var(--primary-text-color,#deedf5) 55%,transparent);stroke-width:1.8; }
   .fin { stroke:var(--primary-text-color,#afc0ce);stroke-width:1;opacity:.18; }
-  .air-track { fill:none;stroke:var(--ha-card-background,var(--card-background-color,#14232d));stroke-width:15;stroke-linecap:round; }
+  .air-track { fill:none;stroke:var(--diagram-surface);stroke-width:15;stroke-linecap:round; }
   .crossing-track { stroke-width:20; }
   .air-route { fill:none;stroke-width:10;stroke-linecap:round; }
   .air-motion { fill:none;stroke:#fff;stroke-width:5;stroke-dasharray:10 20;stroke-linecap:round;opacity:.85; }
   .flowing .air-motion { animation:airflow 2.4s linear infinite; }
   .resting .air-motion { display:none; } .resting .air-route { stroke:var(--muted);opacity:.2; }
-  .efficiency-glass { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--line); }
+  .efficiency-glass { fill:var(--diagram-surface);stroke:var(--line); }
   .core-value { font-size:27px; font-weight:600; fill:var(--primary-text-color,#e2ecf5); letter-spacing:-1px; }
   .core-unit { font-size:12px; fill:var(--muted); }
-  .core-center { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--line); }
+  .core-center { fill:var(--diagram-surface);stroke:var(--line); }
   .core-symbol { fill:none;stroke:var(--muted);stroke-width:1.5; }
   .defrost .core-frame { stroke:color-mix(in srgb,#bcecff 75%,var(--primary-text-color,#deedf5));stroke-width:2;filter:drop-shadow(0 0 1.4px #a1dfff66); }
   .defrost .fin { stroke:#d6f3ff;opacity:.3; }
   .closed-channel { fill:none;stroke:var(--muted);stroke-width:5;stroke-dasharray:2 5;opacity:.24; }
-  .gate-seat { fill:none;stroke:var(--ha-card-background,var(--card-background-color,#14232d));stroke-width:8;stroke-linecap:round; }
+  .gate-seat { fill:none;stroke:var(--diagram-surface);stroke-width:8;stroke-linecap:round; }
   .gate-bar { fill:none;stroke:var(--muted);stroke-width:3;stroke-linecap:round; }
   .melt-drop { fill:color-mix(in srgb,#74c6ee 65%,var(--primary-text-color,#deedf5));stroke:color-mix(in srgb,#c9efff 50%,var(--primary-text-color,#deedf5));stroke-width:.8;animation:melt-drop 4.4s ease-in infinite; }
   .air-route.no-flow { opacity:.25;stroke-dasharray:5 5; }
-  .heater-symbol rect { fill:var(--ha-card-background,var(--card-background-color,#15232d));stroke:var(--muted);stroke-width:1.2; }
+  .heater-symbol rect { fill:var(--diagram-surface);stroke:var(--muted);stroke-width:1.2; }
   .heater-symbol path { fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linejoin:round; }
   .heater-symbol text { fill:var(--muted);font-size:14px; }
   .heater-symbol.active rect { fill:#3a2e22;stroke:#f1b775; }
@@ -80,7 +92,7 @@ export const cardStyles = css`
   .mode svg { width:20px; height:20px; flex:none; }
   .mode span { overflow-wrap:anywhere; }
   .mode:hover:not(:disabled) { background:color-mix(in srgb,var(--accent) 6%,transparent); }
-  .mode[aria-pressed=true],.profile-chip[data-running=true] { color:var(--primary-text-color,#dfebf2);font-weight:700;background:color-mix(in srgb,#20cbb0 18%,transparent);border-color:color-mix(in srgb,#20cbb0 65%,var(--primary-text-color,#dfebf2)); }
+  .mode[aria-pressed=true],.profile-chip[data-running=true] { color:var(--primary-text-color,#dfebf2);font-weight:700;background:color-mix(in srgb,var(--accent) 18%,transparent);border-color:color-mix(in srgb,var(--accent) 65%,var(--primary-text-color,#dfebf2)); }
   .mode[aria-pressed=true] svg,.profile-chip[data-running=true] svg { color:var(--accent);stroke-width:2; }
   .mode[aria-pressed=true][data-profile=boost],.mode[aria-pressed=true][data-profile=fireplace],.profile-chip[data-running=true][data-profile=boost],.profile-chip[data-running=true][data-profile=fireplace] { background:color-mix(in srgb,#ffb347 18%,transparent);border-color:color-mix(in srgb,#ffb347 65%,var(--primary-text-color,#dfebf2)); }
   [data-profile=boost] svg,[data-profile=fireplace] svg { --accent:color-mix(in srgb,#ffb347 55%,var(--primary-text-color,#dfebf2)); }
@@ -122,7 +134,7 @@ export const cardStyles = css`
   .dialog-body { padding:20px; }
   .tabs { display:flex;gap:5px;padding:0 16px;border-bottom:1px solid var(--line); }
   .tabs button { border-bottom:2px solid transparent; font-size:12px; flex:1; }
-  .tabs button[aria-selected=true] { border-bottom-color:var(--accent);color:var(--accent); }
+  .tabs button[aria-selected=true] { border-bottom-color:var(--accent);color:var(--accent-text); }
   .stat-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px; }
   .stat { padding:12px;border-radius:12px;background:color-mix(in srgb,var(--primary-text-color,#fff) 4%,transparent); }
   .stat small { display:block;color:var(--muted);font-size:10px;margin-bottom:5px; }
@@ -148,7 +160,7 @@ export const cardStyles = css`
   .insight h3 { margin:0 0 8px; }
   .insight p { font-size:12px;line-height:1.65;margin:7px 0; }
   .insight .limitation { color:var(--muted);font-size:11px; }
-  a { color:var(--accent);font-size:12px; }
+  a { color:var(--accent-text);font-size:12px; }
   .control-row { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;flex-wrap:wrap; }
   .control-row label { font-size:12px;color:var(--muted); }
   select,input { background:var(--ha-card-background,var(--card-background-color,#12212b));border:1px solid var(--line);padding:10px;border-radius:10px;min-height:44px;max-width:100%; }

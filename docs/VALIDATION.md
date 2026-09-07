@@ -1,16 +1,19 @@
-# Validation — v2.0.0
+# Validation — v2.0.1
 
-The stable card release promotes the functionality tested in 2.0.0-beta.4. The
-promotion updates release metadata and documentation without changing card behavior.
+Version 2.0.1 corrects theme inheritance on top of the stable 2.0.0 card.
+The ventilation, history, energy and companion behavior is unchanged.
 
 ## Automated checks
 
 - TypeScript and ESLint pass; the production bundle is built from the same source.
 - 35 Vitest tests cover readings, command targets, energy integrity and suggestions.
-- 50 Playwright tests cover light/dark themes, 320/390/480/768 px widths,
+- 55 Playwright tests cover light/dark themes, 320/390/480/768 px widths,
   248/376/504 px heights, masonry, keyboard controls and reduced motion.
 - Browser tests also check a blue-grey HA theme, actual selected-button contrast, enlarged
   arrowheads and a readable core at 464×376 with the unchanged energy row.
+- A native-style HA frame fixture checks transparent glass at normal/compact sizes,
+  theme switching without reload, zero/thick borders, shadows, backdrop blur,
+  primary colour changes and SVG separation with gradient card backgrounds.
 - Secondary readings are checked with wider fonts in Finnish and English, keeping
   measured values and heater state visible within their own air-stream columns.
 - Core and heater bounds remain fixed across seven states at 320×248, 390×376,

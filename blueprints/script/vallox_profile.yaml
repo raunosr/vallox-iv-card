@@ -6,7 +6,7 @@ blueprint:
     allowed only when exactly one Vallox fan is registered. Home/Away/Auto use
     a targeted fan action. Repeated requests are idempotent unless restart is true.
   domain: script
-  source_url: https://github.com/raunosr/vallox-iv-card/blob/v2.0.0/blueprints/script/vallox_profile.yaml
+  source_url: https://github.com/raunosr/vallox-iv-card/blob/v2.0.1/blueprints/script/vallox_profile.yaml
   homeassistant:
     min_version: 2025.1.0
   input:

@@ -131,7 +131,13 @@ you can also enable **Appearance → Compact view**. The compact view keeps the 
 readings and profile buttons while moving longer explanations and energy into
 details. Masonry is supported too.
 
-The card follows HA theme colours. English/Finnish and °C/°F normally follow HA;
+The card uses Home Assistant's card frame, including the theme's background,
+transparency, borders, shadows and glass effects. Normal profile controls follow
+the theme's primary colour. Temperature/airflow colours and heating/boost indicators
+retain their meaning, so you can still distinguish cold air, warm air and heating.
+No extra card styling is needed to use the selected dashboard theme.
+
+English/Finnish and °C/°F normally follow HA;
 override them in the editor if desired. Temperature colours, visibility, labels and
 relative number size can also be adjusted. Large custom fonts may need more space.
 

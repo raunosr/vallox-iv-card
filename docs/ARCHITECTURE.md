@@ -19,6 +19,11 @@ persistent control state. No cloud AI, custom integration or browser timer is re
   configured adapter script. The browser never calls the global Vallox profile service directly.
 - `card/core.ts` draws a stationary counterflow core. Separate flow paths indicate direction;
   fan request is not presented as measured airflow. The heater symbol uses only its bound sensor.
+- The native `ha-card` owns background, border and shadow styling. Do not redeclare
+  those on the outer selector: it overrides theme rules in the HA frame's shadow root.
+  SVG surfaces use `card-background-color`, since `ha-card-background` may be a gradient.
+  Normal controls use the HA primary colour; airflow colours carry temperature meaning.
+  The demo models the HA frame and a glass theme to exercise the same CSS cascade.
 - Blueprints implement a persistent seasonal state machine and native profile timing.
   They can be installed independently of the frontend.
 
