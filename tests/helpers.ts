@@ -7,6 +7,7 @@ export function hassWith(values: Record<string, [string,Record<string,unknown>?]
 export function historyFixture(now: number, high = false): History {
   const start=now-8*24*HOUR;
   const history: History={};
+  history['fan.vallox']=[{time:start,state:'on'}];
   for (const [id,state,unit] of [['sensor.outdoor','-10','°C'],['sensor.supply','12','°C'],['sensor.cell','10','°C'],['sensor.profile','Home',''],['sensor.fan','52','%'],['sensor.operation','Heat Recovery',''],['binary_sensor.heater',high?'on':'off','']]) history[id]=[{time:start,state,unit},{time:now,state,unit}];
   let value=10;history['sensor.energy']=[];
   for(let time=start;time<=now;time+=5*60000){value+=(high&&time>=now-24*HOUR?.6:.08)/12;history['sensor.energy'].push({time,state:String(value),unit:'kWh'});}

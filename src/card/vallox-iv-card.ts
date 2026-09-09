@@ -10,6 +10,7 @@ import { airColor, renderCore } from './core';
 import { icon } from './icons';
 import { cardStyles } from './vallox-iv-card.styles';
 import { renderTimeline } from './timeline';
+import { renderHeatingSummary } from './heating-summary';
 import { loadHistory } from '../data/history';
 import { analyzeEnergy } from '../data/energy';
 import { insightsFor } from '../data/insights';
@@ -141,6 +142,7 @@ export class ValloxIvCard extends LitElement {
         ${this._tab === 'energy' ? html`
           <div class="stat-grid"><div class="stat"><small>${this._t('Teho nyt','Power now')}</small><b>${this._n(model.power,0)}</b> W</div><div class="stat"><small>${this._t('Tänään','Today')}</small><b>${energyAvailable ? this._n(this._analysis?.today) : '—'}</b> kWh</div><div class="stat"><small>24 h</small><b>${energyAvailable ? this._n(this._analysis?.last24h) : '—'}</b> kWh</div></div>
           ${!energyAvailable ? html`<p class="note">${this._t('Energiamittaus puuttuu. Kulutusta ei arvioida vastuksen tilasta.','Energy measurement is unavailable. Consumption is not estimated from heater state.')}</p>` : nothing}
+          ${this._analysis && !this._historyError ? renderHeatingSummary(this._analysis,lang,energyAvailable) : nothing}
           ${this._historyError ? html`<p class="note">${this._t('Historiaa ei saatu Home Assistantista. Tarkista Recorder ja käyttöoikeudet.','History could not be loaded. Check Recorder and access permissions.')}</p><button class="action" @click=${() => this._refresh(true)}>${this._t('Yritä uudelleen','Retry')}</button>` : this._analysis ? renderTimeline(this._analysis,lang,hass.config?.time_zone ?? 'UTC') : html`<p class="note">${this._t('Ladataan historiaa…','Loading history…')}</p>`}
           ${this._analysis ? html`<p class="note">${this._t('Sulatusten aikana (24 h)','During defrost (24 h)')}: ${this._n(this._analysis.defrostMinutes,0)} min · ${energyAvailable ? this._n(this._analysis.defrostKwh,2) : '—'} kWh. ${this._t('Tämä on koko laitteen sähkö kyseisiltä jaksoilta, ei sulatuksen erillinen lisäkulutus.','This is whole-unit electricity during those intervals, not the incremental cost of defrost.')}</p>` : nothing}
         ` : this._tab === 'insights' ? html`

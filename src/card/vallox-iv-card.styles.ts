@@ -141,6 +141,15 @@ export const cardStyles = css`
   .stat b { font-size:21px;font-weight:500;font-variant-numeric:tabular-nums; }
   h3 { font-size:13px;font-weight:600;margin:22px 0 10px; }
   .note { color:var(--muted);font-size:12px;line-height:1.6; }
+  .heating-summary { border:1px solid var(--line);border-radius:14px;padding:16px;margin:16px 0; }
+  .heating-summary h3 { margin:0 0 10px; }
+  .heating-readings { margin:0; }
+  .heating-readings > div { display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line); }
+  .heating-readings dt { font-size:12px;line-height:1.4; }
+  .heating-readings dd { margin:0;white-space:nowrap;font-size:19px;font-weight:600;font-variant-numeric:tabular-nums; }
+  .heating-readings small { color:var(--muted);font-size:11px;font-weight:400; }
+  .heating-electricity dd { color:var(--accent-text); }
+  .heating-recent { font-size:12px;line-height:1.6;margin-bottom:0; }
   .chart { width:100%;height:auto;display:block; }
   .chart-grid { stroke:var(--line);stroke-width:1; }
   .chart text { fill:var(--muted);font-size:10px; }
