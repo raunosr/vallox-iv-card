@@ -1,10 +1,10 @@
 import type { HomeAssistant, Sample, ValloxIvCardConfig } from '../src/shared/types';
-export const demoConfig: ValloxIvCardConfig = { type:'custom:vallox-iv-card',language:'fi',fan_entity:'fan.vallox',outdoor_air_temp:'sensor.outdoor',extract_air_temp:'sensor.extract',supply_air_temp:'sensor.supply',exhaust_air_temp:'sensor.exhaust',supply_cell_temp:'sensor.cell',cell_state:'sensor.operation',post_heater:'binary_sensor.heater',profile:'sensor.profile',fan_speed:'sensor.fan',humidity:'sensor.humidity',co2:'sensor.co2',profile_duration:'sensor.duration',energy:{power_entity:'sensor.power',energy_entity:'sensor.energy'},insights:{heating_system:'heat_pump',daily_budget_kwh:4},filter_remaining:'sensor.filter',seasonal:{mode_entity:'input_select.season',status_entity:'input_text.status',mean_entity:'sensor.mean',bypass_lock_entity:'switch.lock'} };
+export const demoConfig: ValloxIvCardConfig = { type:'custom:vallox-iv-card',language:'fi',fan_entity:'fan.vallox',outdoor_air_temp:'sensor.outdoor',extract_air_temp:'sensor.extract',supply_air_temp:'sensor.supply',exhaust_air_temp:'sensor.exhaust',supply_cell_temp:'sensor.cell',cell_state:'sensor.operation',post_heater:'binary_sensor.heater',profile:'sensor.profile',fan_speed:'sensor.fan',humidity:'sensor.humidity',co2:'sensor.co2',profile_duration:'sensor.duration',energy:{power_entity:'sensor.power',energy_entity:'sensor.energy'},insights:{heating_system:'heat_pump'},filter_remaining:'sensor.filter',seasonal:{mode_entity:'input_select.season',status_entity:'input_text.status',mean_entity:'sensor.mean',bypass_lock_entity:'switch.lock'} };
 export function fixture(scenario = 'winter', now = Date.now()): { hass: HomeAssistant; config: ValloxIvCardConfig } {
   const states: HomeAssistant['states'] = {};
   const set = (id: string, state: string | number, attributes: Record<string,unknown> = {}) => { states[id] = { entity_id:id,state:String(state),attributes,last_changed:new Date(now).toISOString(),last_updated:new Date(now).toISOString(),context:{id:'demo',parent_id:null,user_id:null} }; };
   const values: Record<string,[number,number,number,number,number,string,number,string]> = { winter:[-12,22,14,13,-3,'Heat Recovery',84,'off'],bypass:[16,25,16,16,24,'Bypass',72,'off'],cool:[31,23,25,25,29,'Cool Recovery',80,'off'],defrost:[-18,22,13,2,4,'Defrosting',1850,'on'],stopped:[5,22,18,18,10,'Heat Recovery',0,'off'],missing:[13.5,22.2,21,21,16.3,'Heat Recovery',84,'off'],unknown:[5,22,18,18,10,'unknown',84,'off'],high:[-18,22,15,7,-8,'Heat Recovery',1100,'on'] };
-  const [out,ext,sup,cell,exh,op,power,heater] = values[scenario] ?? values.winter;
+  const [out,ext,sup,cell,exh,op,power,heater] = values[scenario === 'steady-heat' ? 'high' : scenario] ?? values.winter;
   for (const [id,value] of Object.entries({outdoor:out,extract:ext,supply:sup,cell,exhaust:exh,mean:out})) set(`sensor.${id}`,scenario === 'unknown' ? 'unavailable' : value,{unit_of_measurement:'°C'});
   set('fan.vallox',scenario === 'stopped' ? 'off' : scenario === 'unknown' ? 'unavailable' : 'on',{percentage:52,preset_mode:'Home',preset_modes:['Home','Away','Boost','Fireplace','Extra','Auto'],supported_features:57});
   set('sensor.operation',op);set('sensor.profile','Home');set('sensor.fan',52,{unit_of_measurement:'%'});set('binary_sensor.heater',scenario === 'unknown' ? 'unavailable' : heater);
@@ -17,7 +17,7 @@ export function fixture(scenario = 'winter', now = Date.now()): { hass: HomeAssi
   history['sensor.energy']=[];history['sensor.power']=[];
   for (let time=start; time<=now;time+=300000) {
     const recent = time > now-24*3600000;
-    const watts = scenario === 'high' && recent ? power : 80 + 15*Math.sin(time/3600000);
+    const watts = scenario === 'steady-heat' || scenario === 'high' && recent ? power : 80 + 15*Math.sin(time/3600000);
     kwh += watts/1000/12;
     history['sensor.energy'].push({time,state:scenario === 'missing' ? 'unavailable' : String(kwh),unit:'kWh'});
     history['sensor.power'].push({time,state:scenario === 'missing' ? 'unavailable' : String(watts),unit:'W'});

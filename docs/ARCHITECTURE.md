@@ -53,8 +53,20 @@ at hour/day boundaries, so totals near boundaries are approximate.
 Recorded state is held until the next recorded change. Recorder retention must cover the
 comparison period; unrecorded HA downtime cannot always be distinguished from unchanged
 states. Electricity attribution is suppressed for intervals without valid meter endpoints.
-Temperature/power graphs show hourly averages; heater share uses minute-weighted samples.
+Temperature/power graphs show hourly averages; hourly heater bands use minute-weighted samples.
 Defrost event durations and electricity allocation use recorded state boundaries.
+
+Heater summaries and the six-hour heater share split at exact recorded heater, core,
+fan and temperature boundaries. At least 90% known context is required. A share above
+50% with at least one hour of non-defrost running time generates read-only advice
+independently of the daily budget, energy baseline or meter availability. Measured
+electricity accompanies the observation only when the current meter is valid and at
+least 90% of the heating intervals have valid counter coverage. This is whole-unit
+electricity during heating, never heater-only kWh. The measured supply-minus-core
+temperature difference uses those same intervals and a separate 90% temperature
+coverage gate; a duplicated sensor is rejected. No heating intervals produce no
+interval energy/lift, rather than a fabricated measurement of zero. Hourly timeline
+bands retain minute-weighted sampling. See [source review](HEATING-EVIDENCE.md).
 
 Comparable-hour analysis requires the same profile, outdoor temperature ±2 °C and fan
 request ±5 percentage points, at least six hours from three distinct local dates. The

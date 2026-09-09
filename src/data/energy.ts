@@ -1,4 +1,4 @@
-import type { EnergyAnalysis, History, Hour, Operation, Sample, ValloxIvCardConfig } from '../shared/types';
+import type { EnergyAnalysis, HeaterUsage, History, Hour, Operation, Sample, ValloxIvCardConfig } from '../shared/types';
 import { booleanState, energyValue, operationOf, powerValue, temperature } from '../card/vallox-iv-card.logic';
 
 export const HOUR = 3600000;
@@ -53,6 +53,45 @@ export function consumption(segments: Segment[], start: number, end: number): { 
   return { kwh: covered ? sum : null, coverage };
 }
 
+/** Split at recorded state boundaries, never infer heater electricity from its rating.
+ * Energy is the whole unit's measured electricity DURING non-defrost heating.
+ * Temperature lift is a measured difference, not heat output or heater-only energy.
+ */
+function heaterUsage(history: History, config: ValloxIvCardConfig, meter: Segment[], start: number, end: number): HeaterUsage {
+  const ids = [config.post_heater, config.cell_state, config.fan_entity, config.supply_cell_temp, config.supply_air_temp];
+  const read = (id: string | undefined, time: number) => at(id ? history[id] ?? [] : [], time);
+  const boundaries = [...new Set([start, end, ...ids.flatMap(id => id ? (history[id] ?? []).filter(s => s.time > start && s.time < end).map(s => s.time) : [])])].sort((a,b) => a-b);
+  let known = 0, active = 0, heating = 0, defrost = 0, normal = 0, kwh = 0, energyCovered = 0, lift = 0, liftCovered = 0;
+  for (let i = 1; i < boundaries.length; i++) {
+    const a = boundaries[i-1], b = boundaries[i], span = b-a;
+    const heater = booleanState(read(config.post_heater,a)?.state ?? null);
+    const fan = read(config.fan_entity,a);
+    const running = booleanState(fan?.state ?? null);
+    const operation = running === false ? 'stopped' : operationOf(read(config.cell_state,a)?.state ?? null);
+    if (heater === null || operation === 'unknown' || (config.fan_entity && running === null)) continue;
+    known += span;
+    if (heater) active += span;
+    if (operation === 'defrost') { if (heater) defrost += span; continue; }
+    if (operation === 'stopped') continue;
+    normal += span;
+    if (!heater) continue;
+    heating += span;
+    const energy = consumption(meter,a,b);
+    kwh += energy.kwh ?? 0; energyCovered += span * energy.coverage;
+    const c = read(config.supply_cell_temp,a), s = read(config.supply_air_temp,a);
+    const cell = temperature(numeric(c?.state),c?.unit ?? ''), supply = temperature(numeric(s?.state),s?.unit ?? '');
+    if (config.supply_cell_temp !== config.supply_air_temp && cell !== null && supply !== null) {
+      lift += (supply-cell) * span; liftCovered += span;
+    }
+  }
+  const coverage = known / (end-start), ready = coverage >= .9;
+  const energyCoverage = heating > 0 ? energyCovered/heating : 0;
+  return { coverage, activeMinutes: ready ? active/MINUTE : null, heatingMinutes: ready ? heating/MINUTE : null,
+    defrostMinutes: ready ? defrost/MINUTE : null, heatingShare: ready && normal >= HOUR ? heating/normal : null,
+    heatingKwh: ready && heating > 0 && energyCoverage >= .9 ? kwh : null, heatingEnergyCoverage: energyCoverage,
+    meanLift: ready && heating > 0 && liftCovered/heating >= .9 ? lift/liftCovered : null };
+}
+
 export function analyzeEnergy(history: History, config: ValloxIvCardConfig, now: number, zone = 'UTC'): EnergyAnalysis {
   const series = (id?: string) => id ? history[id] ?? [] : [];
   const meter = energySegments(series(config.energy?.energy_entity));
@@ -61,7 +100,6 @@ export function analyzeEnergy(history: History, config: ValloxIvCardConfig, now:
   const hours: Hour[] = [];
   const read = (id: string | undefined, time: number) => at(series(id), time);
   let defrostKwh = 0, defrostEnergyCovered = 0, defrostTotal = 0;
-  let heater6 = 0, normal6 = 0, context6 = 0;
   for (let t = start; t < now; t += HOUR) {
     const end = Math.min(now, t + HOUR);
     let outdoor = 0, outdoorN = 0, supply = 0, supplyN = 0, cell = 0, cellN = 0, fan = 0, fanN = 0;
@@ -95,9 +133,7 @@ export function analyzeEnergy(history: History, config: ValloxIvCardConfig, now:
       if (operation !== 'unknown' && operation !== 'defrost' && operation !== 'stopped' && heater !== null) {
         normalMinutes += width;
         if (heater) heaterMinutes += width;
-        if (time >= now - 6 * HOUR) { normal6 += width; if (heater) heater6 += width; }
       }
-      if (time >= now - 6 * HOUR && operation !== 'unknown' && heater !== null) context6 += width;
     }
     const span = (end - t) / MINUTE;
     const dominant = <T>(map: Map<T, number>): [T, number] | undefined => [...map.entries()].sort((a, b) => b[1] - a[1])[0];
@@ -151,9 +187,11 @@ export function analyzeEnergy(history: History, config: ValloxIvCardConfig, now:
     daily.unshift({ date: dayKey(from, zone), ...consumption(meter, from, next) });
     cursor = from;
   }
+  const heater6h = heaterUsage(history,config,meter,now-6*HOUR,now);
+  const heater24h = heaterUsage(history,config,meter,now-24*HOUR,now);
   return { today: today.coverage >= .9 ? today.kwh : null, last24h: last24.coverage >= .9 ? last24.kwh : null,
     todayCoverage: today.coverage, hours, daily, defrostKwh: defrostTotal > 0 && defrostEnergyCovered / defrostTotal >= .9 ? defrostKwh : null,
-    defrostMinutes: defrostTotal / MINUTE, longDefrosts, defrostIncreaseRatio, heaterShare: context6 >= 6 * 60 * .9 && normal6 >= 60 ? heater6 / normal6 : null,
+    defrostMinutes: defrostTotal / MINUTE, longDefrosts, defrostIncreaseRatio, heaterShare: heater6h.heatingShare, heater6h, heater24h,
     elevated: comparisons.length === 3 && comparisons.every(r => r !== null && r > 1 + (config.insights?.excess_ratio ?? .5)),
     baselineReady: comparisons.length === 3 && comparisons.every(r => r !== null), historyAvailable: rawCell.length > 1 || meter.length > 0 || rawHeater.length > 1 };
 }

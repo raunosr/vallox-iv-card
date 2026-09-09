@@ -50,7 +50,7 @@ An electricity meter is optional; the card works without one.
 3. Find **Vallox IV Card** in HACS and download the latest stable version.
 4. Reload Home Assistant in your browser or Companion App.
 
-Already installed? Update to **2.0.1** in HACS. If it has not appeared, use
+Already installed? Update to **2.0.2** in HACS. If it has not appeared, use
 **⋮ → Update information** on the repository. This is a stable release; no beta
 opt-in is needed.
 
@@ -134,7 +134,10 @@ enough history exists. With only a power sensor, you can create a Home Assistant
 Without a working meter, the card shows **Energy measurement unavailable**.
 It does not substitute zero or calculate consumption from the heater's rated power.
 
-Suggestions can account for your heating system and your own daily energy budget.
+The Energy details separate heater runtime during supply heating and defrost, and
+show measured whole-unit electricity during non-defrost heating. Frequent heater use
+is detected without a daily budget or a rise over your historical consumption.
+Suggestions account for your main heating system and, optionally, your own daily budget.
 They explain the observation and what to check; they never change temperature or
 defrost settings. There is no universal supply-temperature minimum or built-in
 17 °C recommendation. [Learn how energy and suggestions work](docs/USER-GUIDE.md#energy-and-suggestions).
@@ -163,7 +166,7 @@ install or enable them. [Companion setup and validation](docs/MIGRATION.md#optio
   bound to the pre-heater sensor.
 
 See the [user guide](docs/USER-GUIDE.md), [migration and rollback](docs/MIGRATION.md),
-[release notes](docs/releases/v2.0.1.md) and [validation scope](docs/VALIDATION.md).
+[release notes](docs/releases/v2.0.2.md) and [validation scope](docs/VALIDATION.md).
 For a problem, [open an issue](https://github.com/raunosr/vallox-iv-card/issues) with
 your card/HA/browser versions, card dimensions, anonymized YAML and a screenshot.
 

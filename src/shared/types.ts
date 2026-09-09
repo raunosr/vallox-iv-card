@@ -169,6 +169,16 @@ export interface Hour {
   contextCoverage: number;
   operationCoverage: number;
 }
+export interface HeaterUsage {
+  coverage: number;
+  activeMinutes: number | null;
+  heatingMinutes: number | null;
+  defrostMinutes: number | null;
+  heatingShare: number | null;
+  heatingKwh: number | null;
+  heatingEnergyCoverage: number;
+  meanLift: number | null;
+}
 export interface EnergyAnalysis {
   today: number | null;
   last24h: number | null;
@@ -180,6 +190,8 @@ export interface EnergyAnalysis {
   longDefrosts: number;
   defrostIncreaseRatio: number | null;
   heaterShare: number | null;
+  heater6h: HeaterUsage;
+  heater24h: HeaterUsage;
   elevated: boolean;
   baselineReady: boolean;
   historyAvailable: boolean;

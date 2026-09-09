@@ -76,11 +76,15 @@ same energy counter. All energy bindings are optional.
 | `enabled` | Show suggestions; enabled unless set to `false`. |
 | `heating_system` | `unknown`, `heat_pump`, `district_heating`, `other_efficient` or `electric`. |
 | `daily_budget_kwh` | Your optional daily budget. No universal budget is supplied. |
-| `comfort_floor` | Your optional comfort preference in °C, including when display units are °F. No general minimum is enforced. |
-| `excess_ratio` | Excess over comparable history; default `0.5` means 50%. |
+| `comfort_floor` | Your optional supply-air comfort reminder in °C, including when display units are °F. Not a device setting or a detection prerequisite. No general minimum is enforced. |
+| `excess_ratio` | Relative increase in consumption or defrost time over your comparable history; default `0.5` means more than +50% for three consecutive hours. Does not gate frequent-heater-use advice. |
 | `defrost_minutes` | Long-defrost observation threshold; default 60 minutes. This is not a fault criterion. |
 
 [Energy behaviour and limitations](USER-GUIDE.md#energy-and-suggestions).
+
+Selecting the heating system is enough to tailor the heater-use advice. All numerical
+thresholds are optional. Frequent non-defrost heating is detected from six-hour state
+history even without a daily budget or a comparable historical consumption baseline.
 
 ## Appearance
 

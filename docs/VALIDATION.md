@@ -1,4 +1,21 @@
-# Validation — v2.0.1
+# Validation
+
+## v2.0.2 — heater-use observations
+
+The heater-use update is validated with Node 22, TypeScript, ESLint, 44 Vitest tests
+and 59 browser tests. New checks cover constant high heater runtime without a budget
+or elevated baseline, early six-hour history, unavailable heater/core/fan state,
+missing energy, meter resets/gaps, exact state transitions, temperature-unit conversion
+and separating defrost from ordinary supply heating. Finnish/dark normal and
+English/light compact screenshots are inspected, including the details dialog.
+The recommendations issue no service commands.
+
+The new heater-use observations have not been field-tested during real winter operation.
+The newly connected real meter has been checked for W/kWh bindings, current power,
+counter updates and the installed card's insufficient-history display. This short
+initial history is not winter validation of the new observations.
+
+## Released v2.0.1
 
 Version 2.0.1 corrects theme inheritance on top of the stable 2.0.0 card.
 The ventilation, history, energy and companion behavior is unchanged.

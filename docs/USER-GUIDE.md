@@ -114,10 +114,41 @@ The card can highlight excess consumption, sustained heater activity outside def
 long defrost events or missing measurement. It compares similar conditions where
 possible and tells you when evidence is insufficient.
 
+The **When was the heater used?** summary in Energy shows 24-hour heater runtime,
+separating supply heating outside defrost from heater use during defrost. It also
+shows the whole unit's measured electricity during non-defrost heating and the
+average difference between final supply and after-core temperature during those
+intervals. Neither value measures the heater's separate electrical or heat output.
+The summary covers the configured post-heater sensor, not any unreported additional
+heaters. Unavailable readings appear as dashes; runtime does not require an energy meter.
+
+Frequent heating is detected directly: the heater must be active for more than half
+the known running time outside defrost over the last six hours. At least 90% of the
+six-hour heater/operating-state history and one hour of non-defrost running time are
+required. **No daily budget, comfort floor or multi-day baseline is needed.** With a
+heat pump or another more efficient heat source selected, the card suggests trying a
+lower supply-air target. Monitor electricity, room temperature and drafts to find a
+balance for your home. Without adequate energy readings, the observation reports runtime
+and explicitly says electricity is not sufficiently measured. Keep the heater function
+needed for defrost available. [Vallox's energy guidance](https://www.vallox.com/miten-ilmanvaihtokoneella-voi-saastaa-sahkoa/).
+
+**Deviation from your history** is a separate change detector, not an acceptable
+consumption limit. The default `0.5` means more than 50% above comparable history for
+three consecutive complete hours. For example, a reference of 0.20 kWh per hour gives
+a threshold above 0.30 kWh per hour. Matches need the same profile, outdoor temperature
+within 2 °C and fan request within 5 percentage points. At least six matching hours
+from three dates are required. The same setting also controls relative defrost-time
+increase detection. A consistently wasteful setup can match its baseline, which is
+why heater runtime is assessed separately.
+
 There is no default daily energy budget, no universal minimum supply target and no
 automatic setting change. Homes with an efficient main heating system can use their
 own lower supply targets when comparing measured consumption. An optional comfort
 floor is your preference, not a recommendation imposed by the card.
+
+For defrost, compare duration, energy and conditions rather than copying another home's
+settings. Long cycles and a sustained increase over comparable history produce a
+check suggestion, not a fault diagnosis. See [the evidence behind the advice](HEATING-EVIDENCE.md).
 
 Electricity recorded during defrost is **the unit's total electricity during those
 periods**. It is not all additional electricity caused by defrost. A drop in Vallox
